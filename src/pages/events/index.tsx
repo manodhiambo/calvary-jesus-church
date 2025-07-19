@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Calendar, Clock, MapPin, Users, Filter, ChevronRight } from 'lucide-react';
+import Link from 'next/link';
 
 interface Event {
   id: string;
@@ -111,6 +112,20 @@ const EventsIndex = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
+    {/* Navigation Bar */}
+    <nav className="bg-white shadow-md">
+    <div className="container mx-auto px-4 py-4 flex flex-wrap gap-4 justify-center text-blue-900 font-semibold">
+    <Link href="/">Home</Link>
+    <Link href="/about">About</Link>
+    <Link href="/services">Services</Link>
+    <Link href="/ministries">Ministries</Link>
+    <Link href="/events">Events</Link>
+    <Link href="/resources">Resources</Link>
+    <Link href="/give">Give</Link>
+    <Link href="/contact">Contact</Link>
+    </div>
+    </nav>
+
       {/* Header Section */}
       <div className="bg-navy-900 text-white py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

@@ -1,497 +1,506 @@
 import React, { useState } from 'react';
-import { Calendar, Clock, MapPin, Play, Download, Search } from 'lucide-react';
+import { Clock, MapPin, Play, Calendar, Book, Users, ChevronRight, Filter, Menu, X } from 'lucide-react';
 
 const ServicesPage = () => {
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  const navigationLinks = [
+    { href: '/', label: 'Home' },
+    { href: '/about', label: 'About Us' },
+    { href: '/services', label: 'Services', active: true },
+    { href: '/ministries', label: 'Ministries' },
+    { href: '/events', label: 'Events' },
+    { href: '/resources', label: 'Resources' },
+    { href: '/give', label: 'Give' },
+    { href: '/contact', label: 'Contact' }
+  ];
   const [activeTab, setActiveTab] = useState('times');
-  const [sermonFilters, setSermonFilters] = useState({
-    series: 'all',
-    speaker: 'all',
-    year: 'all'
-  });
+  const [filterSeries, setFilterSeries] = useState('all');
 
-  const serviceLocations = [
-    {
-      name: "Nyaduong' Village Service",
-      time: "9:00 AM - 12:00 PM",
-      day: "Sunday",
-      location: "Nyaduong' Village",
-      details: "Next to Nyaduong' Secondary and Primary Schools",
-      mapUrl: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3321.4799877335027!2d34.47337571532466!3d-1.063975599286632!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x19d6d5d20ef2b8f5%3A0x24f0b2d8dcdd1c7f!2sNyaduong'%20Secondary%20School!5e0!3m2!1sen!2ske!4v1709878675012!5m2!1sen!2ske"
-    },
-    {
-      name: "Migori Town Service",
-      time: "2:00 PM - 4:00 PM",
-      day: "Sunday",
-      location: "Oruba, Migori Town",
-      details: "Inside Dip Primary School",
-      mapUrl: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3321.4799877335027!2d34.47337571532466!3d-1.063975599286632!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x19d6d5d20ef2b8f5%3A0x24f0b2d8dcdd1c7f!2sMigori!5e0!3m2!1sen!2ske!4v1709878675012!5m2!1sen!2ske"
-    }
-  ];
-
-  const specialEvents = [
-    {
-      title: "Christmas Service",
-      description: "Join us for our special Christmas worship service celebrating the birth of our Savior.",
-      date: "December 25th",
-      time: "9:00 AM",
-      location: "Both locations"
-    },
-    {
-      title: "Easter Service",
-      description: "Celebrate the resurrection of Jesus Christ with our Easter worship service.",
-      date: "Easter Sunday",
-      time: "9:00 AM",
-      location: "Both locations"
-    },
-    {
-      title: "Baptism Services",
-      description: "Monthly baptism services for new believers making their public declaration of faith.",
-      date: "First Sunday of each month",
-      time: "After morning service",
-      location: "Nyaduong' Village"
-    },
-    {
-      title: "Youth Conference",
-      description: "Annual youth conference focusing on discipleship and spiritual growth.",
-      date: "July 15-17",
-      time: "9:00 AM - 5:00 PM",
-      location: "Nyaduong' Village"
-    },
-    {
-      title: "Bible Study Workshop",
-      description: "Intensive Bible study sessions for deeper understanding of Scripture.",
-      date: "Every Wednesday",
-      time: "6:00 PM - 8:00 PM",
-      location: "Migori Town"
-    }
-  ];
-
+  // Sample sermon data
   const sermons = [
     {
+      id: 1,
       title: "The Authority of Scripture",
       speaker: "Pastor Bruce",
-      date: "January 2024",
-      series: "Gospel of John",
-      scripture: "2 Timothy 3:16-17",
-      description: "Understanding the complete sufficiency and authority of God's Word in the believer's life.",
-      year: "2024"
+      date: "2024-01-14",
+      series: "Biblical Foundations",
+      videoUrl: "https://youtube.com/watch?v=example1",
+      description: "Understanding why the Bible is our sole source of divine authority."
     },
     {
-      title: "Salvation by Grace Through Faith",
-      speaker: "Pastor Bruce",
-      date: "December 2023",
-      series: "Romans",
-      scripture: "Ephesians 2:8-9",
-      description: "Exploring the biblical doctrine of salvation and the role of faith in justification.",
-      year: "2023"
+      id: 2,
+      title: "Salvation by Grace Alone",
+      speaker: "Pastor Bruce", 
+      date: "2024-01-07",
+      series: "Gospel Essentials",
+      videoUrl: "https://youtube.com/watch?v=example2",
+      description: "No good deed from man can justify him before God - only through Christ."
     },
     {
-      title: "The Necessity of Christ's Sacrifice",
+      id: 3,
+      title: "The Way to Heaven",
       speaker: "Pastor Bruce",
-      date: "November 2023",
-      series: "Romans",
-      scripture: "Hebrews 9:22",
-      description: "Why the blood of Jesus Christ was necessary for our salvation and forgiveness of sins.",
-      year: "2023"
+      date: "2023-12-31",
+      series: "Gospel Essentials", 
+      videoUrl: "https://youtube.com/watch?v=example3",
+      description: "Jesus said: I am the way, and the truth, and the life."
     },
     {
-      title: "Walking in the Light",
+      id: 4,
+      title: "Born in Adam - The Reality of Sin",
       speaker: "Pastor Bruce",
-      date: "October 2023",
-      series: "Gospel of John",
-      scripture: "1 John 1:7",
-      description: "Living a life that reflects the light of Christ in our daily walk.",
-      year: "2023"
-    },
-    {
-      title: "The Great Commission",
-      speaker: "Pastor Bruce",
-      date: "September 2023",
-      series: "Genesis",
-      scripture: "Matthew 28:19-20",
-      description: "Our calling to make disciples of all nations and the power to fulfill this mission.",
-      year: "2023"
-    },
-    {
-      title: "Love One Another",
-      speaker: "Pastor Bruce",
-      date: "August 2023",
-      series: "Gospel of John",
-      scripture: "John 13:34-35",
-      description: "The commandment to love as Christ loved us and its impact on our witness.",
-      year: "2023"
+      date: "2023-12-24",
+      series: "Understanding Sin",
+      videoUrl: "https://youtube.com/watch?v=example4",
+      description: "All mankind are born sinners by birth through Adam."
     }
   ];
 
-  const filteredSermons = sermons.filter(sermon => {
-    return (
-      (sermonFilters.series === 'all' || sermon.series === sermonFilters.series) &&
-      (sermonFilters.speaker === 'all' || sermon.speaker === sermonFilters.speaker) &&
-      (sermonFilters.year === 'all' || sermon.year === sermonFilters.year)
-    );
-  });
+  const seriesList = ['all', ...new Set(sermons.map(sermon => sermon.series))];
+  const filteredSermons = filterSeries === 'all' ? sermons : sermons.filter(sermon => sermon.series === filterSeries);
 
-  const handleFilterChange = (filterType, value) => {
-    setSermonFilters(prev => ({
-      ...prev,
-      [filterType]: value
-    }));
-  };
+  const ServiceTimeCard = ({ time, location, details, icon }) => (
+    <div className="bg-white rounded-lg shadow-md p-6 border-l-4 border-blue-600 hover:shadow-lg transition-shadow">
+      <div className="flex items-start space-x-4">
+        <div className="bg-blue-100 p-3 rounded-full">
+          {icon}
+        </div>
+        <div className="flex-1">
+          <h3 className="text-xl font-bold text-gray-900 mb-2">{time}</h3>
+          <div className="flex items-center text-gray-600 mb-2">
+            <MapPin className="w-4 h-4 mr-2" />
+            <span>{location}</span>
+          </div>
+          <p className="text-gray-700">{details}</p>
+        </div>
+      </div>
+    </div>
+  );
+
+  const SermonCard = ({ sermon }) => (
+    <div className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow">
+      <div className="p-6">
+        <div className="flex items-center justify-between mb-2">
+          <span className="bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-0.5 rounded">
+            {sermon.series}
+          </span>
+          <span className="text-sm text-gray-500">{sermon.date}</span>
+        </div>
+        <h3 className="text-lg font-bold text-gray-900 mb-2">{sermon.title}</h3>
+        <p className="text-gray-600 mb-3">{sermon.description}</p>
+        <div className="flex items-center justify-between">
+          <span className="text-sm text-gray-500">Speaker: {sermon.speaker}</span>
+          <button className="flex items-center text-blue-600 hover:text-blue-800 font-medium">
+            <Play className="w-4 h-4 mr-1" />
+            Watch
+          </button>
+        </div>
+      </div>
+    </div>
+  );
 
   return (
     <div className="min-h-screen bg-gray-50">
+      {/* Navigation Header */}
+      <nav className="bg-white shadow-lg sticky top-0 z-50">
+        <div className="max-w-6xl mx-auto px-4">
+          <div className="flex justify-between items-center py-4">
+            {/* Logo */}
+            <div className="flex items-center space-x-3">
+              <div className="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center">
+                <Book className="w-6 h-6 text-white" />
+              </div>
+              <div>
+                <h1 className="text-xl font-bold text-gray-900">Calvary Jesus Church</h1>
+                <p className="text-sm text-gray-600">Unleashing God's truth</p>
+              </div>
+            </div>
+
+            {/* Desktop Navigation */}
+            <div className="hidden md:flex space-x-8">
+              {navigationLinks.map((link) => (
+                <a
+                  key={link.href}
+                  href={link.href}
+                  className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${
+                    link.active
+                      ? 'bg-blue-100 text-blue-700'
+                      : 'text-gray-700 hover:text-blue-600 hover:bg-gray-50'
+                  }`}
+                >
+                  {link.label}
+                </a>
+              ))}
+            </div>
+
+            {/* Mobile menu button */}
+            <div className="md:hidden">
+              <button
+                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                className="inline-flex items-center justify-center p-2 rounded-md text-gray-700 hover:text-blue-600 hover:bg-gray-100"
+              >
+                {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+              </button>
+            </div>
+          </div>
+
+          {/* Mobile Navigation */}
+          {mobileMenuOpen && (
+            <div className="md:hidden border-t border-gray-200">
+              <div className="px-2 pt-2 pb-3 space-y-1">
+                {navigationLinks.map((link) => (
+                  <a
+                    key={link.href}
+                    href={link.href}
+                    className={`block px-3 py-2 rounded-md text-base font-medium transition-colors ${
+                      link.active
+                        ? 'bg-blue-100 text-blue-700'
+                        : 'text-gray-700 hover:text-blue-600 hover:bg-gray-50'
+                    }`}
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    {link.label}
+                  </a>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+      </nav>
+
       {/* Header */}
-      <section className="bg-gradient-to-r from-blue-900 to-blue-800 text-white py-20">
-        <div className="container mx-auto px-4">
+      <div className="bg-gradient-to-r from-blue-900 to-blue-700 text-white">
+        <div className="max-w-6xl mx-auto px-4 py-16">
           <div className="text-center">
-            <h1 className="text-5xl font-bold mb-6">Our Services</h1>
-            <p className="text-xl max-w-3xl mx-auto leading-relaxed">
-              We are dedicated to unleashing God's truth one verse at a time. Teaching the Bible is our focus.
-            </p>
+            <h1 className="text-4xl font-bold mb-4">Our Services</h1>
+            <p className="text-xl opacity-90">Unleashing God's truth one verse at a time</p>
+            <p className="text-lg opacity-80 mt-2">Teaching the Bible is our focus</p>
           </div>
         </div>
-      </section>
+      </div>
 
       {/* Navigation Tabs */}
-      <div className="bg-white shadow-lg sticky top-0 z-40">
-        <div className="container mx-auto px-4">
-          <div className="flex overflow-x-auto">
+      <div className="bg-white shadow-sm sticky top-0 z-10">
+        <div className="max-w-6xl mx-auto px-4">
+          <nav className="flex space-x-8">
             {[
               { id: 'times', label: 'Service Times', icon: Clock },
               { id: 'online', label: 'Online Services', icon: Play },
               { id: 'special', label: 'Special Events', icon: Calendar },
-              { id: 'archive', label: 'Sermon Archive', icon: Download }
+              { id: 'archive', label: 'Sermon Archive', icon: Book }
             ].map(({ id, label, icon: Icon }) => (
               <button
                 key={id}
                 onClick={() => setActiveTab(id)}
-                className={`flex items-center space-x-2 py-4 px-6 border-b-3 font-medium text-sm whitespace-nowrap transition-all duration-200 ${
-                  activeTab === id 
-                    ? 'border-blue-500 text-blue-600 bg-blue-50' 
+                className={`flex items-center py-4 px-2 border-b-2 font-medium text-sm transition-colors ${
+                  activeTab === id
+                    ? 'border-blue-600 text-blue-600'
                     : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
                 }`}
               >
-                <Icon size={18} />
-                <span>{label}</span>
+                <Icon className="w-4 h-4 mr-2" />
+                {label}
               </button>
             ))}
-          </div>
+          </nav>
         </div>
       </div>
 
-      {/* Tab Content */}
-      <div className="py-16">
-        {/* Service Times Tab */}
+      {/* Content */}
+      <div className="max-w-6xl mx-auto px-4 py-12">
+        {/* Service Times */}
         {activeTab === 'times' && (
-          <div className="container mx-auto px-4">
+          <div className="space-y-8">
             <div className="text-center mb-12">
-              <h2 className="text-4xl font-bold text-gray-800 mb-4">Weekly Service Schedule</h2>
-              <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-                Join us for worship, biblical teaching, and fellowship at our two locations
+              <h2 className="text-3xl font-bold text-gray-900 mb-4">Join Our Sunday Services</h2>
+              <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+                We gather every Sunday to worship together and dive deep into God's Word. 
+                All are welcome to join us in person at either of our locations.
               </p>
             </div>
-            <div className="grid lg:grid-cols-2 gap-8 max-w-6xl mx-auto">
-              {serviceLocations.map((service, index) => (
-                <div key={index} className="bg-white rounded-2xl shadow-xl overflow-hidden transform hover:scale-105 transition-all duration-300">
-                  <div className="bg-gradient-to-r from-blue-900 to-blue-800 text-white p-8">
-                    <h3 className="text-2xl font-bold mb-3">{service.name}</h3>
-                    <div className="flex items-center space-x-4 text-blue-100">
-                      <div className="flex items-center space-x-2">
-                        <Calendar size={20} />
-                        <span>{service.day}</span>
-                      </div>
-                      <div className="flex items-center space-x-2">
-                        <Clock size={20} />
-                        <span>{service.time}</span>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="p-8">
-                    <div className="mb-6">
-                      <div className="flex items-start space-x-3 mb-4">
-                        <MapPin className="text-blue-600 mt-1 flex-shrink-0" size={20} />
-                        <div>
-                          <h4 className="font-semibold text-gray-800 mb-1">Location</h4>
-                          <p className="text-gray-600">{service.location}</p>
-                          <p className="text-gray-500 text-sm">{service.details}</p>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="mb-6">
-                      <h4 className="font-semibold text-gray-800 mb-3">What to Expect</h4>
-                      <ul className="text-gray-600 space-y-2">
-                        <li className="flex items-center space-x-2">
-                          <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
-                          <span>Biblical teaching and exposition</span>
-                        </li>
-                        <li className="flex items-center space-x-2">
-                          <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
-                          <span>Worship and praise</span>
-                        </li>
-                        <li className="flex items-center space-x-2">
-                          <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
-                          <span>Prayer and fellowship</span>
-                        </li>
-                        <li className="flex items-center space-x-2">
-                          <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
-                          <span>Warm, welcoming community</span>
-                        </li>
-                      </ul>
-                    </div>
-                    <div className="rounded-lg overflow-hidden">
-                      <iframe
-                        src={service.mapUrl}
-                        width="100%"
-                        height="250"
-                        style={{ border: 0 }}
-                        allowFullScreen=""
-                        loading="lazy"
-                        className="rounded-lg"
-                      />
-                    </div>
+
+            <div className="grid md:grid-cols-2 gap-8">
+              <ServiceTimeCard
+                time="9:00 AM - 12:00 PM"
+                location="Nyaduong' Village"
+                details="Located next to Nyaduong' Secondary and Primary Schools. Our main worship service with expository preaching."
+                icon={<Clock className="w-6 h-6 text-blue-600" />}
+              />
+              <ServiceTimeCard
+                time="2:00 PM - 4:00 PM"
+                location="Migori Town - Oruba"
+                details="Inside Dip Primary School. Afternoon service for those who can't attend the morning session."
+                icon={<Users className="w-6 h-6 text-blue-600" />}
+              />
+            </div>
+
+            <div className="bg-blue-50 rounded-lg p-8 mt-12">
+              <h3 className="text-xl font-bold text-gray-900 mb-4">What to Expect</h3>
+              <div className="grid md:grid-cols-2 gap-6">
+                <div>
+                  <h4 className="font-semibold text-gray-900 mb-2">Biblical Teaching</h4>
+                  <p className="text-gray-700">Every service centers on verse-by-verse exposition of Scripture, helping you understand God's Word deeply.</p>
+                </div>
+                <div>
+                  <h4 className="font-semibold text-gray-900 mb-2">Worship & Prayer</h4>
+                  <p className="text-gray-700">We gather to worship God in spirit and truth, and lift up prayers for our community and world.</p>
+                </div>
+                <div>
+                  <h4 className="font-semibold text-gray-900 mb-2">Fellowship</h4>
+                  <p className="text-gray-700">Connect with other believers who share a commitment to biblical truth and Christian growth.</p>
+                </div>
+                <div>
+                  <h4 className="font-semibold text-gray-900 mb-2">All Welcome</h4>
+                  <p className="text-gray-700">Whether you're a longtime believer or just curious about faith, you'll find a warm welcome here.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Online Services */}
+        {activeTab === 'online' && (
+          <div className="space-y-8">
+            <div className="text-center mb-12">
+              <h2 className="text-3xl font-bold text-gray-900 mb-4">Online Services</h2>
+              <p className="text-lg text-gray-600">
+                Can't make it to church in person? Join us online for live streaming and recorded services.
+              </p>
+            </div>
+
+            <div className="bg-white rounded-lg shadow-md p-8">
+              <h3 className="text-xl font-bold text-gray-900 mb-4">Live Stream</h3>
+              <p className="text-gray-600 mb-6">
+                Join us live every Sunday at 9:00 AM (EAT) for our morning service from Nyaduong' Village.
+              </p>
+              
+              {/* Placeholder for YouTube embed */}
+              <div className="bg-gray-200 rounded-lg aspect-video flex items-center justify-center mb-6">
+                <div className="text-center">
+                  <Play className="w-12 h-12 text-gray-400 mx-auto mb-2" />
+                  <p className="text-gray-500">Live stream will appear here during service times</p>
+                </div>
+              </div>
+
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="font-medium text-gray-900">Next Live Service</p>
+                  <p className="text-sm text-gray-600">Sunday at 9:00 AM EAT</p>
+                </div>
+                <button className="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition-colors">
+                  Set Reminder
+                </button>
+              </div>
+            </div>
+
+            <div className="grid md:grid-cols-2 gap-8">
+              <div className="bg-white rounded-lg shadow-md p-6">
+                <h3 className="text-lg font-bold text-gray-900 mb-3">Facebook Live</h3>
+                <p className="text-gray-600 mb-4">Follow our Facebook page for live streaming and community updates.</p>
+                <a 
+                  href="https://www.facebook.com/profile.php?id=100064378341874" 
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center text-blue-600 hover:text-blue-800 font-medium"
+                >
+                  Visit Facebook Page
+                  <ChevronRight className="w-4 h-4 ml-1" />
+                </a>
+              </div>
+
+              <div className="bg-white rounded-lg shadow-md p-6">
+                <h3 className="text-lg font-bold text-gray-900 mb-3">Missed a Service?</h3>
+                <p className="text-gray-600 mb-4">Catch up on recent sermons and teachings in our archive.</p>
+                <button 
+                  onClick={() => setActiveTab('archive')}
+                  className="inline-flex items-center text-blue-600 hover:text-blue-800 font-medium"
+                >
+                  Browse Archive
+                  <ChevronRight className="w-4 h-4 ml-1" />
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Special Events */}
+        {activeTab === 'special' && (
+          <div className="space-y-8">
+            <div className="text-center mb-12">
+              <h2 className="text-3xl font-bold text-gray-900 mb-4">Special Events</h2>
+              <p className="text-lg text-gray-600">
+                Join us for special services, baptisms, and seasonal celebrations throughout the year.
+              </p>
+            </div>
+
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+              <div className="bg-white rounded-lg shadow-md overflow-hidden">
+                <div className="bg-gradient-to-r from-green-600 to-green-500 h-24"></div>
+                <div className="p-6">
+                  <h3 className="text-lg font-bold text-gray-900 mb-2">Easter Service</h3>
+                  <p className="text-gray-600 mb-4">Celebrate the resurrection of our Lord Jesus Christ with special worship and teaching.</p>
+                  <div className="text-sm text-gray-500">
+                    <p>Date: March 31, 2024</p>
+                    <p>Time: 9:00 AM</p>
                   </div>
                 </div>
+              </div>
+
+              <div className="bg-white rounded-lg shadow-md overflow-hidden">
+                <div className="bg-gradient-to-r from-red-600 to-red-500 h-24"></div>
+                <div className="p-6">
+                  <h3 className="text-lg font-bold text-gray-900 mb-2">Christmas Service</h3>
+                  <p className="text-gray-600 mb-4">Join us as we celebrate the birth of our Savior with special music and messages.</p>
+                  <div className="text-sm text-gray-500">
+                    <p>Date: December 25, 2024</p>
+                    <p>Time: 9:00 AM</p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="bg-white rounded-lg shadow-md overflow-hidden">
+                <div className="bg-gradient-to-r from-blue-600 to-blue-500 h-24"></div>
+                <div className="p-6">
+                  <h3 className="text-lg font-bold text-gray-900 mb-2">Baptism Services</h3>
+                  <p className="text-gray-600 mb-4">Witness believers publicly declare their faith through baptism.</p>
+                  <div className="text-sm text-gray-500">
+                    <p>Quarterly Events</p>
+                    <p>Contact us for details</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-6">
+              <h3 className="text-lg font-bold text-yellow-800 mb-2">Upcoming Events</h3>
+              <p className="text-yellow-700 mb-4">
+                Stay connected with us to be notified of special events, guest speakers, and seasonal celebrations.
+              </p>
+              <div className="flex flex-wrap gap-4">
+                <a 
+                  href="/events" 
+                  className="bg-yellow-200 text-yellow-800 px-4 py-2 rounded-lg hover:bg-yellow-300 transition-colors font-medium"
+                >
+                  View All Events
+                </a>
+                <a 
+                  href="/contact" 
+                  className="bg-yellow-800 text-white px-4 py-2 rounded-lg hover:bg-yellow-900 transition-colors font-medium"
+                >
+                  Contact Us
+                </a>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Sermon Archive */}
+        {activeTab === 'archive' && (
+          <div className="space-y-8">
+            <div className="text-center mb-12">
+              <h2 className="text-3xl font-bold text-gray-900 mb-4">Sermon Archive</h2>
+              <p className="text-lg text-gray-600">
+                Access our library of biblical teachings and sermons. Growing in God's Word, one message at a time.
+              </p>
+            </div>
+
+            {/* Filter */}
+            <div className="bg-white rounded-lg shadow-md p-6">
+              <div className="flex items-center space-x-4">
+                <Filter className="w-5 h-5 text-gray-500" />
+                <label className="font-medium text-gray-900">Filter by Series:</label>
+                <select 
+                  value={filterSeries}
+                  onChange={(e) => setFilterSeries(e.target.value)}
+                  className="border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                >
+                  {seriesList.map(series => (
+                    <option key={series} value={series}>
+                      {series === 'all' ? 'All Series' : series}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            </div>
+
+            {/* Sermons Grid */}
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {filteredSermons.map(sermon => (
+                <SermonCard key={sermon.id} sermon={sermon} />
               ))}
             </div>
-          </div>
-        )}
 
-        {/* Online Services Tab */}
-        {activeTab === 'online' && (
-          <div className="container mx-auto px-4">
-            <div className="text-center mb-12">
-              <h2 className="text-4xl font-bold text-gray-800 mb-4">Online Worship</h2>
-              <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-                Connect with us digitally and be part of our worship community from anywhere
-              </p>
-            </div>
-            <div className="max-w-4xl mx-auto">
-              <div className="bg-white rounded-2xl shadow-xl p-8 mb-8">
-                <h3 className="text-3xl font-bold text-blue-900 mb-6 flex items-center">
-                  <Play className="mr-3 text-blue-600" size={28} />
-                  Live Streaming
-                </h3>
-                <p className="text-gray-600 mb-8 text-lg">
-                  Can't make it to our physical location? Join us online for live streaming of our services.
-                </p>
-                <div className="bg-gradient-to-br from-blue-50 to-blue-100 p-8 rounded-xl mb-8">
-                  <p className="text-center text-gray-700 mb-6 text-lg">Live stream will be available here during service times</p>
-                  <div className="bg-gray-800 h-80 rounded-xl flex items-center justify-center relative overflow-hidden">
-                    <div className="absolute inset-0 bg-gradient-to-r from-blue-900/80 to-blue-800/80"></div>
-                    <div className="relative z-10 text-center text-white">
-                      <Play size={64} className="mx-auto mb-4 opacity-80" />
-                      <p className="text-xl font-semibold">Live Stream Player</p>
-                      <p className="text-blue-200 mt-2">Available during service times</p>
-                    </div>
-                  </div>
-                </div>
-                <div className="grid md:grid-cols-2 gap-8">
-                  <div className="bg-gradient-to-br from-blue-50 to-blue-100 p-6 rounded-xl">
-                    <h4 className="font-bold text-gray-800 mb-3 text-lg">Morning Service</h4>
-                    <p className="text-gray-600 text-lg">Sunday 9:00 AM - 12:00 PM</p>
-                    <p className="text-gray-500 text-sm mt-2">Nyaduong' Village Location</p>
-                  </div>
-                  <div className="bg-gradient-to-br from-blue-50 to-blue-100 p-6 rounded-xl">
-                    <h4 className="font-bold text-gray-800 mb-3 text-lg">Afternoon Service</h4>
-                    <p className="text-gray-600 text-lg">Sunday 2:00 PM - 4:00 PM</p>
-                    <p className="text-gray-500 text-sm mt-2">Migori Town Location</p>
-                  </div>
-                </div>
-              </div>
-              <div className="bg-white rounded-2xl shadow-xl p-8">
-                <h3 className="text-3xl font-bold text-blue-900 mb-6">Follow Us Online</h3>
-                <p className="text-gray-600 mb-8 text-lg">
-                  Stay connected with our church community through our social media channels and receive updates on services, events, and prayer requests.
-                </p>
-                <div className="flex flex-col sm:flex-row gap-4">
-                  <a 
-                    href="https://www.facebook.com/profile.php?id=100064378341874" 
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 rounded-xl font-semibold transition-all duration-200 transform hover:scale-105 text-center"
-                  >
-                    Facebook Page
-                  </a>
-                  <a 
-                    href="mailto:Pst.bruce67@gmail.com"
-                    className="border-2 border-blue-600 hover:bg-blue-600 hover:text-white text-blue-600 px-8 py-4 rounded-xl font-semibold transition-all duration-200 transform hover:scale-105 text-center"
-                  >
-                    Email Us
-                  </a>
-                </div>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* Special Events Tab */}
-        {activeTab === 'special' && (
-          <div className="container mx-auto px-4">
-            <div className="text-center mb-12">
-              <h2 className="text-4xl font-bold text-gray-800 mb-4">Special Events</h2>
-              <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-                Join us for special celebrations, conferences, and ministry events throughout the year
-              </p>
-            </div>
-            <div className="max-w-4xl mx-auto">
-              <div className="grid gap-6">
-                {specialEvents.map((event, index) => (
-                  <div key={index} className="bg-white rounded-2xl shadow-xl p-8 transform hover:scale-105 transition-all duration-300">
-                    <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between">
-                      <div className="flex-1">
-                        <h3 className="text-2xl font-bold text-blue-900 mb-3">{event.title}</h3>
-                        <p className="text-gray-600 mb-4 text-lg leading-relaxed">{event.description}</p>
-                        <div className="flex flex-wrap gap-4 text-sm">
-                          <div className="flex items-center space-x-2 bg-blue-50 px-3 py-2 rounded-lg">
-                            <Calendar className="text-blue-600" size={16} />
-                            <span className="font-medium text-gray-800">Date: </span>
-                            <span className="text-gray-600">{event.date}</span>
-                          </div>
-                          <div className="flex items-center space-x-2 bg-blue-50 px-3 py-2 rounded-lg">
-                            <Clock className="text-blue-600" size={16} />
-                            <span className="font-medium text-gray-800">Time: </span>
-                            <span className="text-gray-600">{event.time}</span>
-                          </div>
-                          <div className="flex items-center space-x-2 bg-blue-50 px-3 py-2 rounded-lg">
-                            <MapPin className="text-blue-600" size={16} />
-                            <span className="font-medium text-gray-800">Location: </span>
-                            <span className="text-gray-600">{event.location}</span>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="mt-4 lg:mt-0 lg:ml-6">
-                        <button className="w-full lg:w-auto bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-semibold transition-colors">
-                          Learn More
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* Sermon Archive Tab */}
-        {activeTab === 'archive' && (
-          <div className="container mx-auto px-4">
-            <div className="text-center mb-12">
-              <h2 className="text-4xl font-bold text-gray-800 mb-4">Sermon Archive</h2>
-              <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-                Access our collection of biblical teachings and sermons focused on God's Word
-              </p>
-            </div>
-            <div className="max-w-6xl mx-auto">
-              <div className="bg-white rounded-2xl shadow-xl p-8">
-                <h3 className="text-3xl font-bold text-blue-900 mb-6 flex items-center">
-                  <Download className="mr-3 text-blue-600" size={28} />
-                  Recent Sermons
-                </h3>
-                
-                {/* Sermon Filters */}
-                <div className="mb-8">
-                  <div className="flex flex-wrap gap-4 mb-6">
-                    <div className="flex items-center space-x-2">
-                      <Search className="text-gray-500" size={20} />
-                      <span className="text-gray-700 font-medium">Filter by:</span>
-                    </div>
-                  </div>
-                  <div className="grid sm:grid-cols-3 gap-4">
-                    <select 
-                      className="border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                      value={sermonFilters.series}
-                      onChange={(e) => handleFilterChange('series', e.target.value)}
-                    >
-                      <option value="all">All Series</option>
-                      <option value="Gospel of John">Gospel of John</option>
-                      <option value="Romans">Romans</option>
-                      <option value="Genesis">Genesis</option>
-                    </select>
-                    <select 
-                      className="border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                      value={sermonFilters.speaker}
-                      onChange={(e) => handleFilterChange('speaker', e.target.value)}
-                    >
-                      <option value="all">All Speakers</option>
-                      <option value="Pastor Bruce">Pastor Bruce</option>
-                    </select>
-                    <select 
-                      className="border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                      value={sermonFilters.year}
-                      onChange={(e) => handleFilterChange('year', e.target.value)}
-                    >
-                      <option value="all">All Years</option>
-                      <option value="2024">2024</option>
-                      <option value="2023">2023</option>
-                    </select>
-                  </div>
-                </div>
-
-                {/* Sermon List */}
-                <div className="space-y-6">
-                  {filteredSermons.map((sermon, index) => (
-                    <div key={index} className="border border-gray-200 rounded-xl p-6 hover:shadow-lg transition-shadow duration-200">
-                      <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between">
-                        <div className="flex-1">
-                          <h4 className="text-xl font-bold text-gray-800 mb-2">{sermon.title}</h4>
-                          <p className="text-gray-600 mb-2">
-                            <span className="font-medium">{sermon.scripture}</span> • {sermon.speaker} • {sermon.date}
-                          </p>
-                          <div className="flex flex-wrap gap-2 mb-3">
-                            <span className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm font-medium">
-                              {sermon.series}
-                            </span>
-                            <span className="bg-gray-100 text-gray-800 px-3 py-1 rounded-full text-sm">
-                              {sermon.year}
-                            </span>
-                          </div>
-                          <p className="text-gray-600 leading-relaxed">{sermon.description}</p>
-                        </div>
-                        <div className="mt-4 lg:mt-0 lg:ml-6">
-                          <button className="w-full lg:w-auto bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-semibold transition-colors flex items-center justify-center space-x-2">
-                            <Play size={18} />
-                            <span>Watch/Listen</span>
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-                
-                {filteredSermons.length === 0 && (
-                  <div className="text-center py-12">
-                    <p className="text-gray-500 text-lg">No sermons found matching your filters.</p>
-                  </div>
-                )}
-                
-                <div className="mt-8 text-center">
-                  <button className="border-2 border-blue-600 hover:bg-blue-600 hover:text-white text-blue-600 px-8 py-4 rounded-xl font-semibold transition-all duration-200 transform hover:scale-105">
-                    View All Sermons
-                  </button>
-                </div>
-              </div>
+            {/* Load More */}
+            <div className="text-center">
+              <button className="bg-blue-600 text-white px-8 py-3 rounded-lg hover:bg-blue-700 transition-colors font-medium">
+                Load More Sermons
+              </button>
             </div>
           </div>
         )}
       </div>
 
-      {/* Call to Action */}
-      <section className="py-20 bg-gradient-to-r from-blue-900 to-blue-800 text-white">
-        <div className="container mx-auto px-4 text-center">
-          <h2 className="text-4xl font-bold mb-6">Join Us This Sunday</h2>
-          <p className="text-xl mb-8 max-w-2xl mx-auto leading-relaxed">
-            Experience the transformative power of God's Word in a welcoming community of believers.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <a href="/contact" className="bg-yellow-500 hover:bg-yellow-600 text-blue-900 px-8 py-4 rounded-xl font-semibold transition-all duration-200 transform hover:scale-105">
-              Contact Us
-            </a>
-            <a href="/about" className="border-2 border-white hover:bg-white hover:text-blue-900 px-8 py-4 rounded-xl font-semibold transition-all duration-200 transform hover:scale-105">
-              Learn More
-            </a>
+      {/* Footer with additional navigation */}
+      <footer className="bg-gray-900 text-white py-12">
+        <div className="max-w-6xl mx-auto px-4">
+          <div className="grid md:grid-cols-4 gap-8">
+            {/* Church Info */}
+            <div>
+              <h3 className="text-lg font-bold mb-4">Calvary Jesus Church</h3>
+              <p className="text-gray-300 mb-4">Unleashing God's truth one verse at a time</p>
+              <div className="space-y-2 text-sm text-gray-400">
+                <p>📧 Pst.bruce67@gmail.com</p>
+                <p>📞 +254735464102</p>
+              </div>
+            </div>
+
+            {/* Quick Links */}
+            <div>
+              <h4 className="font-semibold mb-4">Quick Links</h4>
+              <ul className="space-y-2 text-sm">
+                <li><a href="/" className="text-gray-300 hover:text-white transition-colors">Home</a></li>
+                <li><a href="/about" className="text-gray-300 hover:text-white transition-colors">About Us</a></li>
+                <li><a href="/services" className="text-gray-300 hover:text-white transition-colors">Services</a></li>
+                <li><a href="/ministries" className="text-gray-300 hover:text-white transition-colors">Ministries</a></li>
+              </ul>
+            </div>
+
+            {/* Resources */}
+            <div>
+              <h4 className="font-semibold mb-4">Resources</h4>
+              <ul className="space-y-2 text-sm">
+                <li><a href="/events" className="text-gray-300 hover:text-white transition-colors">Events</a></li>
+                <li><a href="/resources" className="text-gray-300 hover:text-white transition-colors">Resources</a></li>
+                <li><a href="/give" className="text-gray-300 hover:text-white transition-colors">Give</a></li>
+                <li><a href="/contact" className="text-gray-300 hover:text-white transition-colors">Contact</a></li>
+              </ul>
+            </div>
+
+            {/* Connect */}
+            <div>
+              <h4 className="font-semibold mb-4">Connect</h4>
+              <div className="space-y-3">
+                <a 
+                  href="https://www.facebook.com/profile.php?id=100064378341874" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="flex items-center text-gray-300 hover:text-white transition-colors"
+                >
+                  📘 Facebook
+                </a>
+                <p className="text-sm text-gray-400">
+                  Follow us for live streams and updates
+                </p>
+              </div>
+            </div>
+          </div>
+          
+          <div className="border-t border-gray-800 mt-8 pt-6 text-center text-sm text-gray-400">
+            <p>&copy; 2024 Calvary Jesus Church. All rights reserved.</p>
           </div>
         </div>
-      </section>
+      </footer>
     </div>
   );
 };

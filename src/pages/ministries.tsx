@@ -1,6 +1,13 @@
 import React from 'react';
 import Head from 'next/head';
 import Link from 'next/link';
+import Image from 'next/image'
+import { ArrowRight, Play, Calendar, MapPin, Clock, Heart, BookOpen, Users, Send } from 'lucide-react'
+import Layout from '@/components/Layout'
+import Button from '@/components/ui/Button'
+import Card, { CardContent, CardHeader, CardTitle } from '@/components/ui/Card'
+import { cn } from '@/lib/utils'
+
 
 const MinistriesPage = () => {
   const ministries = [
@@ -104,6 +111,20 @@ const MinistriesPage = () => {
       </Head>
 
       <div className="min-h-screen bg-gray-50">
+      {/* Navigation Bar */}
+      <nav className="bg-white shadow-md">
+      <div className="container mx-auto px-4 py-4 flex flex-wrap gap-4 justify-center text-blue-900 font-semibold">
+      <Link href="/">Home</Link>
+      <Link href="/about">About</Link>
+      <Link href="/services">Services</Link>
+      <Link href="/ministries">Ministries</Link>
+      <Link href="/events">Events</Link>
+      <Link href="/resources">Resources</Link>
+      <Link href="/give">Give</Link>
+      <Link href="/contact">Contact</Link>
+      </div>
+      </nav>
+
         {/* Header */}
         <section className="bg-blue-900 text-white py-16">
           <div className="container mx-auto px-4">
