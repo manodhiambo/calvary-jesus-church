@@ -1,10 +1,44 @@
 import React, { useState } from 'react';
 import { Clock, MapPin, Play, Calendar, Book, Users, ChevronRight, Filter, Menu, X } from 'lucide-react';
 
-const ServicesPage = () => {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+// TypeScript interfaces
+interface NavigationLink {
+  href: string;
+  label: string;
+  active?: boolean;
+}
 
-  const navigationLinks = [
+interface Sermon {
+  id: number;
+  title: string;
+  speaker: string;
+  date: string;
+  series: string;
+  videoUrl: string;
+  description: string;
+}
+
+interface ServiceTimeCardProps {
+  time: string;
+  location: string;
+  details: string;
+  icon: React.ReactNode;
+}
+
+interface SermonCardProps {
+  sermon: Sermon;
+}
+
+interface TabItem {
+  id: string;
+  label: string;
+  icon: React.ComponentType<{ className?: string }>;
+}
+
+const ServicesPage = () => {
+  const [mobileMenuOpen, setMobileMenuOpen] = useState<boolean>(false);
+
+  const navigationLinks: NavigationLink[] = [
     { href: '/', label: 'Home' },
     { href: '/about', label: 'About Us' },
     { href: '/services', label: 'Services', active: true },
@@ -14,11 +48,12 @@ const ServicesPage = () => {
     { href: '/give', label: 'Give' },
     { href: '/contact', label: 'Contact' }
   ];
-  const [activeTab, setActiveTab] = useState('times');
-  const [filterSeries, setFilterSeries] = useState('all');
+  
+  const [activeTab, setActiveTab] = useState<string>('times');
+  const [filterSeries, setFilterSeries] = useState<string>('all');
 
   // Sample sermon data
-  const sermons = [
+  const sermons: Sermon[] = [
     {
       id: 1,
       title: "The Authority of Scripture",
@@ -57,10 +92,10 @@ const ServicesPage = () => {
     }
   ];
 
-  const seriesList = ['all', ...new Set(sermons.map(sermon => sermon.series))];
-  const filteredSermons = filterSeries === 'all' ? sermons : sermons.filter(sermon => sermon.series === filterSeries);
+  const seriesList: string[] = ['all', ...new Set(sermons.map(sermon => sermon.series))];
+  const filteredSermons: Sermon[] = filterSeries === 'all' ? sermons : sermons.filter(sermon => sermon.series === filterSeries);
 
-  const ServiceTimeCard = ({ time, location, details, icon }) => (
+  const ServiceTimeCard: React.FC<ServiceTimeCardProps> = ({ time, location, details, icon }) => (
     <div className="bg-white rounded-lg shadow-md p-6 border-l-4 border-blue-600 hover:shadow-lg transition-shadow">
       <div className="flex items-start space-x-4">
         <div className="bg-blue-100 p-3 rounded-full">
@@ -78,7 +113,7 @@ const ServicesPage = () => {
     </div>
   );
 
-  const SermonCard = ({ sermon }) => (
+  const SermonCard: React.FC<SermonCardProps> = ({ sermon }) => (
     <div className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow">
       <div className="p-6">
         <div className="flex items-center justify-between mb-2">
@@ -99,6 +134,13 @@ const ServicesPage = () => {
       </div>
     </div>
   );
+
+  const tabs: TabItem[] = [
+    { id: 'times', label: 'Service Times', icon: Clock },
+    { id: 'online', label: 'Online Services', icon: Play },
+    { id: 'special', label: 'Special Events', icon: Calendar },
+    { id: 'archive', label: 'Sermon Archive', icon: Book }
+  ];
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -184,12 +226,7 @@ const ServicesPage = () => {
       <div className="bg-white shadow-sm sticky top-0 z-10">
         <div className="max-w-6xl mx-auto px-4">
           <nav className="flex space-x-8">
-            {[
-              { id: 'times', label: 'Service Times', icon: Clock },
-              { id: 'online', label: 'Online Services', icon: Play },
-              { id: 'special', label: 'Special Events', icon: Calendar },
-              { id: 'archive', label: 'Sermon Archive', icon: Book }
-            ].map(({ id, label, icon: Icon }) => (
+            {tabs.map(({ id, label, icon: Icon }) => (
               <button
                 key={id}
                 onClick={() => setActiveTab(id)}
