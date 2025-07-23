@@ -2,24 +2,39 @@ import { useState } from 'react';
 import Head from 'next/head';
 import Link from 'next/link';
 import { Dialog } from '@headlessui/react';
-import { X } from 'lucide-react';
+import { X, LucideIcon, Users, Heart, Music, Baby, Gamepad2, Globe } from 'lucide-react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
-import { Users, Heart, Music, Baby, Gamepad2, Globe } from 'lucide-react';
+
+// ✅ Define Ministry interface for type safety
+interface Ministry {
+  id: string;
+  title: string;
+  icon: LucideIcon;
+  description: string;
+  image: string;
+  ageGroup: string;
+  schedule: string;
+  location: string;
+  contact: string;
+  leader: string;
+  activities: string[];
+  goals: string[];
+}
 
 export default function Ministries() {
-  const [selectedMinistry, setSelectedMinistry] = useState(null);
+  const [selectedMinistry, setSelectedMinistry] = useState<Ministry | null>(null);
 
-  const ministries = [
+  const ministries: Ministry[] = [
     {
       id: 'children',
-      title: 'Children\'s Ministry',
+      title: "Children's Ministry",
       icon: Baby,
-      description: 'Nurturing young hearts with Bible stories, songs, and age-appropriate activities that help children understand God\'s love.',
+      description: "Nurturing young hearts with Bible stories, songs, and age-appropriate activities that help children understand God's love.",
       image: '/images/ministries/children.jpg',
       ageGroup: 'Ages 3-12',
       schedule: 'Sunday 9:00 AM - 11:00 AM',
-      location: 'Children\'s Room, Nyaduong\' Village',
+      location: "Children's Room, Nyaduong' Village",
       contact: 'children@calvaryjesus.org',
       leader: 'Sister Mary',
       activities: [
@@ -28,24 +43,24 @@ export default function Ministries() {
         'Christian songs and worship',
         'Arts and crafts with Biblical themes',
         'Character building lessons',
-        'Special holiday programs'
+        'Special holiday programs',
       ],
       goals: [
         'Introduce children to Jesus Christ',
         'Teach foundational Bible stories',
         'Develop Christian character',
-        'Create a safe learning environment'
-      ]
+        'Create a safe learning environment',
+      ],
     },
     {
       id: 'youth',
       title: 'Youth Ministry',
       icon: Gamepad2,
-      description: 'Empowering teenagers to grow in their faith, build godly relationships, and navigate life\'s challenges with Biblical wisdom.',
+      description: "Empowering teenagers to grow in their faith, build godly relationships, and navigate life's challenges with Biblical wisdom.",
       image: '/images/ministries/youth.jpg',
       ageGroup: 'Ages 13-18',
       schedule: 'Sunday 2:00 PM - 4:00 PM',
-      location: 'Youth Hall, Nyaduong\' Village',
+      location: "Youth Hall, Nyaduong' Village",
       contact: 'youth@calvaryjesus.org',
       leader: 'Elder Johnson',
       activities: [
@@ -54,20 +69,20 @@ export default function Ministries() {
         'Life skills and mentorship',
         'Community service projects',
         'Fellowship games and activities',
-        'Discipleship training'
+        'Discipleship training',
       ],
       goals: [
         'Help youth develop personal relationship with Christ',
         'Provide Biblical guidance for life decisions',
         'Build strong Christian friendships',
-        'Prepare youth for adult ministry'
-      ]
+        'Prepare youth for adult ministry',
+      ],
     },
     {
       id: 'adults',
       title: 'Adult Ministry',
       icon: Users,
-      description: 'Supporting adults in their spiritual growth through in-depth Bible study, fellowship, and practical application of God\'s Word.',
+      description: "Supporting adults in their spiritual growth through in-depth Bible study, fellowship, and practical application of God's Word.",
       image: '/images/ministries/adults.jpg',
       ageGroup: 'Ages 19+',
       schedule: 'Wednesday 7:00 PM - 9:00 PM',
@@ -80,14 +95,14 @@ export default function Ministries() {
         'Prayer and intercession',
         'Marriage and family seminars',
         'Leadership development',
-        'Evangelism training'
+        'Evangelism training',
       ],
       goals: [
         'Deepen understanding of Scripture',
         'Strengthen marriages and families',
         'Develop mature Christian leaders',
-        'Equip members for ministry'
-      ]
+        'Equip members for ministry',
+      ],
     },
     {
       id: 'music',
@@ -97,7 +112,7 @@ export default function Ministries() {
       image: '/images/ministries/music.jpg',
       ageGroup: 'All Ages',
       schedule: 'Saturday 4:00 PM - 6:00 PM (Practice)',
-      location: 'Main Sanctuary, Nyaduong\' Village',
+      location: "Main Sanctuary, Nyaduong' Village",
       contact: 'worship@calvaryjesus.org',
       leader: 'Sarah (Worship Leader)',
       activities: [
@@ -106,14 +121,14 @@ export default function Ministries() {
         'Instrumental accompaniment',
         'Choir performances',
         'Music training and workshops',
-        'Worship team development'
+        'Worship team development',
       ],
       goals: [
         'Lead congregation in biblical worship',
         'Use music to teach spiritual truths',
-        'Develop musical talents for God\'s glory',
-        'Create atmosphere for worship'
-      ]
+        "Develop musical talents for God's glory",
+        'Create atmosphere for worship',
+      ],
     },
     {
       id: 'outreach',
@@ -132,14 +147,14 @@ export default function Ministries() {
         'Food distribution to needy families',
         'Hospital and prison visits',
         'Street preaching and tract distribution',
-        'Community cleanup initiatives'
+        'Community cleanup initiatives',
       ],
       goals: [
         'Share the Gospel with the lost',
-        'Show Christ\'s love through service',
+        "Show Christ's love through service",
         'Meet practical needs of community',
-        'Build relationships for witnessing'
-      ]
+        'Build relationships for witnessing',
+      ],
     },
     {
       id: 'pastoral-care',
@@ -149,7 +164,7 @@ export default function Ministries() {
       image: '/images/ministries/pastoral-care.jpg',
       ageGroup: 'All Ages',
       schedule: 'By Appointment',
-      location: 'Pastor\'s Office / Home Visits',
+      location: "Pastor's Office / Home Visits",
       contact: 'Pst.bruce67@gmail.com',
       leader: 'Pastor Bruce',
       activities: [
@@ -158,15 +173,15 @@ export default function Ministries() {
         'Grief and crisis support',
         'Pre-marital counseling',
         'Spiritual direction and discipleship',
-        'Crisis intervention and support'
+        'Crisis intervention and support',
       ],
       goals: [
         'Provide Christ-centered care',
         'Support members through life transitions',
         'Offer Biblical counseling',
-        'Build strong pastoral relationships'
-      ]
-    }
+        'Build strong pastoral relationships',
+      ],
+    },
   ];
 
   return (
@@ -236,7 +251,7 @@ export default function Ministries() {
 
       <Footer />
 
-      {/* Modal */}
+      {/* Modal for Ministry Detail */}
       <Dialog open={!!selectedMinistry} onClose={() => setSelectedMinistry(null)} className="relative z-50">
         <div className="fixed inset-0 bg-black/50" aria-hidden="true" />
         <div className="fixed inset-0 flex items-center justify-center p-4">

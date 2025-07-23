@@ -1,7 +1,7 @@
 import React from 'react';
 import { Calendar, Clock, MapPin, Users, ArrowRight } from 'lucide-react';
 
-interface EventCardProps {
+interface Event {
   title: string;
   description: string;
   startDate: string;
@@ -15,21 +15,28 @@ interface EventCardProps {
   onRegister?: () => void;
 }
 
-const EventCard: React.FC<EventCardProps> = ({
-  title,
-  description,
-  startDate,
-  endDate,
-  startTime,
-  endTime,
-  location,
-  imageUrl,
-  category,
-  registrationRequired = false,
-  onRegister
-}) => {
+interface EventCardProps {
+  event: Event;
+  featured?: boolean;
+}
+
+const EventCard: React.FC<EventCardProps> = ({ event, featured }) => {
+  const {
+    title,
+    description,
+    startDate,
+    endDate,
+    startTime,
+    endTime,
+    location,
+    imageUrl,
+    category,
+    registrationRequired = false,
+    onRegister
+  } = event;
+
   const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString('en-US', {
+    return new Date(dateString).toLocaleDateString('en-GB', {
       weekday: 'short',
       month: 'short',
       day: 'numeric',
@@ -57,7 +64,7 @@ const EventCard: React.FC<EventCardProps> = ({
   const isUpcoming = new Date(startDate) > new Date();
 
   return (
-    <div className="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 group">
+    <div className={`bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 group ${featured ? 'border-4 border-yellow-400' : ''}`}>
       {/* Image Section */}
       <div className="relative h-48 bg-gradient-to-br from-blue-900 to-blue-700 overflow-hidden">
         {imageUrl ? (

@@ -42,8 +42,8 @@ export default function Home() {
 
   const upcomingEvent = {
     title: "Sunday Worship Service",
-    date: "2024-01-28",
-    time: "9:00 AM - 12:00 PM",
+    startDate: "2024-08-04",
+    startTime: "10:00 AM",
     location: "Nyaduong' Village",
     description: "Join us for worship, Bible teaching, and fellowship."
   };
