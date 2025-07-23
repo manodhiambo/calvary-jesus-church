@@ -1,482 +1,285 @@
-import React, { useState } from 'react';
-import Link from 'next/link';
-import { CreditCard, Building, Phone, Heart, DollarSign, Shield, CheckCircle } from 'lucide-react';
+import React from 'react';
+import Header from '@/components/Header';
+import Footer from '@/components/Footer';
+import { CreditCard, Building2, Phone, Heart, FileText, Shield } from 'lucide-react';
 
-const GivePage = () => {
-  const [activeTab, setActiveTab] = useState('online');
-  const [donationAmount, setDonationAmount] = useState('');
-  const [customAmount, setCustomAmount] = useState('');
-  const [donationType, setDonationType] = useState('tithe');
-
-  const predefinedAmounts = [1000, 2000, 5000, 10000, 20000, 50000];
-
-  const handleAmountSelect = (amount: number) => {
-    setDonationAmount(amount.toString());
-    setCustomAmount('');
-  };
-
-  const handleCustomAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setCustomAmount(e.target.value);
-    setDonationAmount('');
-  };
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    const finalAmount = customAmount || donationAmount;
-    if (!finalAmount) {
-      alert('Please select or enter an amount');
-      return;
-    }
-    // Handle donation submission
-    alert(`Thank you for your ${donationType} of KES ${finalAmount}!`);
-  };
-
+const Give: React.FC = () => {
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Header with Navigation */}
-      <header className="bg-white shadow-sm border-b">
-        <div className="container mx-auto px-4 py-4">
-          <div className="flex items-center justify-between">
-            <Link href="/" className="flex items-center space-x-3">
-              <img src="/images/logo1.jpg" alt="Calvary Jesus Church" className="h-12 w-12 rounded-full" />
-              <span className="text-xl font-bold text-gray-900">Calvary Jesus Church</span>
-            </Link>
-            <nav className="hidden md:flex space-x-6">
-              <Link href="/" className="text-gray-600 hover:text-blue-600">Home</Link>
-              <Link href="/about" className="text-gray-600 hover:text-blue-600">About Us</Link>
-              <Link href="/services" className="text-gray-600 hover:text-blue-600">Services</Link>
-              <Link href="/ministries" className="text-gray-600 hover:text-blue-600">Ministries</Link>
-              <Link href="/events" className="text-gray-600 hover:text-blue-600">Events</Link>
-              <Link href="/resources" className="text-gray-600 hover:text-blue-600">Resources</Link>
-              <Link href="/give" className="text-blue-600 font-semibold">Give</Link>
-              <Link href="/contact" className="text-gray-600 hover:text-blue-600">Contact</Link>
-            </nav>
-          </div>
-        </div>
-      </header>
-
+      <Header />
+      
       {/* Hero Section */}
-      <section className="bg-gradient-to-r from-green-900 to-green-700 text-white py-16">
-        <div className="container mx-auto px-4 text-center">
-          <Heart className="w-16 h-16 mx-auto mb-4 text-green-200" />
-          <h1 className="text-4xl md:text-5xl font-bold mb-4">Give</h1>
-          <p className="text-xl text-green-100 max-w-2xl mx-auto">
-            Support God's work through your generous giving
+      <section className="relative bg-gradient-to-r from-blue-900 to-blue-800 text-white py-16">
+        <div className="absolute inset-0 bg-black opacity-20"></div>
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <h1 className="text-4xl md:text-5xl font-bold mb-4">Give Generously</h1>
+          <p className="text-xl md:text-2xl mb-8 max-w-3xl mx-auto">
+            "Each of you should give what you have decided in your heart to give, not reluctantly or under compulsion, for God loves a cheerful giver." - 2 Corinthians 9:7
           </p>
-          <div className="mt-8 bg-green-800 bg-opacity-50 rounded-lg p-6 max-w-2xl mx-auto">
-            <p className="text-green-100 italic">
-              "Each one must give as he has decided in his heart, not reluctantly or under compulsion, 
-              for God loves a cheerful giver." - 2 Corinthians 9:7
-            </p>
-          </div>
         </div>
       </section>
 
-      {/* Main Content */}
-      <div className="container mx-auto px-4 py-12">
-        {/* Tab Navigation */}
-        <div className="flex flex-wrap justify-center mb-8 bg-white rounded-lg shadow-sm p-2">
-          <button
-            onClick={() => setActiveTab('online')}
-            className={`px-6 py-3 rounded-md font-medium transition-colors ${
-              activeTab === 'online'
-                ? 'bg-green-600 text-white'
-                : 'text-gray-600 hover:text-green-600'
-            }`}
-          >
-            <CreditCard className="inline-block w-5 h-5 mr-2" />
-            Online Giving
-          </button>
-          <button
-            onClick={() => setActiveTab('ways')}
-            className={`px-6 py-3 rounded-md font-medium transition-colors ${
-              activeTab === 'ways'
-                ? 'bg-green-600 text-white'
-                : 'text-gray-600 hover:text-green-600'
-            }`}
-          >
-            <Building className="inline-block w-5 h-5 mr-2" />
-            Other Ways
-          </button>
-          <button
-            onClick={() => setActiveTab('transparency')}
-            className={`px-6 py-3 rounded-md font-medium transition-colors ${
-              activeTab === 'transparency'
-                ? 'bg-green-600 text-white'
-                : 'text-gray-600 hover:text-green-600'
-            }`}
-          >
-            <Shield className="inline-block w-5 h-5 mr-2" />
-            Transparency
-          </button>
-        </div>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        
+        {/* Online Giving Section */}
+        <section className="mb-16">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">Online Giving</h2>
+            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+              Give conveniently and securely through our online platform. Your generous contributions help us continue God's work in our community.
+            </p>
+          </div>
 
-        {/* Online Giving Tab */}
-        {activeTab === 'online' && (
-          <div className="max-w-2xl mx-auto">
-            <div className="text-center mb-8">
-              <h2 className="text-3xl font-bold text-gray-900 mb-4">Online Giving</h2>
-              <p className="text-gray-600">Give securely online with M-Pesa or bank transfer</p>
-            </div>
-            
-            <form onSubmit={handleSubmit} className="bg-white rounded-lg shadow-md p-8">
-              {/* Donation Type */}
-              <div className="mb-6">
-                <label className="block text-sm font-medium text-gray-700 mb-3">
-                  Type of Giving
-                </label>
-                <div className="grid grid-cols-2 gap-3">
-                  <button
-                    type="button"
-                    onClick={() => setDonationType('tithe')}
-                    className={`p-4 rounded-lg border-2 transition-colors ${
-                      donationType === 'tithe'
-                        ? 'border-green-600 bg-green-50 text-green-700'
-                        : 'border-gray-300 hover:border-green-300'
-                    }`}
-                  >
-                    <DollarSign className="w-6 h-6 mx-auto mb-2" />
-                    <span className="block font-medium">Tithe</span>
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => setDonationType('offering')}
-                    className={`p-4 rounded-lg border-2 transition-colors ${
-                      donationType === 'offering'
-                        ? 'border-green-600 bg-green-50 text-green-700'
-                        : 'border-gray-300 hover:border-green-300'
-                    }`}
-                  >
-                    <Heart className="w-6 h-6 mx-auto mb-2" />
-                    <span className="block font-medium">Offering</span>
-                  </button>
-                </div>
+          <div className="grid md:grid-cols-2 gap-8 mb-12">
+            {/* Online Form Card */}
+            <div className="bg-white rounded-lg shadow-lg p-8">
+              <div className="flex items-center mb-6">
+                <CreditCard className="h-8 w-8 text-blue-600 mr-3" />
+                <h3 className="text-2xl font-semibold text-gray-900">Secure Online Form</h3>
               </div>
-
-              {/* Amount Selection */}
-              <div className="mb-6">
-                <label className="block text-sm font-medium text-gray-700 mb-3">
-                  Select Amount (KES)
-                </label>
-                <div className="grid grid-cols-3 gap-3 mb-4">
-                  {predefinedAmounts.map((amount) => (
-                    <button
-                      key={amount}
-                      type="button"
-                      onClick={() => handleAmountSelect(amount)}
-                      className={`p-3 rounded-lg border-2 transition-colors ${
-                        donationAmount === amount.toString()
-                          ? 'border-green-600 bg-green-50 text-green-700'
-                          : 'border-gray-300 hover:border-green-300'
-                      }`}
-                    >
-                      KES {amount.toLocaleString()}
-                    </button>
-                  ))}
+              
+              <form className="space-y-6">
+                <div>
+                  <label htmlFor="amount" className="block text-sm font-medium text-gray-700 mb-2">
+                    Donation Amount (KES)
+                  </label>
+                  <div className="relative">
+                    <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500">KES</span>
+                    <input
+                      type="number"
+                      id="amount"
+                      className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                      placeholder="0.00"
+                      min="1"
+                    />
+                  </div>
                 </div>
-                <div className="relative">
+
+                <div>
+                  <label htmlFor="purpose" className="block text-sm font-medium text-gray-700 mb-2">
+                    Purpose (Optional)
+                  </label>
+                  <select
+                    id="purpose"
+                    className="w-full px-4 py-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  >
+                    <option value="">General Fund</option>
+                    <option value="tithes">Tithes</option>
+                    <option value="offerings">Offerings</option>
+                    <option value="missions">Missions</option>
+                    <option value="building">Building Fund</option>
+                    <option value="youth">Youth Ministry</option>
+                    <option value="children">Children's Ministry</option>
+                    <option value="outreach">Community Outreach</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-2">
+                    Full Name
+                  </label>
                   <input
-                    type="number"
-                    placeholder="Enter custom amount"
-                    value={customAmount}
-                    onChange={handleCustomAmountChange}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                    type="text"
+                    id="name"
+                    className="w-full px-4 py-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    placeholder="Enter your full name"
                   />
-                  <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500">
-                    KES
-                  </span>
                 </div>
-              </div>
 
-              {/* Donor Information */}
-              <div className="mb-6">
-                <label htmlFor="donor_name" className="block text-sm font-medium text-gray-700 mb-2">
-                  Your Name
-                </label>
-                <input
-                  type="text"
-                  id="donor_name"
-                  name="donor_name"
-                  className="w-full px-4 py-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-green-500 focus:border-transparent"
-                  placeholder="Enter your full name"
-                />
-              </div>
+                <div>
+                  <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
+                    Email Address
+                  </label>
+                  <input
+                    type="email"
+                    id="email"
+                    className="w-full px-4 py-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    placeholder="Enter your email"
+                  />
+                </div>
 
-              <div className="mb-6">
-                <label htmlFor="donor_phone" className="block text-sm font-medium text-gray-700 mb-2">
-                  Phone Number (M-Pesa)
-                </label>
-                <input
-                  type="tel"
-                  id="donor_phone"
-                  name="donor_phone"
-                  className="w-full px-4 py-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-green-500 focus:border-transparent"
-                  placeholder="0700000000"
-                />
-              </div>
+                <div>
+                  <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-2">
+                    Phone Number (Optional)
+                  </label>
+                  <input
+                    type="tel"
+                    id="phone"
+                    className="w-full px-4 py-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    placeholder="+254 xxx xxx xxx"
+                  />
+                </div>
 
-              <div className="mb-6">
-                <label htmlFor="donor_email" className="block text-sm font-medium text-gray-700 mb-2">
-                  Email (Optional)
-                </label>
-                <input
-                  type="email"
-                  id="donor_email"
-                  name="donor_email"
-                  className="w-full px-4 py-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-green-500 focus:border-transparent"
-                  placeholder="your.email@example.com"
-                />
-              </div>
+                <div className="flex items-center">
+                  <input
+                    type="checkbox"
+                    id="anonymous"
+                    className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                  />
+                  <label htmlFor="anonymous" className="ml-2 block text-sm text-gray-700">
+                    Make this donation anonymous
+                  </label>
+                </div>
 
-              <button
-                type="submit"
-                className="w-full bg-green-600 text-white py-3 px-6 rounded-md font-medium hover:bg-green-700 transition-colors"
-              >
-                Give KES {customAmount || donationAmount || '0'}
-              </button>
-            </form>
-          </div>
-        )}
-
-        {/* Other Ways Tab */}
-        {activeTab === 'ways' && (
-          <div className="space-y-8">
-            <div className="text-center mb-8">
-              <h2 className="text-3xl font-bold text-gray-900 mb-4">Other Ways to Give</h2>
-              <p className="text-gray-600">Choose the method that works best for you</p>
+                <button
+                  type="submit"
+                  className="w-full bg-blue-600 text-white py-3 px-6 rounded-md hover:bg-blue-700 transition duration-300 font-semibold text-lg"
+                >
+                  Proceed to Payment
+                </button>
+              </form>
             </div>
-            
-            <div className="grid gap-8 md:grid-cols-2">
-              {/* M-Pesa */}
-              <div className="bg-white rounded-lg shadow-md p-8">
-                <div className="flex items-center mb-4">
-                  <Phone className="w-8 h-8 text-green-600 mr-3" />
-                  <h3 className="text-xl font-bold text-gray-900">M-Pesa</h3>
-                </div>
-                <div className="space-y-3">
-                  <div className="flex justify-between">
-                    <span className="font-medium">Paybill Number:</span>
-                    <span className="text-green-600 font-bold">522522</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="font-medium">Account Number:</span>
-                    <span className="text-green-600 font-bold">CALVARY</span>
-                  </div>
-                  <div className="mt-4 p-3 bg-green-50 rounded-md">
-                    <p className="text-sm text-green-700">
-                      Go to M-Pesa → Lipa na M-Pesa → Paybill → Enter 522522 → Account: CALVARY → Enter amount → PIN
-                    </p>
-                  </div>
-                </div>
+
+            {/* Quick Give Options */}
+            <div className="bg-white rounded-lg shadow-lg p-8">
+              <h3 className="text-2xl font-semibold text-gray-900 mb-6">Quick Give Options</h3>
+              
+              <div className="grid grid-cols-2 gap-4 mb-8">
+                {[100, 500, 1000, 2000, 5000, 10000].map((amount) => (
+                  <button
+                    key={amount}
+                    className="bg-gray-100 hover:bg-blue-100 text-gray-800 hover:text-blue-800 py-3 px-4 rounded-md transition duration-300 font-semibold"
+                  >
+                    KES {amount.toLocaleString()}
+                  </button>
+                ))}
               </div>
 
-              {/* Bank Transfer */}
-              <div className="bg-white rounded-lg shadow-md p-8">
-                <div className="flex items-center mb-4">
-                  <Building className="w-8 h-8 text-blue-600 mr-3" />
-                  <h3 className="text-xl font-bold text-gray-900">Bank Transfer</h3>
-                </div>
-                <div className="space-y-3">
-                  <div className="flex justify-between">
-                    <span className="font-medium">Bank:</span>
-                    <span className="text-blue-600 font-bold">Equity Bank</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="font-medium">Account Name:</span>
-                    <span className="text-blue-600 font-bold">Calvary Jesus Church</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="font-medium">Account Number:</span>
-                    <span className="text-blue-600 font-bold">1234567890</span>
-                  </div>
-                  <div className="mt-4 p-3 bg-blue-50 rounded-md">
-                    <p className="text-sm text-blue-700">
-                      Please include your name and "Church Offering" in the transaction reference
-                    </p>
+              <div className="space-y-4">
+                <div className="flex items-center p-4 bg-green-50 rounded-lg">
+                  <Shield className="h-6 w-6 text-green-600 mr-3" />
+                  <div>
+                    <h4 className="font-semibold text-green-800">Secure & Protected</h4>
+                    <p className="text-sm text-green-600">256-bit SSL encryption</p>
                   </div>
                 </div>
-              </div>
 
-              {/* In-Person */}
-              <div className="bg-white rounded-lg shadow-md p-8">
-                <div className="flex items-center mb-4">
-                  <Heart className="w-8 h-8 text-purple-600 mr-3" />
-                  <h3 className="text-xl font-bold text-gray-900">In-Person</h3>
-                </div>
-                <div className="space-y-3">
-                  <p className="text-gray-600">
-                    You can give during our Sunday services at either location:
-                  </p>
-                  <div className="space-y-2">
-                    <div className="flex items-start">
-                      <CheckCircle className="w-5 h-5 text-green-600 mr-2 mt-0.5" />
-                      <div>
-                        <p className="font-medium">Nyaduong' Village</p>
-                        <p className="text-sm text-gray-600">Sunday 9:00 AM - 12:00 PM</p>
-                      </div>
-                    </div>
-                    <div className="flex items-start">
-                      <CheckCircle className="w-5 h-5 text-green-600 mr-2 mt-0.5" />
-                      <div>
-                        <p className="font-medium">Oruba, Migori Town</p>
-                        <p className="text-sm text-gray-600">Sunday 2:00 PM - 4:00 PM</p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* Contact for Questions */}
-              <div className="bg-white rounded-lg shadow-md p-8">
-                <div className="flex items-center mb-4">
-                  <Phone className="w-8 h-8 text-orange-600 mr-3" />
-                  <h3 className="text-xl font-bold text-gray-900">Questions?</h3>
-                </div>
-                <div className="space-y-3">
-                  <p className="text-gray-600 mb-4">
-                    If you have any questions about giving, please contact us:
-                  </p>
-                  <div className="space-y-2">
-                    <div className="flex items-center">
-                      <span className="font-medium">Email:</span>
-                      <a href="mailto:Pst.bruce67@gmail.com" className="text-blue-600 hover:underline ml-2">
-                        Pst.bruce67@gmail.com
-                      </a>
-                    </div>
-                    <div className="flex items-center">
-                      <span className="font-medium">Phone:</span>
-                      <a href="tel:+254735464102" className="text-blue-600 hover:underline ml-2">
-                        +254735464102
-                      </a>
-                    </div>
+                <div className="flex items-center p-4 bg-blue-50 rounded-lg">
+                  <Heart className="h-6 w-6 text-blue-600 mr-3" />
+                  <div>
+                    <h4 className="font-semibold text-blue-800">Tax Deductible</h4>
+                    <p className="text-sm text-blue-600">Receipts provided for all donations</p>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-        )}
+        </section>
 
-        {/* Transparency Tab */}
-        {activeTab === 'transparency' && (
-          <div className="space-y-8">
-            <div className="text-center mb-8">
-              <h2 className="text-3xl font-bold text-gray-900 mb-4">Financial Transparency</h2>
-              <p className="text-gray-600">We are committed to responsible stewardship of your gifts</p>
-            </div>
-            
-            <div className="grid gap-8 md:grid-cols-2">
-              {/* How We Use Your Gifts */}
-              <div className="bg-white rounded-lg shadow-md p-8">
-                <h3 className="text-xl font-bold text-gray-900 mb-6">How We Use Your Gifts</h3>
-                <div className="space-y-4">
-                  <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-                    <span className="font-medium">Ministry & Outreach</span>
-                    <span className="text-green-600 font-bold">40%</span>
-                  </div>
-                  <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-                    <span className="font-medium">Facilities & Operations</span>
-                    <span className="text-blue-600 font-bold">25%</span>
-                  </div>
-                  <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-                    <span className="font-medium">Staff & Leadership</span>
-                    <span className="text-purple-600 font-bold">20%</span>
-                  </div>
-                  <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-                    <span className="font-medium">Community Support</span>
-                    <span className="text-orange-600 font-bold">15%</span>
-                  </div>
-                </div>
-              </div>
+        {/* Other Ways to Give */}
+        <section className="mb-16">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">Other Ways to Give</h2>
+            <p className="text-lg text-gray-600">
+              Choose the method that works best for you
+            </p>
+          </div>
 
-              {/* Our Commitment */}
-              <div className="bg-white rounded-lg shadow-md p-8">
-                <h3 className="text-xl font-bold text-gray-900 mb-6">Our Commitment</h3>
-                <div className="space-y-4">
-                  <div className="flex items-start">
-                    <CheckCircle className="w-5 h-5 text-green-600 mr-3 mt-0.5" />
-                    <div>
-                      <p className="font-medium">Biblical Stewardship</p>
-                      <p className="text-sm text-gray-600">
-                        We handle all funds according to biblical principles of stewardship
-                      </p>
-                    </div>
-                  </div>
-                  <div className="flex items-start">
-                    <CheckCircle className="w-5 h-5 text-green-600 mr-3 mt-0.5" />
-                    <div>
-                      <p className="font-medium">Regular Reporting</p>
-                      <p className="text-sm text-gray-600">
-                        Financial reports are shared with the congregation quarterly
-                      </p>
-                    </div>
-                  </div>
-                  <div className="flex items-start">
-                    <CheckCircle className="w-5 h-5 text-green-600 mr-3 mt-0.5" />
-                    <div>
-                      <p className="font-medium">Accountability</p>
-                      <p className="text-sm text-gray-600">
-                        Our finances are overseen by a board of trusted church members
-                      </p>
-                    </div>
-                  </div>
-                </div>
+          <div className="grid md:grid-cols-3 gap-8">
+            {/* Bank Transfer */}
+            <div className="bg-white rounded-lg shadow-lg p-6 text-center">
+              <Building2 className="h-12 w-12 text-blue-600 mx-auto mb-4" />
+              <h3 className="text-xl font-semibold text-gray-900 mb-4">Bank Transfer</h3>
+              <div className="space-y-2 text-gray-600">
+                <p><strong>Bank:</strong> Kenya Commercial Bank</p>
+                <p><strong>Account Name:</strong> Calvary Jesus Church</p>
+                <p><strong>Account Number:</strong> 1234567890</p>
+                <p><strong>Branch:</strong> Migori Branch</p>
               </div>
             </div>
 
-            {/* Annual Report */}
-            <div className="bg-white rounded-lg shadow-md p-8 text-center">
-              <h3 className="text-xl font-bold text-gray-900 mb-4">Annual Financial Report</h3>
-              <p className="text-gray-600 mb-6">
-                Our detailed annual financial report is available to all church members
-              </p>
-              <button className="bg-blue-600 text-white px-6 py-3 rounded-md font-medium hover:bg-blue-700 transition-colors">
-                Download 2023 Annual Report
-              </button>
+            {/* M-Pesa */}
+            <div className="bg-white rounded-lg shadow-lg p-6 text-center">
+              <Phone className="h-12 w-12 text-green-600 mx-auto mb-4" />
+              <h3 className="text-xl font-semibold text-gray-900 mb-4">M-Pesa Paybill</h3>
+              <div className="space-y-2 text-gray-600">
+                <p><strong>Paybill Number:</strong> 123456</p>
+                <p><strong>Account Number:</strong> Your Phone Number</p>
+                <p className="text-sm mt-4">
+                  Go to M-Pesa → Lipa na M-Pesa → Pay Bill → Enter details above
+                </p>
+              </div>
+            </div>
+
+            {/* In-Person */}
+            <div className="bg-white rounded-lg shadow-lg p-6 text-center">
+              <Heart className="h-12 w-12 text-red-600 mx-auto mb-4" />
+              <h3 className="text-xl font-semibold text-gray-900 mb-4">In-Person Giving</h3>
+              <div className="space-y-2 text-gray-600">
+                <p>During Sunday services:</p>
+                <p><strong>9:00 AM - 12:00 PM</strong><br />Nyaduong' Village</p>
+                <p><strong>2:00 PM - 4:00 PM</strong><br />Dip Primary School, Migori</p>
+                <p className="text-sm mt-4">
+                  Cash offerings and tithes accepted during service
+                </p>
+              </div>
             </div>
           </div>
-        )}
+        </section>
+
+        {/* Financial Transparency */}
+        <section className="bg-white rounded-lg shadow-lg p-8">
+          <div className="text-center mb-8">
+            <FileText className="h-12 w-12 text-blue-600 mx-auto mb-4" />
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">Financial Transparency</h2>
+            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+              We believe in being transparent with how your donations are used to further God's kingdom.
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            <div className="text-center">
+              <div className="bg-blue-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-3">
+                <span className="text-2xl font-bold text-blue-600">40%</span>
+              </div>
+              <h3 className="font-semibold text-gray-900">Ministry Programs</h3>
+              <p className="text-sm text-gray-600">Worship, discipleship, and spiritual growth</p>
+            </div>
+
+            <div className="text-center">
+              <div className="bg-green-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-3">
+                <span className="text-2xl font-bold text-green-600">25%</span>
+              </div>
+              <h3 className="font-semibold text-gray-900">Community Outreach</h3>
+              <p className="text-sm text-gray-600">Local missions and community service</p>
+            </div>
+
+            <div className="text-center">
+              <div className="bg-yellow-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-3">
+                <span className="text-2xl font-bold text-yellow-600">20%</span>
+              </div>
+              <h3 className="font-semibold text-gray-900">Facility & Operations</h3>
+              <p className="text-sm text-gray-600">Maintenance and operational costs</p>
+            </div>
+
+            <div className="text-center">
+              <div className="bg-purple-100 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-3">
+                <span className="text-2xl font-bold text-purple-600">15%</span>
+              </div>
+              <h3 className="font-semibold text-gray-900">Staff & Leadership</h3>
+              <p className="text-sm text-gray-600">Supporting our ministry team</p>
+            </div>
+          </div>
+
+          <div className="text-center">
+            <button className="bg-blue-600 text-white px-6 py-3 rounded-md hover:bg-blue-700 transition duration-300">
+              Download Annual Financial Report
+            </button>
+          </div>
+        </section>
+
+        {/* Bible Verse */}
+        <section className="text-center py-12">
+          <blockquote className="text-2xl font-medium text-gray-900 italic max-w-4xl mx-auto">
+            "Remember this: Whoever sows sparingly will also reap sparingly, and whoever sows generously will also reap generously."
+          </blockquote>
+          <cite className="text-lg text-gray-600 mt-4 block">- 2 Corinthians 9:6</cite>
+        </section>
       </div>
 
-      {/* Footer */}
-      <footer className="bg-gray-900 text-white py-12">
-        <div className="container mx-auto px-4">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div>
-              <h3 className="text-lg font-bold mb-4">Contact Us</h3>
-              <div className="space-y-2">
-                <p>📧 Pst.bruce67@gmail.com</p>
-                <p>📱 +254735464102</p>
-                <p>📍 Migori, Kenya</p>
-              </div>
-            </div>
-            <div>
-              <h3 className="text-lg font-bold mb-4">Service Times</h3>
-              <div className="space-y-2">
-                <p>Sunday: 9:00 AM - 12:00 PM</p>
-                <p>Nyaduong' Village</p>
-                <p>Sunday: 2:00 PM - 4:00 PM</p>
-                <p>Oruba, Migori Town</p>
-              </div>
-            </div>
-            <div>
-              <h3 className="text-lg font-bold mb-4">Follow Us</h3>
-              <a 
-                href="https://www.facebook.com/profile.php?id=100064378341874" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="text-blue-400 hover:text-blue-300"
-              >
-                Facebook Page
-              </a>
-            </div>
-          </div>
-          <div className="border-t border-gray-800 mt-8 pt-8 text-center">
-            <p>&copy; 2024 Calvary Jesus Church. All rights reserved.</p>
-          </div>
-        </div>
-      </footer>
+      <Footer />
     </div>
   );
 };
 
-export default GivePage;
+export default Give;
