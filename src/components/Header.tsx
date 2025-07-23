@@ -83,7 +83,7 @@ const Header: React.FC = () => {
             <div className="flex items-center space-x-2">
               <Mail className="h-4 w-4" />
               <a href="mailto:Pst.bruce67@gmail.com" className="hover:text-blue-200 transition duration-300">
-                Pst.bruce67@gmail.com
+                calvaryjesuschurch.org
               </a>
             </div>
           </div>

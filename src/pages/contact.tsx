@@ -61,8 +61,6 @@ const Contact: React.FC = () => {
               <div className="text-gray-600 space-y-2">
                 <p className="font-medium">Nyaduong' Village</p>
                 <p className="text-sm">Next to Nyaduong' Secondary & Primary Schools</p>
-                <p className="font-medium mt-3">Migori Town</p>
-                <p className="text-sm">Oruba, Dip Primary School</p>
               </div>
             </div>
 
@@ -73,7 +71,6 @@ const Contact: React.FC = () => {
               <div className="text-gray-600 space-y-2">
                 <p className="font-medium">Sunday Services</p>
                 <p className="text-sm">9:00 AM - 12:00 PM<br />Nyaduong' Village</p>
-                <p className="text-sm">2:00 PM - 4:00 PM<br />Migori Town</p>
               </div>
             </div>
 
@@ -329,7 +326,7 @@ const Contact: React.FC = () => {
                   </div>
                   <div>
                     <h4 className="font-semibold text-gray-900">Pastor Bruce</h4>
-                    <p className="text-sm text-gray-600">Senior Pastor</p>
+                    <p className="text-sm text-gray-600">Missionary Pastor</p>
                     <a href="mailto:Pst.bruce67@gmail.com" className="text-sm text-blue-600 hover:underline">
                       Pst.bruce67@gmail.com
                     </a>
@@ -363,7 +360,7 @@ const Contact: React.FC = () => {
                     <User className="h-6 w-6 text-yellow-600" />
                   </div>
                   <div>
-                    <h4 className="font-semibold text-gray-900">Fredrick</h4>
+                    <h4 className="font-semibold text-gray-900">Fredrick Musala</h4>
                     <p className="text-sm text-gray-600">Worship Leader</p>
                     <p className="text-sm text-gray-600">Music Ministry</p>
                   </div>

@@ -166,7 +166,7 @@ export default function Home() {
             <div className="text-center mb-16">
               <h2 className="text-4xl md:text-5xl font-bold mb-6">Join Us for Worship</h2>
               <p className="text-xl text-slate-300">
-                We have two service locations to serve you better
+                We have one service locations to serve you better
               </p>
             </div>
 
@@ -184,23 +184,6 @@ export default function Home() {
                   <div className="flex items-start">
                     <MapPin className="w-5 h-5 text-amber-500 mr-3 mt-1" />
                     <span>Nyaduong' Village, next to Nyaduong' Secondary and Primary Schools</span>
-                  </div>
-                </div>
-              </div>
-
-              <div className="bg-slate-800 p-8 rounded-lg">
-                <div className="flex items-center mb-6">
-                  <Clock className="w-8 h-8 text-amber-500 mr-4" />
-                  <h3 className="text-2xl font-bold">Afternoon Service</h3>
-                </div>
-                <div className="space-y-4">
-                  <div className="flex items-center">
-                    <CalendarDays className="w-5 h-5 text-amber-500 mr-3" />
-                    <span>Sunday: 2:00 PM - 4:00 PM</span>
-                  </div>
-                  <div className="flex items-start">
-                    <MapPin className="w-5 h-5 text-amber-500 mr-3 mt-1" />
-                    <span>Oruba, Migori Town inside Dip Primary School</span>
                   </div>
                 </div>
               </div>

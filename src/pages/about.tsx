@@ -31,7 +31,7 @@ export default function About() {
   const leadership = [
     {
       name: "Pastor Bruce",
-      role: "Senior Pastor",
+      role: "Missionary Pastor",
       image: "/images/about/leadership/pastor-bruce.jpg",
       description: "Leading our church in Bible-centered teaching and pastoral care.",
       email: "Pst.bruce67@gmail.com"

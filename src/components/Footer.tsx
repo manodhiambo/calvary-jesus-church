@@ -105,10 +105,6 @@ const Footer: React.FC = () => {
                     Nyaduong' village, Migori<br />
                     Next to Nyaduong' Secondary School
                   </p>
-                  <p className="text-gray-300 text-sm mt-1">
-                    Oruba, Migori Town<br />
-                    Inside Dip Primary School
-                  </p>
                 </div>
               </div>
               <div className="flex items-center space-x-3">
@@ -134,7 +130,6 @@ const Footer: React.FC = () => {
                 <div>
                   <p className="text-gray-300 text-sm">Sunday Services:</p>
                   <p className="text-gray-300 text-sm">9:00 AM - 12:00 PM</p>
-                  <p className="text-gray-300 text-sm">2:00 PM - 4:00 PM</p>
                 </div>
               </div>
             </div>
