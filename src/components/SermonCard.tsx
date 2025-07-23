@@ -1,27 +1,34 @@
 import React from 'react';
 import { Calendar, Play, User } from 'lucide-react';
 
-interface SermonCardProps {
+interface Sermon {
   title: string;
   speaker: string;
   date: string;
   description: string;
   videoUrl?: string;
-  thumbnailUrl?: string;
+  thumbnail?: string;
   series?: string;
   duration?: string;
 }
 
-const SermonCard: React.FC<SermonCardProps> = ({
-  title,
-  speaker,
-  date,
-  description,
-  videoUrl,
-  thumbnailUrl,
-  series,
-  duration
-}) => {
+interface SermonCardProps {
+  sermon: Sermon;
+  featured?: boolean;
+}
+
+const SermonCard: React.FC<SermonCardProps> = ({ sermon, featured }) => {
+  const {
+    title,
+    speaker,
+    date,
+    description,
+    videoUrl,
+    thumbnail,
+    series,
+    duration
+  } = sermon;
+
   const handlePlay = () => {
     if (videoUrl) {
       window.open(videoUrl, '_blank');
@@ -29,12 +36,12 @@ const SermonCard: React.FC<SermonCardProps> = ({
   };
 
   return (
-    <div className="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300 group">
+    <div className={`bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300 group ${featured ? 'border-4 border-amber-500' : ''}`}>
       {/* Thumbnail Section */}
       <div className="relative h-48 bg-gradient-to-br from-blue-900 to-blue-700 overflow-hidden">
-        {thumbnailUrl ? (
+        {thumbnail ? (
           <img 
-            src={thumbnailUrl} 
+            src={thumbnail} 
             alt={title}
             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
           />
@@ -46,8 +53,7 @@ const SermonCard: React.FC<SermonCardProps> = ({
             </div>
           </div>
         )}
-        
-        {/* Play Button Overlay */}
+
         {videoUrl && (
           <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-40 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
             <button
@@ -59,7 +65,6 @@ const SermonCard: React.FC<SermonCardProps> = ({
           </div>
         )}
 
-        {/* Series Badge */}
         {series && (
           <div className="absolute top-4 left-4">
             <span className="bg-yellow-500 text-white px-3 py-1 rounded-full text-xs font-semibold">
@@ -68,7 +73,6 @@ const SermonCard: React.FC<SermonCardProps> = ({
           </div>
         )}
 
-        {/* Duration Badge */}
         {duration && (
           <div className="absolute top-4 right-4">
             <span className="bg-black bg-opacity-50 text-white px-2 py-1 rounded text-xs">
@@ -83,7 +87,7 @@ const SermonCard: React.FC<SermonCardProps> = ({
         <h3 className="text-xl font-bold text-gray-900 mb-3 line-clamp-2 hover:text-blue-900 transition-colors">
           {title}
         </h3>
-        
+
         <p className="text-gray-600 mb-4 line-clamp-3 text-sm leading-relaxed">
           {description}
         </p>
@@ -96,7 +100,7 @@ const SermonCard: React.FC<SermonCardProps> = ({
           </div>
           <div className="flex items-center">
             <Calendar className="w-4 h-4 mr-1" />
-            <span>{new Date(date).toLocaleDateString()}</span>
+            <span>{new Date(date).toLocaleDateString('en-GB', { day: '2-digit', month: '2-digit', year: 'numeric' })}</span>
           </div>
         </div>
 
@@ -121,3 +125,4 @@ const SermonCard: React.FC<SermonCardProps> = ({
 };
 
 export default SermonCard;
+
