@@ -51,11 +51,11 @@ export default function About() {
       email: "manodhiambo@gmail.com"
     },
     {
-      name: "Fredrick",
+      name: "Fredrick Musala",
       role: "Worship Leader",
       image: "/images/about/leadership/worship-leader-sarah.jpg",
       description: "Leading our congregation in worship and praise.",
-      email: "worship@calvaryjesus.org"
+      email: "fredrickmusala@gmail.com"
     }
   ];
 
