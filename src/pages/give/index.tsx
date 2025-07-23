@@ -193,8 +193,8 @@ const Give: React.FC = () => {
               <Phone className="h-12 w-12 text-green-600 mx-auto mb-4" />
               <h3 className="text-xl font-semibold text-gray-900 mb-4">M-Pesa Paybill</h3>
               <div className="space-y-2 text-gray-600">
-                <p><strong>Paybill Number:</strong> 123456</p>
-                <p><strong>Account Number:</strong> Your Phone Number</p>
+                <p><strong>Paybill Number:</strong> coming soon</p>
+                <p><strong>Account Number:</strong> coming soon</p>
                 <p className="text-sm mt-4">
                   Go to M-Pesa → Lipa na M-Pesa → Pay Bill → Enter details above
                 </p>
@@ -208,7 +208,6 @@ const Give: React.FC = () => {
               <div className="space-y-2 text-gray-600">
                 <p>During Sunday services:</p>
                 <p><strong>9:00 AM - 12:00 PM</strong><br />Nyaduong' Village</p>
-                <p><strong>2:00 PM - 4:00 PM</strong><br />Dip Primary School, Migori</p>
                 <p className="text-sm mt-4">
                   Cash offerings and tithes accepted during service
                 </p>
@@ -271,7 +270,7 @@ const Give: React.FC = () => {
         {/* Bible Verse */}
         <section className="text-center py-12">
           <blockquote className="text-2xl font-medium text-gray-900 italic max-w-4xl mx-auto">
-            "Remember this: Whoever sows sparingly will also reap sparingly, and whoever sows generously will also reap generously."
+            "Remember this: Whoever sows sparingly will also reap sparingly, and whoever sows generously will also reap generously..This however applies to sharing the gospel, not about money"
           </blockquote>
           <cite className="text-lg text-gray-600 mt-4 block">- 2 Corinthians 9:6</cite>
         </section>
