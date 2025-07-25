@@ -38,22 +38,35 @@ const PrayerRequestPage = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
+    setSubmitStatus('idle');
     
     try {
-      // In real implementation, this would submit to your backend/API
-      // For now, we'll simulate a successful submission
-      await new Promise(resolve => setTimeout(resolve, 2000));
+      const formElement = e.target as HTMLFormElement;
+      const formData = new FormData(formElement);
       
-      setSubmitStatus('success');
-      setFormData({
-        fullName: '',
-        phoneNumber: '',
-        email: '',
-        prayerRequest: '',
-        isSecret: false,
-        allowContact: false,
-        urgency: 'normal'
+      const response = await fetch('https://formsubmit.co/manodhiambo@gmail.com', {
+        method: 'POST',
+        body: formData,
+        headers: {
+          'Accept': 'application/json'
+        }
       });
+
+      if (response.ok) {
+        setSubmitStatus('success');
+        // Reset form data
+        setFormData({
+          fullName: '',
+          phoneNumber: '',
+          email: '',
+          prayerRequest: '',
+          isSecret: false,
+          allowContact: false,
+          urgency: 'normal'
+        });
+      } else {
+        throw new Error('Form submission failed');
+      }
     } catch (error) {
       setSubmitStatus('error');
     } finally {
@@ -110,6 +123,11 @@ const PrayerRequestPage = () => {
               )}
 
               <form onSubmit={handleSubmit} className="space-y-6">
+                {/* FormSubmit Configuration - Hidden Fields */}
+                <input type="hidden" name="_subject" value="New Prayer Request - Calvary Jesus Church" />
+                <input type="hidden" name="_captcha" value="false" />
+                <input type="hidden" name="_template" value="table" />
+
                 {/* Full Name */}
                 <div>
                   <label htmlFor="fullName" className="block text-sm font-semibold text-gray-700 mb-2">
@@ -210,6 +228,7 @@ const PrayerRequestPage = () => {
                         onChange={handleInputChange}
                         className="mt-1 w-4 h-4 text-purple-600 border-gray-300 rounded focus:ring-purple-500"
                       />
+                      <input type="hidden" name="confidential_request" value={formData.isSecret ? 'Yes - Keep confidential' : 'No'} />
                       <div>
                         <span className="text-sm font-medium text-gray-700">
                           Keep this request confidential
@@ -228,6 +247,7 @@ const PrayerRequestPage = () => {
                         onChange={handleInputChange}
                         className="mt-1 w-4 h-4 text-purple-600 border-gray-300 rounded focus:ring-purple-500"
                       />
+                      <input type="hidden" name="allow_personal_contact" value={formData.allowContact ? 'Yes - Open to contact' : 'No'} />
                       <div>
                         <span className="text-sm font-medium text-gray-700">
                           I'm open to personal contact
