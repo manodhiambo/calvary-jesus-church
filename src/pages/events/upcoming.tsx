@@ -20,6 +20,22 @@ interface UpcomingEvent {
 }
 
 const upcomingEvents: UpcomingEvent[] = [
+
+	{
+		id: '6',
+		title: 'Baptism Sunday Celebration',
+		date: '2025-09-07',
+		time: '10:30 AM - 12:30 PM',
+		location: 'Church Courtyard',
+		description: 'Join us for a powerful Baptism Sunday as we celebrate new life in Christ. This is a public declaration of faith and a joyful gathering of our church family.',
+		category: 'special',
+		image: '/images/events/baptism.jpg',
+		attendees: 85,
+		maxAttendees: 150,
+		featured: true,
+		speaker: 'Pastor Bruce Germail',
+		registrationRequired: true
+	},
   {
     id: '1',
     title: 'Sunday Worship Service',
@@ -42,7 +58,7 @@ const upcomingEvents: UpcomingEvent[] = [
     time: '6:00 PM - 8:00 PM',
     location: 'Church Hall',
     description: 'Deep dive into Scripture with verse-by-verse exposition. Bring your Bible and notebook as we study God\'s Word together and grow in biblical understanding.',
-    category: 'Baptism',
+    category: 'worship',
     image: '/images/events/bible-study.jpg',
     attendees: 70,
     maxAttendees: 100,
