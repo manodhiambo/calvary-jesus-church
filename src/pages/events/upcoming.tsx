@@ -23,7 +23,7 @@ const upcomingEvents: UpcomingEvent[] = [
   {
     id: '1',
     title: 'Sunday Worship Service',
-    date: '2024-07-28',
+    date: '2025-08-03',
     time: '9:00 AM - 12:00 PM',
     location: "Nyaduong' Village next to Nyaduong' Secondary School",
     description: 'Join us for a powerful worship service filled with praise, prayer, and expository preaching from God\'s Word. Experience the presence of God as we gather as a community of believers.',
@@ -38,14 +38,14 @@ const upcomingEvents: UpcomingEvent[] = [
   {
     id: '2',
     title: 'Midweek Bible Study',
-    date: '2024-07-30',
+    date: '2025-07-30',
     time: '6:00 PM - 8:00 PM',
     location: 'Church Hall',
     description: 'Deep dive into Scripture with verse-by-verse exposition. Bring your Bible and notebook as we study God\'s Word together and grow in biblical understanding.',
-    category: 'ministry',
+    category: 'Baptism',
     image: '/images/events/bible-study.jpg',
-    attendees: 32,
-    maxAttendees: 50,
+    attendees: 70,
+    maxAttendees: 100,
     featured: false,
     speaker: 'Pastor Bruce',
     registrationRequired: false
@@ -53,7 +53,7 @@ const upcomingEvents: UpcomingEvent[] = [
   {
     id: '3',
     title: 'Community Outreach Program',
-    date: '2024-08-03',
+    date: '2025-09-03',
     time: '8:00 AM - 4:00 PM',
     location: 'Migori Town Center',
     description: 'Join us as we serve our community through practical love and share the Gospel. We\'ll be providing food, clothing, and spiritual encouragement to those in need.',
@@ -67,7 +67,7 @@ const upcomingEvents: UpcomingEvent[] = [
   {
     id: '4',
     title: 'Youth Bible Study',
-    date: '2024-08-05',
+    date: '2025-08-05',
     time: '4:00 PM - 6:00 PM',
     location: 'Youth Hall',
     description: 'Young people ages 13-25 are invited for Bible study, fellowship, and discussion about living faithfully in today\'s world.',
@@ -81,7 +81,7 @@ const upcomingEvents: UpcomingEvent[] = [
   {
     id: '5',
     title: 'Annual Church Conference',
-    date: '2024-08-15',
+    date: '2025-08-15',
     time: '9:00 AM - 5:00 PM',
     location: 'Main Sanctuary',
     description: 'A special day of spiritual renewal, biblical teaching, and fellowship. Guest speakers will join us for this significant church event.',

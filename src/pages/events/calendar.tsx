@@ -16,7 +16,7 @@ const calendarEvents: CalendarEvent[] = [
   {
     id: '1',
     title: 'Sunday Worship',
-    date: '2024-07-28',
+    date: '2025-07-27',
     time: '9:00 AM',
     location: "Nyaduong' Village",
     category: 'worship'
@@ -24,7 +24,7 @@ const calendarEvents: CalendarEvent[] = [
   {
     id: '2',
     title: 'Bible Study',
-    date: '2024-07-30',
+    date: '2025-07-30',
     time: '6:00 PM',
     location: 'Church Hall',
     category: 'ministry'
@@ -32,7 +32,7 @@ const calendarEvents: CalendarEvent[] = [
   {
     id: '3',
     title: 'Community Outreach',
-    date: '2024-08-03',
+    date: '2025-08-03',
     time: '8:00 AM',
     location: 'Migori Town',
     category: 'outreach'
@@ -40,7 +40,7 @@ const calendarEvents: CalendarEvent[] = [
   {
     id: '4',
     title: 'Youth Fellowship',
-    date: '2024-08-05',
+    date: '2025-08-05',
     time: '4:00 PM',
     location: 'Youth Hall',
     category: 'ministry'
@@ -48,7 +48,7 @@ const calendarEvents: CalendarEvent[] = [
   {
     id: '5',
     title: 'Sunday Worship',
-    date: '2024-08-04',
+    date: '2025-08-04',
     time: '9:00 AM',
     location: "Nyaduong' Village",
     category: 'worship'

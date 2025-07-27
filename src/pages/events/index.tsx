@@ -22,7 +22,7 @@ const mockEvents: Event[] = [
   {
     id: '1',
     title: 'Sunday Worship Service',
-    date: '2024-07-28',
+    date: '2025-07-27',
     time: '9:00 AM - 12:00 PM',
     location: "Nyaduong' Village",
     description: 'Join us for worship, prayer, and biblical teaching as we gather to honor God.',
@@ -35,7 +35,7 @@ const mockEvents: Event[] = [
   {
     id: '2',
     title: 'Bible Study Fellowship',
-    date: '2024-07-30',
+    date: '2025-07-30',
     time: '6:00 PM - 8:00 PM',
     location: 'Church Hall',
     description: 'Deep dive into Scripture with expository teaching and group discussion.',
@@ -48,7 +48,7 @@ const mockEvents: Event[] = [
   {
     id: '3',
     title: 'Community Outreach Program',
-    date: '2024-08-03',
+    date: '2025-08-03',
     time: '8:00 AM - 4:00 PM',
     location: 'Migori Town Center',
     description: 'Serving our community through practical love and sharing the Gospel.',
@@ -61,7 +61,7 @@ const mockEvents: Event[] = [
   {
     id: '4',
     title: 'Annual Church Conference',
-    date: '2024-08-15',
+    date: '2025-12-07',
     time: '9:00 AM - 5:00 PM',
     location: 'Main Sanctuary',
     description: 'A day of spiritual renewal, teaching, and fellowship with guest speakers.',
