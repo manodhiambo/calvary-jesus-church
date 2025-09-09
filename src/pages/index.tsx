@@ -95,8 +95,12 @@ export default function Home() {
   };
 
   // Function to format date
-  const formatDate = (date) => {
-    return date.toISOString().split('T')[0];
+  const formatDate = (date: Date | string) => {
+    const d = typeof date === "string" ? new Date(date) : date;
+    if (isNaN(d.getTime())) {
+     throw new Error("Invalid date value");
+   }
+    return d.toISOString().split("T")[0];
   };
 
   // Dynamic upcoming events based on Christian calendar
@@ -153,7 +157,7 @@ export default function Home() {
     });
 
     // Sort events by date
-    return events.sort((a, b) => new Date(a.startDate) - new Date(b.startDate));
+    return events.sort((a, b) => new Date(a.startDate).getTime() - new Date(b.startDate).getTime());
   };
 
   const upcomingEvents = getUpcomingEvents();
