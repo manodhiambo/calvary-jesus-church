@@ -5,10 +5,11 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import SermonCard from '@/components/SermonCard';
 import EventCard from '@/components/EventCard';
-import { CalendarDays, Clock, MapPin, Heart, Users, BookOpen } from 'lucide-react';
+import { CalendarDays, Clock, MapPin, Heart, Users, BookOpen, ChevronLeft, ChevronRight } from 'lucide-react';
 
 export default function Home() {
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [currentBaptismPhoto, setCurrentBaptismPhoto] = useState(0);
   
   const heroSlides = [
     {
@@ -31,6 +32,50 @@ export default function Home() {
     }
   ];
 
+  // Baptism photos from September 7th, 2025
+  const baptismPhotos = [
+    '/images/baptism/1.jfif',
+    '/images/baptism/2.jfif',
+    '/images/baptism/3.jfif',
+    '/images/baptism/4.jfif',
+    '/images/baptism/5.jfif',
+    '/images/baptism/6.jfif',
+    '/images/baptism/7.jfif',
+    '/images/baptism/8.jfif',
+    '/images/baptism/9.jfif',
+    '/images/baptism/10.jfif',
+    '/images/baptism/11.jfif',
+    '/images/baptism/12.jfif',
+    '/images/baptism/13.jfif',
+    '/images/baptism/14.jfif',
+    '/images/baptism/15.jfif',
+    '/images/baptism/16.jfif',
+    '/images/baptism/17.jfif',
+    '/images/baptism/18.jfif',
+    '/images/baptism/19.jfif',
+    '/images/baptism/20.jfif',
+    '/images/baptism/21.jfif',
+    '/images/baptism/22.jfif',
+    '/images/baptism/23.jfif',
+    '/images/baptism/24.jfif',
+    '/images/baptism/25.jfif',
+    '/images/baptism/26.jfif',
+    '/images/baptism/27.jfif',
+    '/images/baptism/28.jfif',
+    '/images/baptism/29.jfif',
+    '/images/baptism/30.jfif',
+    '/images/baptism/31.jfif',
+    '/images/baptism/32.jfif',
+    '/images/baptism/33.jfif',
+    '/images/baptism/34.jfif',
+    '/images/baptism/35.jfif',
+    '/images/baptism/36.jfif',
+    '/images/baptism/37.jfif',
+    '/images/baptism/38.jfif',
+    '/images/baptism/39.jfif',
+    '/images/baptism/40.jfif'
+  ];
+
   const featuredSermon = {
     title: "The Authority of Scripture",
     speaker: "Pastor Bruce",
@@ -40,13 +85,78 @@ export default function Home() {
     thumbnail: "/images/sermons/thumbnails/sermon-1.jpg"
   };
 
-  const upcomingEvent = {
-    title: "Sunday Worship Service",
-    startDate: "2024-08-04",
-    startTime: "10:00 AM",
-    location: "Nyaduong' Village",
-    description: "Join us for worship, Bible teaching, and fellowship."
+  // Function to get next Sunday
+  const getNextSunday = () => {
+    const today = new Date();
+    const nextSunday = new Date(today);
+    const daysUntilSunday = 7 - today.getDay();
+    nextSunday.setDate(today.getDate() + (daysUntilSunday === 7 ? 7 : daysUntilSunday));
+    return nextSunday;
   };
+
+  // Function to format date
+  const formatDate = (date) => {
+    return date.toISOString().split('T')[0];
+  };
+
+  // Dynamic upcoming events based on Christian calendar
+  const getUpcomingEvents = () => {
+    const events = [];
+    const today = new Date();
+    
+    // Add next 4 Sundays
+    for (let i = 0; i < 4; i++) {
+      const sunday = new Date(today);
+      const daysUntilSunday = 7 - today.getDay();
+      sunday.setDate(today.getDate() + (daysUntilSunday === 7 ? 7 : daysUntilSunday) + (i * 7));
+      
+      events.push({
+        title: "Sunday Worship Service",
+        startDate: formatDate(sunday),
+        startTime: "9:00 AM",
+        endTime: "12:00 PM",
+        location: "Nyaduong' Village",
+        description: "Join us for worship, Bible teaching, and fellowship.",
+        type: "worship"
+      });
+    }
+
+    // Add monthly prayer meetings (first Friday of each month)
+    const nextMonth = new Date(today.getFullYear(), today.getMonth() + 1, 1);
+    const firstFriday = new Date(nextMonth);
+    const daysUntilFriday = (5 - nextMonth.getDay() + 7) % 7;
+    firstFriday.setDate(nextMonth.getDate() + daysUntilFriday);
+    
+    events.push({
+      title: "Monthly Prayer Meeting",
+      startDate: formatDate(firstFriday),
+      startTime: "6:00 PM",
+      endTime: "8:00 PM",
+      location: "Nyaduong' Village",
+      description: "Come together for focused prayer and intercession.",
+      type: "prayer"
+    });
+
+    // Add Bible study (every Wednesday)
+    const nextWednesday = new Date(today);
+    const daysUntilWednesday = (3 - today.getDay() + 7) % 7;
+    nextWednesday.setDate(today.getDate() + (daysUntilWednesday === 0 ? 7 : daysUntilWednesday));
+    
+    events.push({
+      title: "Bible Study",
+      startDate: formatDate(nextWednesday),
+      startTime: "6:00 PM",
+      endTime: "8:00 PM",
+      location: "Nyaduong' Village",
+      description: "Deep dive into God's Word with verse-by-verse study.",
+      type: "study"
+    });
+
+    // Sort events by date
+    return events.sort((a, b) => new Date(a.startDate) - new Date(b.startDate));
+  };
+
+  const upcomingEvents = getUpcomingEvents();
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -55,12 +165,28 @@ export default function Home() {
     return () => clearInterval(timer);
   }, [heroSlides.length]);
 
+  // Baptism photo carousel - moves every 1 second
+  useEffect(() => {
+    const baptismTimer = setInterval(() => {
+      setCurrentBaptismPhoto((prev) => (prev + 1) % baptismPhotos.length);
+    }, 1000);
+    return () => clearInterval(baptismTimer);
+  }, [baptismPhotos.length]);
+
+  const nextBaptismPhoto = () => {
+    setCurrentBaptismPhoto((prev) => (prev + 1) % baptismPhotos.length);
+  };
+
+  const prevBaptismPhoto = () => {
+    setCurrentBaptismPhoto((prev) => (prev - 1 + baptismPhotos.length) % baptismPhotos.length);
+  };
+
   return (
     <>
       <Head>
         <title>Calvary Jesus Church - Unleashing God's Truth One Verse at a Time</title>
         <meta name="description" content="Welcome to Calvary Jesus Church in Migori. We are dedicated to teaching the Bible and building lives on solid Biblical foundation." />
-        <meta name="keywords" content="church, Migori, Bible teaching, Christian fellowship, worship" />
+        <meta name="keywords" content="church, Migori, Bible teaching, Christian fellowship, worship, baptism" />
       </Head>
 
       <Header />
@@ -166,7 +292,7 @@ export default function Home() {
             <div className="text-center mb-16">
               <h2 className="text-4xl md:text-5xl font-bold mb-6">Join Us for Worship</h2>
               <p className="text-xl text-slate-300">
-                We have one service locations to serve you better
+                We have one service location to serve you better
               </p>
             </div>
 
@@ -191,8 +317,78 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Featured Sermon */}
+        {/* Latest Baptism Service */}
         <section className="py-20 bg-white">
+          <div className="max-w-6xl mx-auto px-6">
+            <div className="text-center mb-16">
+              <h2 className="text-4xl md:text-5xl font-bold text-slate-900 mb-6">
+                Recent Baptism Service
+              </h2>
+              <p className="text-xl text-slate-600 mb-4">
+                Celebrating new believers who took the step of baptism on September 7th, 2025
+              </p>
+              <p className="text-lg text-slate-500">
+                "Therefore go and make disciples of all nations, baptizing them in the name of the Father and of the Son and of the Holy Spirit" - Matthew 28:19
+              </p>
+            </div>
+
+            <div className="max-w-4xl mx-auto">
+              <div className="relative bg-slate-100 rounded-lg overflow-hidden shadow-lg">
+                <div className="relative h-96 md:h-[500px]">
+                  {baptismPhotos.map((photo, index) => (
+                    <div
+                      key={index}
+                      className={`absolute inset-0 transition-transform duration-1000 ease-in-out ${
+                        index === currentBaptismPhoto ? 'translate-x-0' : 
+                        index === (currentBaptismPhoto + 1) % baptismPhotos.length ? 'translate-x-full' :
+                        'translate-x-full'
+                      }`}
+                    >
+                      <img
+                        src={photo}
+                        alt={`Baptism service photo ${index + 1}`}
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
+                  ))}
+                  
+                  {/* Navigation buttons */}
+                  <button
+                    onClick={prevBaptismPhoto}
+                    className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-black/50 text-white p-2 rounded-full hover:bg-black/70 transition-colors"
+                  >
+                    <ChevronLeft className="w-6 h-6" />
+                  </button>
+                  <button
+                    onClick={nextBaptismPhoto}
+                    className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-black/50 text-white p-2 rounded-full hover:bg-black/70 transition-colors"
+                  >
+                    <ChevronRight className="w-6 h-6" />
+                  </button>
+
+                  {/* Photo counter */}
+                  <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-black/70 text-white px-4 py-2 rounded-full text-sm">
+                    {currentBaptismPhoto + 1} / {baptismPhotos.length}
+                  </div>
+                </div>
+                
+                <div className="p-6 bg-white">
+                  <h3 className="text-2xl font-bold text-slate-900 mb-2">
+                    Baptism Service - September 7th, 2025
+                  </h3>
+                  <p className="text-slate-600">
+                    We rejoice with the believers who publicly declared their faith through baptism. 
+                    It was a blessed day as we witnessed these precious souls take this important step 
+                    in their walk with Christ.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Featured Sermon */}
+        <section className="py-20 bg-slate-50">
           <div className="max-w-6xl mx-auto px-6">
             <div className="text-center mb-16">
               <h2 className="text-4xl md:text-5xl font-bold text-slate-900 mb-6">
@@ -215,8 +411,8 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Upcoming Event */}
-        <section className="py-20 bg-slate-50">
+        {/* Upcoming Events */}
+        <section className="py-20 bg-white">
           <div className="max-w-6xl mx-auto px-6">
             <div className="text-center mb-16">
               <h2 className="text-4xl md:text-5xl font-bold text-slate-900 mb-6">
@@ -227,8 +423,10 @@ export default function Home() {
               </p>
             </div>
 
-            <div className="max-w-4xl mx-auto">
-              <EventCard event={upcomingEvent} featured={true} />
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto">
+              {upcomingEvents.slice(0, 6).map((event, index) => (
+                <EventCard key={index} event={event} featured={index === 0} />
+              ))}
             </div>
 
             <div className="text-center mt-12">
