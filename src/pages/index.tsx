@@ -173,7 +173,7 @@ export default function Home() {
   useEffect(() => {
     const baptismTimer = setInterval(() => {
       setCurrentBaptismPhoto((prev) => (prev + 1) % baptismPhotos.length);
-    }, 1000);
+    }, 2000);
     return () => clearInterval(baptismTimer);
   }, [baptismPhotos.length]);
 
