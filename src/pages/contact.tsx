@@ -429,56 +429,111 @@ const Contact: React.FC = () => {
 </div>          
 
             {/* Staff Directory */}
-            <div className="bg-white rounded-xl shadow-lg p-6">
-              <h3 className="text-2xl font-semibold text-gray-900 mb-6">Church Leadership</h3>
-              <div className="space-y-4">
-                <div className="flex items-center p-4 border border-gray-200 rounded-lg hover:shadow-md transition-shadow duration-300">
-                  <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mr-4">
-                    <User className="h-6 w-6 text-blue-600" />
-                  </div>
-                  <div>
-                    <h4 className="font-semibold text-gray-900">Pastor Bruce</h4>
-                    <p className="text-sm text-gray-600">Missionary Pastor</p>
-                    <a href="mailto:Pst.bruce67@gmail.com" className="text-sm text-blue-600 hover:underline">
-                      Pst.bruce67@gmail.com
-                    </a>
-                  </div>
-                </div>
+<div className="bg-white rounded-xl shadow-lg p-6">
+  <h3 className="text-2xl font-semibold text-gray-900 mb-6">Church Leadership</h3>
+  <div className="space-y-4">
 
-                <div className="flex items-center p-4 border border-gray-200 rounded-lg hover:shadow-md transition-shadow duration-300">
-                  <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mr-4">
-                    <User className="h-6 w-6 text-green-600" />
-                  </div>
-                  <div>
-                    <h4 className="font-semibold text-gray-900">Oliver Oyando</h4>
-                    <p className="text-sm text-gray-600">Church Secretary</p>
-                    <p className="text-sm text-gray-600">Administrative and communication tasks</p>
-                  </div>
-                </div>
+    {/* Pastor Bruce */}
+    <div className="flex items-center p-4 border border-gray-200 rounded-lg hover:shadow-md transition-shadow duration-300">
+      <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mr-4">
+        <User className="h-6 w-6 text-blue-600" />
+      </div>
+      <div>
+        <h4 className="font-semibold text-gray-900">Pastor Bruce</h4>
+        <p className="text-sm text-gray-600">Missionary Pastor</p>
+        <a href="mailto:Pst.bruce67@gmail.com" className="text-sm text-blue-600 hover:underline">
+          Pst.bruce67@gmail.com
+        </a>
+      </div>
+    </div>
 
-                <div className="flex items-center p-4 border border-gray-200 rounded-lg hover:shadow-md transition-shadow duration-300">
-                  <div className="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center mr-4">
-                    <User className="h-6 w-6 text-purple-600" />
-                  </div>
-                  <div>
-                    <h4 className="font-semibold text-gray-900">Kevin Odhiambo</h4>
-                    <p className="text-sm text-gray-600">IT Manager</p>
-                    <p className="text-sm text-gray-600">Technology, systems, and digital communication platforms</p>
-                  </div>
-                </div>
+    {/* Oliver Oyando */}
+    <div className="flex items-center p-4 border border-gray-200 rounded-lg hover:shadow-md transition-shadow duration-300">
+      <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mr-4">
+        <User className="h-6 w-6 text-green-600" />
+      </div>
+      <div>
+        <h4 className="font-semibold text-gray-900">Oliver Oyando</h4>
+        <p className="text-sm text-gray-600">Church Secretary</p>
+        <a href="mailto:oyandooliver6@gmail.com" className="text-sm text-blue-600 hover:underline">
+          oyandooliver6@gmail.com
+        </a>
+      </div>
+    </div>
 
-                <div className="flex items-center p-4 border border-gray-200 rounded-lg hover:shadow-md transition-shadow duration-300">
-                  <div className="w-12 h-12 bg-yellow-100 rounded-full flex items-center justify-center mr-4">
-                    <User className="h-6 w-6 text-yellow-600" />
-                  </div>
-                  <div>
-                    <h4 className="font-semibold text-gray-900">Fredrick Musala</h4>
-                    <p className="text-sm text-gray-600">Worship Leader</p>
-                    <p className="text-sm text-gray-600">Music Ministry</p>
-                  </div>
-                </div>
-              </div>
-            </div>
+    {/* Kevin Odhiambo */}
+    <div className="flex items-center p-4 border border-gray-200 rounded-lg hover:shadow-md transition-shadow duration-300">
+      <div className="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center mr-4">
+        <User className="h-6 w-6 text-purple-600" />
+      </div>
+      <div>
+        <h4 className="font-semibold text-gray-900">Kevin Odhiambo</h4>
+        <p className="text-sm text-gray-600">Secretary</p>
+        <a href="mailto:manodhiambo@gmail.com" className="text-sm text-blue-600 hover:underline">
+          manodhiambo@gmail.com
+        </a>
+      </div>
+    </div>
+
+    {/* Joyce Akoth */}
+    <div className="flex items-center p-4 border border-gray-200 rounded-lg hover:shadow-md transition-shadow duration-300">
+      <div className="w-12 h-12 bg-yellow-100 rounded-full flex items-center justify-center mr-4">
+        <User className="h-6 w-6 text-yellow-600" />
+      </div>
+      <div>
+        <h4 className="font-semibold text-gray-900">Joyce Akoth</h4>
+        <p className="text-sm text-gray-600">Vice Secretary</p>
+        <a href="mailto:joyceakoth@gmail.com" className="text-sm text-blue-600 hover:underline">
+          joyceakoth@gmail.com
+        </a>
+      </div>
+    </div>
+
+    {/* Samuel Ondieki */}
+    <div className="flex items-center p-4 border border-gray-200 rounded-lg hover:shadow-md transition-shadow duration-300">
+      <div className="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center mr-4">
+        <User className="h-6 w-6 text-red-600" />
+      </div>
+      <div>
+        <h4 className="font-semibold text-gray-900">Samuel Ondieki</h4>
+        <p className="text-sm text-gray-600">Vice Chairman</p>
+        <a href="mailto:samuelondieki@gmail.com" className="text-sm text-blue-600 hover:underline">
+          samuelondieki@gmail.com
+        </a>
+      </div>
+    </div>
+
+    {/* Felix Ochieng */}
+    <div className="flex items-center p-4 border border-gray-200 rounded-lg hover:shadow-md transition-shadow duration-300">
+      <div className="w-12 h-12 bg-pink-100 rounded-full flex items-center justify-center mr-4">
+        <User className="h-6 w-6 text-pink-600" />
+      </div>
+      <div>
+        <h4 className="font-semibold text-gray-900">Felix Ochieng</h4>
+        <p className="text-sm text-gray-600">Treasurer</p>
+        <a href="mailto:felixochieng@gmail.com" className="text-sm text-blue-600 hover:underline">
+          felixochieng@gmail.com
+        </a>
+      </div>
+    </div>
+
+    {/* John Olary */}
+    <div className="flex items-center p-4 border border-gray-200 rounded-lg hover:shadow-md transition-shadow duration-300">
+      <div className="w-12 h-12 bg-indigo-100 rounded-full flex items-center justify-center mr-4">
+        <User className="h-6 w-6 text-indigo-600" />
+      </div>
+      <div>
+        <h4 className="font-semibold text-gray-900">John Olary</h4>
+        <p className="text-sm text-gray-600">Vice Treasurer</p>
+        <a href="mailto:johnolary@gmail.com" className="text-sm text-blue-600 hover:underline">
+          johnolary@gmail.com
+        </a>
+      </div>
+    </div>
+
+  </div>
+</div>
+            
 
             {/* Quick Contact Info */}
             <div className="bg-gradient-to-r from-blue-600 to-blue-700 rounded-xl shadow-lg p-6 text-white">
