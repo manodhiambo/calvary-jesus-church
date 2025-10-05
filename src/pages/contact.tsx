@@ -30,13 +30,13 @@ const Contact: React.FC = () => {
     }
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsSubmitting(true);
     setSubmitStatus('idle');
     
     try {
-      const formElement = e.target as HTMLFormElement;
+      const formElement = e.currentTarget;
       const formDataToSubmit = new FormData(formElement);
       
       const response = await fetch('https://formsubmit.co/manodhiambo@gmail.com', {
@@ -403,137 +403,135 @@ const Contact: React.FC = () => {
           </div>
 
           {/* Map and Additional Info */}
-<div className="space-y-8">
-  {/* Google Map */}
-  <div className="bg-white rounded-xl shadow-lg overflow-hidden">
-    <div className="p-6">
-      <h3 className="text-2xl font-semibold text-gray-900 mb-4">Find Us</h3>
-      <p className="text-gray-600 mb-4">
-        Visit us at our service location. We'd love to welcome you to our church family.
-      </p>
-    </div>
+          <div className="space-y-8">
+            {/* Google Map */}
+            <div className="bg-white rounded-xl shadow-lg overflow-hidden">
+              <div className="p-6">
+                <h3 className="text-2xl font-semibold text-gray-900 mb-4">Find Us</h3>
+                <p className="text-gray-600 mb-4">
+                  Visit us at our service location. We'd love to welcome you to our church family.
+                </p>
+              </div>
 
-    <div className="h-96">
-      <iframe
-        src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d1982.3849493258438!2d34.566414!3d-1.062828!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2ske!4v1696500000000!5m2!1sen!2ske"
-        width="100%"
-        height="100%"
-        style={{ border: 0 }}
-        allowFullScreen
-        loading="lazy"
-        referrerPolicy="no-referrer-when-downgrade"
-        title="Church Location Map"
-      />
-    </div>
-  </div>
-</div>          
+              <div className="h-96">
+                <iframe
+                  src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d1982.3849493258438!2d34.566414!3d-1.062828!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2ske!4v1696500000000!5m2!1sen!2ske"
+                  width="100%"
+                  height="100%"
+                  style={{ border: 0 }}
+                  allowFullScreen
+                  loading="lazy"
+                  referrerPolicy="no-referrer-when-downgrade"
+                  title="Church Location Map"
+                />
+              </div>
+            </div>
 
             {/* Staff Directory */}
-<div className="bg-white rounded-xl shadow-lg p-6">
-  <h3 className="text-2xl font-semibold text-gray-900 mb-6">Church Leadership</h3>
-  <div className="space-y-4">
+            <div className="bg-white rounded-xl shadow-lg p-6">
+              <h3 className="text-2xl font-semibold text-gray-900 mb-6">Church Leadership</h3>
+              <div className="space-y-4">
 
-    {/* Pastor Bruce */}
-    <div className="flex items-center p-4 border border-gray-200 rounded-lg hover:shadow-md transition-shadow duration-300">
-      <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mr-4">
-        <User className="h-6 w-6 text-blue-600" />
-      </div>
-      <div>
-        <h4 className="font-semibold text-gray-900">Pastor Bruce</h4>
-        <p className="text-sm text-gray-600">Missionary Pastor</p>
-        <a href="mailto:Pst.bruce67@gmail.com" className="text-sm text-blue-600 hover:underline">
-          Pst.bruce67@gmail.com
-        </a>
-      </div>
-    </div>
+                {/* Pastor Bruce */}
+                <div className="flex items-center p-4 border border-gray-200 rounded-lg hover:shadow-md transition-shadow duration-300">
+                  <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mr-4">
+                    <User className="h-6 w-6 text-blue-600" />
+                  </div>
+                  <div>
+                    <h4 className="font-semibold text-gray-900">Pastor Bruce</h4>
+                    <p className="text-sm text-gray-600">Missionary Pastor</p>
+                    <a href="mailto:Pst.bruce67@gmail.com" className="text-sm text-blue-600 hover:underline">
+                      Pst.bruce67@gmail.com
+                    </a>
+                  </div>
+                </div>
 
-    {/* Oliver Oyando */}
-    <div className="flex items-center p-4 border border-gray-200 rounded-lg hover:shadow-md transition-shadow duration-300">
-      <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mr-4">
-        <User className="h-6 w-6 text-green-600" />
-      </div>
-      <div>
-        <h4 className="font-semibold text-gray-900">Oliver Oyando</h4>
-        <p className="text-sm text-gray-600">Church Secretary</p>
-        <a href="mailto:oyandooliver6@gmail.com" className="text-sm text-blue-600 hover:underline">
-          oyandooliver6@gmail.com
-        </a>
-      </div>
-    </div>
+                {/* Oliver Oyando */}
+                <div className="flex items-center p-4 border border-gray-200 rounded-lg hover:shadow-md transition-shadow duration-300">
+                  <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mr-4">
+                    <User className="h-6 w-6 text-green-600" />
+                  </div>
+                  <div>
+                    <h4 className="font-semibold text-gray-900">Oliver Oyando</h4>
+                    <p className="text-sm text-gray-600">Church Secretary</p>
+                    <a href="mailto:oyandooliver6@gmail.com" className="text-sm text-blue-600 hover:underline">
+                      oyandooliver6@gmail.com
+                    </a>
+                  </div>
+                </div>
 
-    {/* Kevin Odhiambo */}
-    <div className="flex items-center p-4 border border-gray-200 rounded-lg hover:shadow-md transition-shadow duration-300">
-      <div className="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center mr-4">
-        <User className="h-6 w-6 text-purple-600" />
-      </div>
-      <div>
-        <h4 className="font-semibold text-gray-900">Kevin Odhiambo</h4>
-        <p className="text-sm text-gray-600">Secretary</p>
-        <a href="mailto:manodhiambo@gmail.com" className="text-sm text-blue-600 hover:underline">
-          manodhiambo@gmail.com
-        </a>
-      </div>
-    </div>
+                {/* Kevin Odhiambo */}
+                <div className="flex items-center p-4 border border-gray-200 rounded-lg hover:shadow-md transition-shadow duration-300">
+                  <div className="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center mr-4">
+                    <User className="h-6 w-6 text-purple-600" />
+                  </div>
+                  <div>
+                    <h4 className="font-semibold text-gray-900">Kevin Odhiambo</h4>
+                    <p className="text-sm text-gray-600">Secretary</p>
+                    <a href="mailto:manodhiambo@gmail.com" className="text-sm text-blue-600 hover:underline">
+                      manodhiambo@gmail.com
+                    </a>
+                  </div>
+                </div>
 
-    {/* Joyce Akoth */}
-    <div className="flex items-center p-4 border border-gray-200 rounded-lg hover:shadow-md transition-shadow duration-300">
-      <div className="w-12 h-12 bg-yellow-100 rounded-full flex items-center justify-center mr-4">
-        <User className="h-6 w-6 text-yellow-600" />
-      </div>
-      <div>
-        <h4 className="font-semibold text-gray-900">Joyce Akoth</h4>
-        <p className="text-sm text-gray-600">Vice Secretary</p>
-        <a href="mailto:joyceakoth@gmail.com" className="text-sm text-blue-600 hover:underline">
-          joyceakoth@gmail.com
-        </a>
-      </div>
-    </div>
+                {/* Joyce Akoth */}
+                <div className="flex items-center p-4 border border-gray-200 rounded-lg hover:shadow-md transition-shadow duration-300">
+                  <div className="w-12 h-12 bg-yellow-100 rounded-full flex items-center justify-center mr-4">
+                    <User className="h-6 w-6 text-yellow-600" />
+                  </div>
+                  <div>
+                    <h4 className="font-semibold text-gray-900">Joyce Akoth</h4>
+                    <p className="text-sm text-gray-600">Vice Secretary</p>
+                    <a href="mailto:joyceakoth@gmail.com" className="text-sm text-blue-600 hover:underline">
+                      joyceakoth@gmail.com
+                    </a>
+                  </div>
+                </div>
 
-    {/* Samuel Ondieki */}
-    <div className="flex items-center p-4 border border-gray-200 rounded-lg hover:shadow-md transition-shadow duration-300">
-      <div className="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center mr-4">
-        <User className="h-6 w-6 text-red-600" />
-      </div>
-      <div>
-        <h4 className="font-semibold text-gray-900">Samuel Ondieki</h4>
-        <p className="text-sm text-gray-600">Vice Chairman</p>
-        <a href="mailto:samuelondieki@gmail.com" className="text-sm text-blue-600 hover:underline">
-          samuelondieki@gmail.com
-        </a>
-      </div>
-    </div>
+                {/* Samuel Ondieki */}
+                <div className="flex items-center p-4 border border-gray-200 rounded-lg hover:shadow-md transition-shadow duration-300">
+                  <div className="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center mr-4">
+                    <User className="h-6 w-6 text-red-600" />
+                  </div>
+                  <div>
+                    <h4 className="font-semibold text-gray-900">Samuel Ondieki</h4>
+                    <p className="text-sm text-gray-600">Vice Chairman</p>
+                    <a href="mailto:samuelondieki@gmail.com" className="text-sm text-blue-600 hover:underline">
+                      samuelondieki@gmail.com
+                    </a>
+                  </div>
+                </div>
 
-    {/* Felix Ochieng */}
-    <div className="flex items-center p-4 border border-gray-200 rounded-lg hover:shadow-md transition-shadow duration-300">
-      <div className="w-12 h-12 bg-pink-100 rounded-full flex items-center justify-center mr-4">
-        <User className="h-6 w-6 text-pink-600" />
-      </div>
-      <div>
-        <h4 className="font-semibold text-gray-900">Felix Ochieng</h4>
-        <p className="text-sm text-gray-600">Treasurer</p>
-        <a href="mailto:felixochieng@gmail.com" className="text-sm text-blue-600 hover:underline">
-          felixochieng@gmail.com
-        </a>
-      </div>
-    </div>
+                {/* Felix Ochieng */}
+                <div className="flex items-center p-4 border border-gray-200 rounded-lg hover:shadow-md transition-shadow duration-300">
+                  <div className="w-12 h-12 bg-pink-100 rounded-full flex items-center justify-center mr-4">
+                    <User className="h-6 w-6 text-pink-600" />
+                  </div>
+                  <div>
+                    <h4 className="font-semibold text-gray-900">Felix Ochieng</h4>
+                    <p className="text-sm text-gray-600">Treasurer</p>
+                    <a href="mailto:felixochieng@gmail.com" className="text-sm text-blue-600 hover:underline">
+                      felixochieng@gmail.com
+                    </a>
+                  </div>
+                </div>
 
-    {/* John Olary */}
-    <div className="flex items-center p-4 border border-gray-200 rounded-lg hover:shadow-md transition-shadow duration-300">
-      <div className="w-12 h-12 bg-indigo-100 rounded-full flex items-center justify-center mr-4">
-        <User className="h-6 w-6 text-indigo-600" />
-      </div>
-      <div>
-        <h4 className="font-semibold text-gray-900">John Olary</h4>
-        <p className="text-sm text-gray-600">Vice Treasurer</p>
-        <a href="mailto:johnolary@gmail.com" className="text-sm text-blue-600 hover:underline">
-          johnolary@gmail.com
-        </a>
-      </div>
-    </div>
+                {/* John Olary */}
+                <div className="flex items-center p-4 border border-gray-200 rounded-lg hover:shadow-md transition-shadow duration-300">
+                  <div className="w-12 h-12 bg-indigo-100 rounded-full flex items-center justify-center mr-4">
+                    <User className="h-6 w-6 text-indigo-600" />
+                  </div>
+                  <div>
+                    <h4 className="font-semibold text-gray-900">John Olary</h4>
+                    <p className="text-sm text-gray-600">Vice Treasurer</p>
+                    <a href="mailto:johnolary@gmail.com" className="text-sm text-blue-600 hover:underline">
+                      johnolary@gmail.com
+                    </a>
+                  </div>
+                </div>
 
-  </div>
-</div>
-            
+              </div>
+            </div>
 
             {/* Quick Contact Info */}
             <div className="bg-gradient-to-r from-blue-600 to-blue-700 rounded-xl shadow-lg p-6 text-white">
@@ -544,7 +542,7 @@ const Contact: React.FC = () => {
               <div className="flex flex-col sm:flex-row gap-3">
                 <a
                   href="tel:+254735464102"
-                  className="flex items-center justify-center bg-white text-blue-600 px-4 py-2 rounded-lg hover:bg-gray-100 transition duration-300 font-semibold"
+                  className="flex items-center jusy-center bg-white text-blue-600 px-4 py-2 rounded-lg hover:bg-gray-100 transition duration-300 font-semibold"
                 >
                   <Phone className="h-4 w-4 mr-2" />
                   Call Now
@@ -553,7 +551,7 @@ const Contact: React.FC = () => {
                   href="https://www.facebook.com/profile.php?id=100064378341874"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center justify-center bg-blue-800 text-white px-4 py-2 rounded-lg hover:bg-blue-900 transition duration-300 font-semibold"
+                  className="flex items-center justify-center bg-blue-800 text-white px-4 py-2 rounded-lgbg-blue-900 transition duration-300 font-semibold"
                 >
                   Message on Facebook
                 </a>
@@ -566,7 +564,7 @@ const Contact: React.FC = () => {
         <section className="text-center py-12">
           <div className="bg-white rounded-xl shadow-lg p-8 max-w-4xl mx-auto">
             <blockquote className="text-2xl font-medium text-gray-900 italic mb-4">
-              "Call to me and I will answer you and tell you great and unsearchable things you do not know."
+              "Call to me and I will answer you and tell you great and nsearchable things you do not know."
             </blockquote>
             <cite className="text-lg text-gray-600">- Jeremiah 33:3</cite>
           </div>
