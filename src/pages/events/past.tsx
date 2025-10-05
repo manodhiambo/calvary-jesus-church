@@ -24,7 +24,7 @@ const pastEvents: PastEvent[] = [
   {
     id: '1',
     title: 'Easter Celebration Service',
-    date: '2024-03-31',
+    date: '2025-03-31',
     time: '9:00 AM - 12:00 PM',
     location: "Nyaduong' Village",
     description: 'A glorious celebration of Christ\'s resurrection with special music, testimonies, and powerful preaching about the victory we have in Jesus.',

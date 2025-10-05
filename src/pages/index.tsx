@@ -79,7 +79,7 @@ export default function Home() {
   const featuredSermon = {
     title: "The Authority of Scripture",
     speaker: "Pastor Bruce",
-    date: "2024-01-21",
+    date: "2025-01-21",
     description: "Understanding why the Bible is our sole authority for faith and practice.",
     videoUrl: "https://youtube.com/watch?v=example",
     thumbnail: "/images/sermons/thumbnails/sermon-1.jpg"
