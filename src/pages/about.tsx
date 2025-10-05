@@ -27,37 +27,57 @@ export default function About() {
       verse: "John 14:6"
     }
   ];
-
-  const leadership = [
-    {
-      name: "Pastor Bruce",
-      role: "Missionary Pastor",
-      image: "/images/about/leadership/pastor-bruce.jpg",
-      description: "Leading our church in Bible-centered teaching and pastoral care.",
-      email: "Pst.bruce67@gmail.com"
-    },
-    {
-      name: "Oliver Oyando",
-      role: "Church Secretary",
-      image: "/images/about/leadership/elder-johnson.jpg",
-      description: "Ensures smooth daily operations by handling administrative and communication tasks.",
-      email: "oyandooliver6@gmail.com"
-    },
-    {
-      name: "Kevin Odhiambo",
-      role: "IT Manager",
-      image: "/images/about/leadership/sister-mary.jpg",
-      description: "Handles all technology, systems, and digital communication platforms within the church",
-      email: "manodhiambo@gmail.com"
-    },
-    {
-      name: "Fredrick Musala",
-      role: "Worship Leader",
-      image: "/images/about/leadership/worship-leader-sarah.jpg",
-      description: "Leading our congregation in worship and praise.",
-      email: "fredrickmusala@gmail.com"
-    }
-  ];
+const leadership = [
+  {
+    name: "Pastor Bruce",
+    role: "Missionary Pastor",
+    image: "/images/about/leadership/pastor-bruce.jpg",
+    description: "Leading our church in Bible-centered teaching and pastoral care.",
+    email: "Pst.bruce67@gmail.com"
+  },
+  {
+    name: "Oliver Oyando",
+    role: "Church Secretary",
+    image: "/images/about/leadership/elder-johnson.jpg",
+    description: "Ensures smooth daily operations by handling administrative and communication tasks.",
+    email: "oyandooliver6@gmail.com"
+  },
+  {
+    name: "Kevin Odhiambo",
+    role: "Secretary",
+    image: "/images/about/leadership/kevin-odhiambo.jpg",
+    description: "Handles all technology, systems, and digital communication platforms within the church.",
+    email: "manodhiambo@gmail.com"
+  },
+  {
+    name: "Joyce Akoth",
+    role: "Vice Secretary",
+    image: "/images/about/leadership/joyce-akoth.jpg",
+    description: "Supports secretarial duties and assists in administrative functions.",
+    email: "joyceakoth@gmail.com"
+  },
+  {
+    name: "Samuel Ondieki",
+    role: "Vice Chairman",
+    image: "/images/about/leadership/samuel-ondieki.jpg",
+    description: "Assists the chairman in leadership and decision-making responsibilities.",
+    email: "samuelondieki@gmail.com"
+  },
+  {
+    name: "Felix Ochieng",
+    role: "Treasurer",
+    image: "/images/about/leadership/felix-ochieng.jpg",
+    description: "Manages church finances and ensures transparency in financial matters.",
+    email: "felixochieng@gmail.com"
+  },
+  {
+    name: "John Olary",
+    role: "Vice Treasurer",
+    image: "/images/about/leadership/john-olary.jpg",
+    description: "Supports the treasurer in managing church financial responsibilities.",
+    email: "johnolary@gmail.com"
+  }
+];
 
   const coreValues = [
     {
