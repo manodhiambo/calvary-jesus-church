@@ -34,13 +34,24 @@ interface OnlineService {
   duration_minutes?: number;
 }
 
+interface ChurchService {
+  id: number;
+  title: string;
+  description?: string;
+  service_type?: string;
+  service_date?: string;
+  media_urls?: string[];
+}
+
 export default function Services() {
   const [activeTab, setActiveTab] = useState('times');
   const [searchTerm, setSearchTerm] = useState('');
   const [filterSeries, setFilterSeries] = useState('all');
   const [sermons, setSermons] = useState<Sermon[]>([]);
   const [onlineServices, setOnlineServices] = useState<OnlineService[]>([]);
+  const [churchServices, setChurchServices] = useState<ChurchService[]>([]);
   const [loadingSermons, setLoadingSermons] = useState(false);
+  const [loadingSpecial, setLoadingSpecial] = useState(false);
 
   const staticSermons: Sermon[] = [
     { title: "The Authority of Scripture", speaker: "Pastor Bruce", date: "2024-01-21", series: "doctrine", description: "Understanding why the Bible is our sole authority for faith and practice.", videoUrl: "https://youtube.com/watch?v=example1", thumbnail: "/images/sermons/thumbnails/sermon-1.jpg" },
@@ -65,6 +76,14 @@ export default function Services() {
         .then(r => r.json())
         .then(data => { if (Array.isArray(data)) setOnlineServices(data); })
         .catch(() => {});
+    }
+    if (activeTab === 'special-events') {
+      setLoadingSpecial(true);
+      fetch('/api/public/services')
+        .then(r => r.json())
+        .then(data => { if (Array.isArray(data)) setChurchServices(data); })
+        .catch(() => {})
+        .finally(() => setLoadingSpecial(false));
     }
   }, [activeTab]);
 
@@ -339,43 +358,87 @@ export default function Services() {
             <div className="max-w-6xl mx-auto px-6">
               <div className="text-center mb-16">
                 <h2 className="text-4xl md:text-5xl font-bold text-slate-900 mb-6">
-                  Special Events
+                  Special Services
                 </h2>
                 <p className="text-xl text-slate-600 max-w-3xl mx-auto">
-                  Throughout the year, we hold special services and events to celebrate 
+                  Throughout the year, we hold special services and events to celebrate
                   important moments in our faith journey.
                 </p>
               </div>
 
-              <div className="grid lg:grid-cols-3 gap-8">
-                {specialEvents.map((event, index) => (
-                  <div key={index} className="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow">
-                    <img
-                      src={event.image}
-                      alt={event.title}
-                      className="w-full h-48 object-cover"
-                    />
-                    <div className="p-6">
-                      <h3 className="text-xl font-bold text-slate-900 mb-3">{event.title}</h3>
-                      <div className="space-y-2 mb-4 text-sm text-slate-600">
-                        <div className="flex items-center">
-                          <Calendar className="w-4 h-4 text-amber-500 mr-2" />
-                          <span>{event.date}</span>
-                        </div>
-                        <div className="flex items-center">
-                          <Clock className="w-4 h-4 text-amber-500 mr-2" />
-                          <span>{event.time}</span>
-                        </div>
-                        <div className="flex items-center">
-                          <MapPin className="w-4 h-4 text-amber-500 mr-2" />
-                          <span>{event.location}</span>
+              {loadingSpecial ? (
+                <div className="flex justify-center py-12">
+                  <Loader2 className="w-8 h-8 animate-spin text-amber-600" />
+                </div>
+              ) : churchServices.length > 0 ? (
+                <div className="grid lg:grid-cols-3 gap-8">
+                  {churchServices.map((svc) => {
+                    const media = Array.isArray(svc.media_urls) ? svc.media_urls : [];
+                    const firstImage = media.find(u => /\.(jpg|jpeg|png|webp|gif|jfif)/i.test(u));
+                    const firstVideo = media.find(u => /\.(mp4|mov|webm)/i.test(u) || u.includes('youtube') || u.includes('youtu.be') || u.includes('cloudinary'));
+                    return (
+                      <div key={svc.id} className="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow">
+                        {firstImage ? (
+                          <img src={firstImage} alt={svc.title} className="w-full h-48 object-cover" onError={e => { (e.target as HTMLImageElement).style.display = 'none'; }} />
+                        ) : firstVideo ? (
+                          <div className="w-full h-48 bg-slate-900 flex items-center justify-center">
+                            <Play className="w-12 h-12 text-amber-400" />
+                          </div>
+                        ) : (
+                          <div className="w-full h-48 bg-gradient-to-br from-amber-100 to-amber-200 flex items-center justify-center">
+                            <Calendar className="w-12 h-12 text-amber-600" />
+                          </div>
+                        )}
+                        <div className="p-6">
+                          {svc.service_type && (
+                            <span className="inline-block bg-amber-100 text-amber-700 text-xs font-semibold px-2 py-1 rounded mb-2 capitalize">
+                              {svc.service_type}
+                            </span>
+                          )}
+                          <h3 className="text-xl font-bold text-slate-900 mb-3">{svc.title}</h3>
+                          {svc.service_date && (
+                            <div className="flex items-center text-sm text-slate-500 mb-3">
+                              <Calendar className="w-4 h-4 text-amber-500 mr-2" />
+                              {new Date(svc.service_date).toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
+                            </div>
+                          )}
+                          {svc.description && <p className="text-slate-600 text-sm">{svc.description}</p>}
+                          {firstVideo && (
+                            <div className="mt-4 aspect-video rounded-lg overflow-hidden bg-slate-900">
+                              {firstVideo.includes('youtube') || firstVideo.includes('youtu.be') ? (
+                                <iframe
+                                  src={(() => { const m = firstVideo.match(/(?:youtube\.com\/(?:watch\?v=|live\/)|youtu\.be\/)([a-zA-Z0-9_-]+)/); return m ? `https://www.youtube.com/embed/${m[1]}` : firstVideo; })()}
+                                  className="w-full h-full" allowFullScreen frameBorder="0"
+                                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                />
+                              ) : (
+                                <video src={firstVideo} controls className="w-full h-full object-cover" />
+                              )}
+                            </div>
+                          )}
                         </div>
                       </div>
-                      <p className="text-slate-600 text-sm">{event.description}</p>
+                    );
+                  })}
+                </div>
+              ) : (
+                <div className="grid lg:grid-cols-3 gap-8">
+                  {specialEvents.map((event, index) => (
+                    <div key={index} className="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow">
+                      <img src={event.image} alt={event.title} className="w-full h-48 object-cover" />
+                      <div className="p-6">
+                        <h3 className="text-xl font-bold text-slate-900 mb-3">{event.title}</h3>
+                        <div className="space-y-2 mb-4 text-sm text-slate-600">
+                          <div className="flex items-center"><Calendar className="w-4 h-4 text-amber-500 mr-2" /><span>{event.date}</span></div>
+                          <div className="flex items-center"><Clock className="w-4 h-4 text-amber-500 mr-2" /><span>{event.time}</span></div>
+                          <div className="flex items-center"><MapPin className="w-4 h-4 text-amber-500 mr-2" /><span>{event.location}</span></div>
+                        </div>
+                        <p className="text-slate-600 text-sm">{event.description}</p>
+                      </div>
                     </div>
-                  </div>
-                ))}
-              </div>
+                  ))}
+                </div>
+              )}
 
               <div className="mt-16 text-center">
                 <Link href="/events" className="bg-amber-600 text-white px-8 py-4 rounded-lg font-semibold text-lg hover:bg-amber-700 transition-colors">
