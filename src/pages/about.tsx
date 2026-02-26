@@ -1,10 +1,44 @@
+import { useState, useEffect } from 'react';
 import Head from 'next/head';
 import Link from 'next/link';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { BookOpen, Users, Heart, Cross, Shield, Star } from 'lucide-react';
 
+interface Leader {
+  id: number;
+  name: string;
+  position: string;
+  bio?: string;
+  image_url?: string;
+  email?: string;
+  role?: string;
+  image?: string;
+  description?: string;
+}
+
 export default function About() {
+  const [leadershipData, setLeadershipData] = useState<Leader[]>([]);
+  // Static fallback leadership
+  const staticLeadership: Leader[] = [
+    { id: 1, name: "Pastor Bruce", position: "Missionary Pastor", image_url: "/images/about/leadership/pastor-bruce.jpg", description: "Leading our church in Bible-centered teaching and pastoral care.", email: "Pst.bruce67@gmail.com" },
+    { id: 2, name: "Oliver Oyando", position: "Church Secretary", image_url: "/images/about/leadership/elder-johnson.jpg", description: "Ensures smooth daily operations by handling administrative and communication tasks.", email: "oyandooliver6@gmail.com" },
+    { id: 3, name: "Kevin Odhiambo", position: "Secretary", image_url: "/images/about/leadership/kevin-odhiambo.jpg", description: "Handles all technology and digital communication platforms.", email: "manodhiambo@gmail.com" },
+    { id: 4, name: "Joyce Akoth", position: "Vice Secretary", image_url: "/images/about/leadership/joyce-akoth.jpg", description: "Supports secretarial duties and assists in administrative functions.", email: "joyceakoth@gmail.com" },
+    { id: 5, name: "Samuel Ondieki", position: "Vice Chairman", image_url: "/images/about/leadership/samuel-ondieki.jpg", description: "Assists the chairman in leadership and decision-making responsibilities.", email: "samuelondieki@gmail.com" },
+    { id: 6, name: "Felix Ochieng", position: "Treasurer", image_url: "/images/about/leadership/felix-ochieng.jpg", description: "Manages church finances and ensures transparency in financial matters.", email: "felixochieng@gmail.com" },
+    { id: 7, name: "John Olary", position: "Vice Treasurer", image_url: "/images/about/leadership/john-olary.jpg", description: "Supports the treasurer in managing church financial responsibilities.", email: "johnolary@gmail.com" },
+  ];
+
+  useEffect(() => {
+    fetch('/api/public/leadership')
+      .then(r => r.json())
+      .then(data => { if (Array.isArray(data) && data.length > 0) setLeadershipData(data); else setLeadershipData(staticLeadership); })
+      .catch(() => setLeadershipData(staticLeadership));
+  }, []);
+
+  const leadership = leadershipData.length > 0 ? leadershipData : staticLeadership;
+
   const beliefs = [
     {
       title: "Biblical Foundation",
@@ -27,57 +61,6 @@ export default function About() {
       verse: "John 14:6"
     }
   ];
-const leadership = [
-  {
-    name: "Pastor Bruce",
-    role: "Missionary Pastor",
-    image: "/images/about/leadership/pastor-bruce.jpg",
-    description: "Leading our church in Bible-centered teaching and pastoral care.",
-    email: "Pst.bruce67@gmail.com"
-  },
-  {
-    name: "Oliver Oyando",
-    role: "Church Secretary",
-    image: "/images/about/leadership/elder-johnson.jpg",
-    description: "Ensures smooth daily operations by handling administrative and communication tasks.",
-    email: "oyandooliver6@gmail.com"
-  },
-  {
-    name: "Kevin Odhiambo",
-    role: "Secretary",
-    image: "/images/about/leadership/kevin-odhiambo.jpg",
-    description: "Handles all technology, systems, and digital communication platforms within the church.",
-    email: "manodhiambo@gmail.com"
-  },
-  {
-    name: "Joyce Akoth",
-    role: "Vice Secretary",
-    image: "/images/about/leadership/joyce-akoth.jpg",
-    description: "Supports secretarial duties and assists in administrative functions.",
-    email: "joyceakoth@gmail.com"
-  },
-  {
-    name: "Samuel Ondieki",
-    role: "Vice Chairman",
-    image: "/images/about/leadership/samuel-ondieki.jpg",
-    description: "Assists the chairman in leadership and decision-making responsibilities.",
-    email: "samuelondieki@gmail.com"
-  },
-  {
-    name: "Felix Ochieng",
-    role: "Treasurer",
-    image: "/images/about/leadership/felix-ochieng.jpg",
-    description: "Manages church finances and ensures transparency in financial matters.",
-    email: "felixochieng@gmail.com"
-  },
-  {
-    name: "John Olary",
-    role: "Vice Treasurer",
-    image: "/images/about/leadership/john-olary.jpg",
-    description: "Supports the treasurer in managing church financial responsibilities.",
-    email: "johnolary@gmail.com"
-  }
-];
 
   const coreValues = [
     {
@@ -259,24 +242,24 @@ const leadership = [
 
             <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
               {leadership.map((leader, index) => (
-                <div key={index} className="text-center group">
+                <div key={leader.id || index} className="text-center group">
                   <div className="relative mb-6 overflow-hidden rounded-lg">
                     <img
-                      src={leader.image}
+                      src={leader.image_url || leader.image || '/images/about/leadership/default.jpg'}
                       alt={leader.name}
                       className="w-full h-80 object-cover group-hover:scale-105 transition-transform duration-300"
+                      onError={e => { (e.target as HTMLImageElement).src = '/images/about/leadership/pastor-bruce.jpg'; }}
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-slate-900/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                   </div>
                   <h3 className="text-2xl font-bold text-slate-900 mb-2">{leader.name}</h3>
-                  <p className="text-amber-600 font-semibold mb-3">{leader.role}</p>
-                  <p className="text-slate-600 text-sm mb-4">{leader.description}</p>
-                  <a
-                    href={`mailto:${leader.email}`}
-                    className="text-amber-600 hover:text-amber-700 font-medium"
-                  >
-                    Contact
-                  </a>
+                  <p className="text-amber-600 font-semibold mb-3">{leader.position || leader.role}</p>
+                  <p className="text-slate-600 text-sm mb-4">{leader.bio || leader.description}</p>
+                  {leader.email && (
+                    <a href={`mailto:${leader.email}`} className="text-amber-600 hover:text-amber-700 font-medium">
+                      Contact
+                    </a>
+                  )}
                 </div>
               ))}
             </div>

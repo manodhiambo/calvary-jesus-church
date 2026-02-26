@@ -2,10 +2,15 @@
 const nextConfig = {
   reactStrictMode: true,
   images: {
-    domains: ['lh3.googleusercontent.com', 'images.unsplash.com'],
+    domains: [
+      'lh3.googleusercontent.com',
+      'images.unsplash.com',
+      'res.cloudinary.com',
+      'cloudinary.com',
+    ],
     unoptimized: true,
   },
+
 };
 
 module.exports = nextConfig;
-

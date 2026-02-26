@@ -1,31 +1,38 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Head from 'next/head';
 import Link from 'next/link';
 import { Dialog } from '@headlessui/react';
-import { X, LucideIcon, Users, Heart, Music, Baby, Gamepad2, Globe } from 'lucide-react';
+import { X, Users, Heart, Music, Baby, Gamepad2, Globe, Loader2, BookOpen } from 'lucide-react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 
-// ✅ Define Ministry interface for type safety
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 interface Ministry {
-  id: string;
-  title: string;
-  icon: LucideIcon;
+  id: number | string;
+  name?: string;
+  title?: string;
+  icon?: any;
   description: string;
-  image: string;
-  ageGroup: string;
+  image_url?: string;
+  image?: string;
+  age_group?: string;
+  ageGroup?: string;
   schedule: string;
-  location: string;
-  contact: string;
-  leader: string;
+  location?: string;
+  contact_email?: string;
+  contact?: string;
+  leader_name?: string;
+  leader?: string;
   activities: string[];
-  goals: string[];
+  goals?: string[];
 }
 
 export default function Ministries() {
   const [selectedMinistry, setSelectedMinistry] = useState<Ministry | null>(null);
+  const [ministries, setMinistries] = useState<Ministry[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  const ministries: Ministry[] = [
+  const staticMinistries: Ministry[] = [
     {
       id: 'children',
       title: "Children's Ministry",
@@ -184,11 +191,25 @@ export default function Ministries() {
     },
   ];
 
+  useEffect(() => {
+    fetch('/api/public/ministries')
+      .then(r => r.json())
+      .then(data => {
+        if (Array.isArray(data) && data.length > 0) setMinistries(data);
+        else setMinistries(staticMinistries);
+      })
+      .catch(() => setMinistries(staticMinistries))
+      .finally(() => setLoading(false));
+  }, []);
+
+  const displayMinistries = ministries.length > 0 ? ministries : staticMinistries;
+
   return (
     <>
       <Head>
         <title>Ministries - Calvary Jesus Church</title>
-        <meta name="description" content="Explore all our ministries serving different age groups and spiritual needs." />
+        <meta name="description" content="Explore all our ministries at Calvary Jesus Church serving different age groups and spiritual needs in Migori, Kenya." />
+        <meta name="keywords" content="church ministries, children ministry, youth ministry, adult ministry, music ministry, outreach, Migori church" />
       </Head>
 
       <Header />
@@ -208,26 +229,42 @@ export default function Ministries() {
             <div className="text-center mb-12">
               <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-2">Find Your Place to Serve & Grow</h2>
               <p className="text-gray-600 max-w-xl mx-auto">
-                Whether you’re looking to serve or grow in faith, there’s a ministry waiting for you.
+                Whether you're looking to serve or grow in faith, there's a ministry waiting for you.
               </p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {ministries.map((ministry) => (
-                <div
-                  key={ministry.id}
-                  className="bg-white rounded-xl shadow hover:shadow-lg transition cursor-pointer"
-                  onClick={() => setSelectedMinistry(ministry)}
-                >
-                  <img src={ministry.image} alt={ministry.title} className="w-full h-48 object-cover rounded-t-xl" />
-                  <div className="p-6">
-                    <ministry.icon className="w-8 h-8 text-blue-600 mb-2" />
-                    <h3 className="text-xl font-semibold mb-2">{ministry.title}</h3>
-                    <p className="text-gray-600 text-sm">{ministry.description}</p>
+            {loading ? (
+              <div className="flex justify-center py-12">
+                <Loader2 className="w-8 h-8 animate-spin text-amber-600" />
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                {displayMinistries.map((ministry) => (
+                  <div
+                    key={ministry.id}
+                    className="bg-white rounded-xl shadow hover:shadow-lg transition cursor-pointer group"
+                    onClick={() => setSelectedMinistry(ministry)}
+                  >
+                    <div className="overflow-hidden rounded-t-xl">
+                      <img
+                        src={ministry.image_url || ministry.image || '/images/ministries/default.jpg'}
+                        alt={ministry.name || ministry.title}
+                        className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
+                        onError={e => { (e.target as HTMLImageElement).src = '/images/ministries/adults.jpg'; }}
+                      />
+                    </div>
+                    <div className="p-6">
+                      <h3 className="text-xl font-semibold mb-2">{ministry.name || ministry.title}</h3>
+                      {(ministry.age_group || ministry.ageGroup) && (
+                        <p className="text-xs text-amber-600 font-medium mb-2">{ministry.age_group || ministry.ageGroup}</p>
+                      )}
+                      <p className="text-gray-600 text-sm">{ministry.description}</p>
+                      {ministry.schedule && <p className="text-xs text-gray-400 mt-2">{ministry.schedule}</p>}
+                    </div>
                   </div>
-                </div>
-              ))}
-            </div>
+                ))}
+              </div>
+            )}
           </div>
         </section>
 
@@ -261,15 +298,15 @@ export default function Ministries() {
             </button>
             {selectedMinistry && (
               <>
-                <img src={selectedMinistry.image} alt={selectedMinistry.title} className="w-full h-48 object-cover rounded-lg mb-4" />
-                <h3 className="text-2xl font-bold mb-2">{selectedMinistry.title}</h3>
+                <img src={selectedMinistry.image_url || selectedMinistry.image || '/images/ministries/adults.jpg'} alt={selectedMinistry.name || selectedMinistry.title} className="w-full h-48 object-cover rounded-lg mb-4" />
+                <h3 className="text-2xl font-bold mb-2">{selectedMinistry.name || selectedMinistry.title}</h3>
                 <p className="mb-4 text-gray-700">{selectedMinistry.description}</p>
-                <ul className="mb-4 text-sm text-gray-600">
-                  <li><strong>Age Group:</strong> {selectedMinistry.ageGroup}</li>
+                <ul className="mb-4 text-sm text-gray-600 space-y-1">
+                  {(selectedMinistry.age_group || selectedMinistry.ageGroup) && <li><strong>Age Group:</strong> {selectedMinistry.age_group || selectedMinistry.ageGroup}</li>}
                   <li><strong>Schedule:</strong> {selectedMinistry.schedule}</li>
-                  <li><strong>Location:</strong> {selectedMinistry.location}</li>
-                  <li><strong>Contact:</strong> {selectedMinistry.contact}</li>
-                  <li><strong>Leader:</strong> {selectedMinistry.leader}</li>
+                  {(selectedMinistry.location) && <li><strong>Location:</strong> {selectedMinistry.location}</li>}
+                  {(selectedMinistry.contact_email || selectedMinistry.contact) && <li><strong>Contact:</strong> {selectedMinistry.contact_email || selectedMinistry.contact}</li>}
+                  {(selectedMinistry.leader_name || selectedMinistry.leader) && <li><strong>Leader:</strong> {selectedMinistry.leader_name || selectedMinistry.leader}</li>}
                 </ul>
                 <div className="mb-4">
                   <h4 className="font-semibold text-gray-800 mb-1">Activities</h4>
@@ -279,14 +316,16 @@ export default function Ministries() {
                     ))}
                   </ul>
                 </div>
-                <div>
-                  <h4 className="font-semibold text-gray-800 mb-1">Goals</h4>
-                  <ul className="list-disc list-inside text-sm text-gray-700">
-                    {selectedMinistry.goals.map((goal, i) => (
-                      <li key={i}>{goal}</li>
-                    ))}
-                  </ul>
-                </div>
+                {selectedMinistry.goals && selectedMinistry.goals.length > 0 && (
+                  <div>
+                    <h4 className="font-semibold text-gray-800 mb-1">Goals</h4>
+                    <ul className="list-disc list-inside text-sm text-gray-700">
+                      {selectedMinistry.goals.map((goal, i) => (
+                        <li key={i}>{goal}</li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
               </>
             )}
           </Dialog.Panel>
