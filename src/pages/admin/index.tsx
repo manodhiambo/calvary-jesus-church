@@ -79,34 +79,71 @@ export default function AdminDashboard() {
           </div>
         </div>
 
-        {/* Database Init Banner */}
-        <div className="bg-blue-50 border border-blue-200 rounded-xl p-4">
-          <div className="flex items-start gap-3">
-            <div className="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center flex-shrink-0">
-              <RefreshCw className="w-4 h-4 text-blue-600" />
+        {/* Database Init + Seed Banner */}
+        <div className="grid sm:grid-cols-2 gap-4">
+          <div className="bg-blue-50 border border-blue-200 rounded-xl p-4">
+            <div className="flex items-start gap-3">
+              <div className="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                <RefreshCw className="w-4 h-4 text-blue-600" />
+              </div>
+              <div>
+                <p className="text-sm font-medium text-blue-800">First time setup?</p>
+                <p className="text-xs text-blue-600 mt-0.5">
+                  Initialize the database to create all tables and admin user.{' '}
+                  <button
+                    onClick={async () => {
+                      const key = prompt('Enter init key (default: init-cjc-2024):');
+                      if (!key) return;
+                      const res = await fetch('/api/admin/init-db', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ initKey: key }),
+                      });
+                      const data = await res.json();
+                      alert(res.ok ? `✅ ${data.message}` : `❌ ${data.error}`);
+                      if (res.ok) fetchStats();
+                    }}
+                    className="underline font-semibold hover:text-blue-800"
+                  >
+                    Initialize DB →
+                  </button>
+                </p>
+              </div>
             </div>
-            <div>
-              <p className="text-sm font-medium text-blue-800">First time setup?</p>
-              <p className="text-xs text-blue-600 mt-0.5">
-                Initialize the database to create all tables and the default admin user.{' '}
-                <button
-                  onClick={async () => {
-                    const key = prompt('Enter init key (default: init-cjc-2024):');
-                    if (!key) return;
-                    const res = await fetch('/api/admin/init-db', {
-                      method: 'POST',
-                      headers: { 'Content-Type': 'application/json' },
-                      body: JSON.stringify({ initKey: key }),
-                    });
-                    const data = await res.json();
-                    alert(res.ok ? `✅ ${data.message}` : `❌ ${data.error}`);
-                    if (res.ok) fetchStats();
-                  }}
-                  className="underline font-semibold hover:text-blue-800"
-                >
-                  Click here to initialize →
-                </button>
-              </p>
+          </div>
+
+          <div className="bg-amber-50 border border-amber-200 rounded-xl p-4">
+            <div className="flex items-start gap-3">
+              <div className="w-8 h-8 bg-amber-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                <TrendingUp className="w-4 h-4 text-amber-600" />
+              </div>
+              <div>
+                <p className="text-sm font-medium text-amber-800">Load default data</p>
+                <p className="text-xs text-amber-700 mt-0.5">
+                  Populate leadership and ministries from the website&apos;s existing content.{' '}
+                  <button
+                    onClick={async () => {
+                      if (!confirm('This will seed leadership (7 members) and ministries (6) into the database. Continue?')) return;
+                      const res = await fetch('/api/admin/seed-data', { method: 'POST' });
+                      const data = await res.json();
+                      if (res.ok) {
+                        const seeded = Object.entries(data.seeded as Record<string, number>)
+                          .filter(([, v]) => v > 0)
+                          .map(([k, v]) => `${k}: ${v}`)
+                          .join(', ');
+                        const skipped = (data.skipped as string[]).join(', ');
+                        alert(`✅ Seeded: ${seeded || 'none (already had data)'}${skipped ? `\n⏭ Skipped (already exists): ${skipped}` : ''}`);
+                        fetchStats();
+                      } else {
+                        alert(`❌ ${data.error}`);
+                      }
+                    }}
+                    className="underline font-semibold hover:text-amber-900"
+                  >
+                    Seed default data →
+                  </button>
+                </p>
+              </div>
             </div>
           </div>
         </div>
