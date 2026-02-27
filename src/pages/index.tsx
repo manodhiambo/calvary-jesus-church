@@ -6,6 +6,7 @@ import Footer from '@/components/Footer';
 import SermonCard from '@/components/SermonCard';
 import EventCard from '@/components/EventCard';
 import { CalendarDays, Clock, MapPin, Heart, Users, BookOpen, ChevronLeft, ChevronRight, Play, Radio } from 'lucide-react';
+import MediaCarousel from '@/components/MediaCarousel';
 
 interface Event {
   id?: number;
@@ -44,6 +45,8 @@ export default function Home() {
   const [events, setEvents] = useState<Event[]>([]);
   const [featuredSermon, setFeaturedSermon] = useState<Sermon | null>(null);
   const [onlineService, setOnlineService] = useState<{ video_url?: string; title?: string; is_live?: boolean } | null>(null);
+  const [churchServices, setChurchServices] = useState<Array<{ id: number; title: string; description?: string; service_type?: string; service_date?: string; media_urls?: string[] }>>([]);
+  const [serviceTab, setServiceTab] = useState(0);
 
   const heroSlides = [
     {
@@ -108,6 +111,12 @@ export default function Home() {
       .then(data => {
         if (Array.isArray(data) && data.length > 0) setOnlineService(data[0]);
       })
+      .catch(() => {});
+
+    // Fetch church services (baptism, communion etc.)
+    fetch('/api/public/services')
+      .then(r => r.json())
+      .then(data => { if (Array.isArray(data) && data.length > 0) setChurchServices(data); })
       .catch(() => {});
   }, []);
 
@@ -303,40 +312,119 @@ export default function Home() {
           </section>
         )}
 
-        {/* Latest Baptism Service */}
+        {/* Recent Services — DB driven with category tabs + carousel */}
         <section className="py-20 bg-white">
           <div className="max-w-6xl mx-auto px-6">
-            <div className="text-center mb-16">
-              <h2 className="text-4xl md:text-5xl font-bold text-slate-900 mb-6">Recent Baptism Service</h2>
-              <p className="text-xl text-slate-600 mb-4">Celebrating new believers who took the step of baptism on September 7th, 2025</p>
-              <p className="text-lg text-slate-500 italic">"Therefore go and make disciples of all nations, baptizing them in the name of the Father and of the Son and of the Holy Spirit" — Matthew 28:19</p>
+            <div className="text-center mb-10">
+              <h2 className="text-4xl md:text-5xl font-bold text-slate-900 mb-4">Recent Services</h2>
+              <p className="text-xl text-slate-600 mb-2">Special moments from our church gatherings</p>
+              <p className="text-lg text-slate-500 italic">"Therefore go and make disciples of all nations" — Matthew 28:19</p>
             </div>
-            <div className="max-w-4xl mx-auto">
-              <div className="relative bg-slate-100 rounded-lg overflow-hidden shadow-lg">
-                <div className="relative h-96 md:h-[500px]">
-                  {baptismPhotos.map((photo, index) => (
-                    <div key={index} className={`absolute inset-0 transition-opacity duration-700 ${index === currentBaptismPhoto ? 'opacity-100' : 'opacity-0'}`}>
-                      <img src={photo} alt={`Baptism service photo ${index + 1}`} className="w-full h-full object-cover" />
+
+            {churchServices.length > 0 ? (
+              <div className="max-w-4xl mx-auto">
+                {/* Category Tabs */}
+                {churchServices.length > 1 && (
+                  <div className="flex flex-wrap gap-2 justify-center mb-6">
+                    {churchServices.map((svc, i) => {
+                      const isPast = svc.service_date && new Date(svc.service_date) < new Date();
+                      return (
+                        <button
+                          key={svc.id}
+                          onClick={() => setServiceTab(i)}
+                          className={`px-4 py-2 rounded-full text-sm font-semibold transition-colors flex items-center gap-2 ${
+                            serviceTab === i ? 'bg-amber-600 text-white' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                          }`}
+                        >
+                          <span className="capitalize">{svc.service_type || 'service'}</span>
+                          {isPast && <span className={`text-xs px-1.5 py-0.5 rounded-full ${serviceTab === i ? 'bg-amber-500 text-amber-100' : 'bg-gray-200 text-gray-500'}`}>Past</span>}
+                        </button>
+                      );
+                    })}
+                  </div>
+                )}
+
+                {/* Active Service */}
+                {(() => {
+                  const svc = churchServices[serviceTab] || churchServices[0];
+                  const media = Array.isArray(svc?.media_urls) ? svc.media_urls.filter(Boolean) : [];
+                  const isPast = svc?.service_date && new Date(svc.service_date) < new Date();
+                  return (
+                    <div className="bg-white rounded-xl shadow-lg overflow-hidden border border-slate-100">
+                      {media.length > 0 ? (
+                        <MediaCarousel items={media} interval={3000} />
+                      ) : (
+                        /* Fallback: show static baptism photos if no media uploaded */
+                        <div className="relative h-96 md:h-[440px] bg-slate-100">
+                          {baptismPhotos.map((photo, index) => (
+                            <div key={index} className={`absolute inset-0 transition-opacity duration-700 ${index === currentBaptismPhoto ? 'opacity-100' : 'opacity-0'}`}>
+                              <img src={photo} alt="Service photo" className="w-full h-full object-cover" />
+                            </div>
+                          ))}
+                          <button onClick={() => setCurrentBaptismPhoto(p => (p - 1 + baptismPhotos.length) % baptismPhotos.length)}
+                            className="absolute left-4 top-1/2 -translate-y-1/2 bg-black/50 text-white p-2 rounded-full hover:bg-black/70">
+                            <ChevronLeft className="w-6 h-6" />
+                          </button>
+                          <button onClick={() => setCurrentBaptismPhoto(p => (p + 1) % baptismPhotos.length)}
+                            className="absolute right-4 top-1/2 -translate-y-1/2 bg-black/50 text-white p-2 rounded-full hover:bg-black/70">
+                            <ChevronRight className="w-6 h-6" />
+                          </button>
+                          <div className="absolute bottom-4 left-1/2 -translate-x-1/2 bg-black/70 text-white px-4 py-1.5 rounded-full text-sm">
+                            {currentBaptismPhoto + 1} / {baptismPhotos.length}
+                          </div>
+                        </div>
+                      )}
+                      <div className="p-6">
+                        <div className="flex items-center gap-2 mb-2 flex-wrap">
+                          {svc.service_type && (
+                            <span className="bg-amber-100 text-amber-700 text-xs font-semibold px-2 py-1 rounded capitalize">{svc.service_type}</span>
+                          )}
+                          {isPast
+                            ? <span className="bg-gray-100 text-gray-500 text-xs px-2 py-1 rounded">Past Service</span>
+                            : <span className="bg-green-100 text-green-700 text-xs px-2 py-1 rounded">Upcoming</span>
+                          }
+                          {svc.service_date && (
+                            <span className="text-xs text-slate-400 ml-auto">
+                              {new Date(svc.service_date).toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
+                            </span>
+                          )}
+                        </div>
+                        <h3 className="text-2xl font-bold text-slate-900 mb-2">{svc.title}</h3>
+                        {svc.description && <p className="text-slate-600">{svc.description}</p>}
+                      </div>
                     </div>
-                  ))}
-                  <button onClick={() => setCurrentBaptismPhoto(p => (p - 1 + baptismPhotos.length) % baptismPhotos.length)}
-                    className="absolute left-4 top-1/2 -translate-y-1/2 bg-black/50 text-white p-2 rounded-full hover:bg-black/70">
-                    <ChevronLeft className="w-6 h-6" />
-                  </button>
-                  <button onClick={() => setCurrentBaptismPhoto(p => (p + 1) % baptismPhotos.length)}
-                    className="absolute right-4 top-1/2 -translate-y-1/2 bg-black/50 text-white p-2 rounded-full hover:bg-black/70">
-                    <ChevronRight className="w-6 h-6" />
-                  </button>
-                  <div className="absolute bottom-4 left-1/2 -translate-x-1/2 bg-black/70 text-white px-4 py-2 rounded-full text-sm">
-                    {currentBaptismPhoto + 1} / {baptismPhotos.length}
+                  );
+                })()}
+              </div>
+            ) : (
+              /* Fallback: original baptism photo slideshow */
+              <div className="max-w-4xl mx-auto">
+                <div className="relative bg-slate-100 rounded-lg overflow-hidden shadow-lg">
+                  <div className="relative h-96 md:h-[500px]">
+                    {baptismPhotos.map((photo, index) => (
+                      <div key={index} className={`absolute inset-0 transition-opacity duration-700 ${index === currentBaptismPhoto ? 'opacity-100' : 'opacity-0'}`}>
+                        <img src={photo} alt={`Baptism service photo ${index + 1}`} className="w-full h-full object-cover" />
+                      </div>
+                    ))}
+                    <button onClick={() => setCurrentBaptismPhoto(p => (p - 1 + baptismPhotos.length) % baptismPhotos.length)}
+                      className="absolute left-4 top-1/2 -translate-y-1/2 bg-black/50 text-white p-2 rounded-full hover:bg-black/70">
+                      <ChevronLeft className="w-6 h-6" />
+                    </button>
+                    <button onClick={() => setCurrentBaptismPhoto(p => (p + 1) % baptismPhotos.length)}
+                      className="absolute right-4 top-1/2 -translate-y-1/2 bg-black/50 text-white p-2 rounded-full hover:bg-black/70">
+                      <ChevronRight className="w-6 h-6" />
+                    </button>
+                    <div className="absolute bottom-4 left-1/2 -translate-x-1/2 bg-black/70 text-white px-4 py-2 rounded-full text-sm">
+                      {currentBaptismPhoto + 1} / {baptismPhotos.length}
+                    </div>
+                  </div>
+                  <div className="p-6 bg-white">
+                    <h3 className="text-2xl font-bold text-slate-900 mb-2">Baptism Service — September 7th, 2025</h3>
+                    <p className="text-slate-600">We rejoice with the believers who publicly declared their faith through baptism.</p>
                   </div>
                 </div>
-                <div className="p-6 bg-white">
-                  <h3 className="text-2xl font-bold text-slate-900 mb-2">Baptism Service — September 7th, 2025</h3>
-                  <p className="text-slate-600">We rejoice with the believers who publicly declared their faith through baptism. It was a blessed day as we witnessed these precious souls take this important step in their walk with Christ.</p>
-                </div>
               </div>
-            </div>
+            )}
           </div>
         </section>
 

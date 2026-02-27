@@ -114,6 +114,47 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       results.ministries = 0;
     }
 
+    // ── SERMONS ────────────────────────────────────────────────────────────
+    const existingSermons = await query('SELECT COUNT(*) FROM sermons');
+    if (parseInt(existingSermons.rows[0].count, 10) === 0) {
+      const sermons = [
+        { title: 'The Authority of Scripture', speaker: 'Pastor Bruce', series: 'Christian Doctrine', scripture_reference: '2 Timothy 3:16-17', description: 'Understanding why the Bible is our sole authority for faith and practice.', sermon_date: '2024-01-21', is_featured: true },
+        { title: 'Justification by Faith Alone', speaker: 'Pastor Bruce', series: 'Romans', scripture_reference: 'Romans 3:21-31', description: 'Exploring Romans 3:21-31 and the doctrine of justification.', sermon_date: '2024-01-14', is_featured: false },
+        { title: 'The Sufficiency of Scripture', speaker: 'Pastor Bruce', series: 'Christian Doctrine', scripture_reference: '2 Peter 1:3', description: 'Why Scripture is complete and sufficient for all matters of faith and practice.', sermon_date: '2024-01-07', is_featured: false },
+        { title: 'In the Beginning God', speaker: 'Pastor Bruce', series: 'Genesis', scripture_reference: 'Genesis 1:1', description: 'Starting our journey through Genesis 1:1 and God\'s creative work.', sermon_date: '2023-12-31', is_featured: false },
+        { title: 'The Lord is My Shepherd', speaker: 'Pastor Bruce', series: 'Psalms', scripture_reference: 'Psalm 23', description: 'Finding comfort and guidance in Psalm 23.', sermon_date: '2023-12-24', is_featured: false },
+        { title: 'In the Beginning Was the Word', speaker: 'Pastor Bruce', series: 'Gospel of John', scripture_reference: 'John 1:1-14', description: 'The deity of Christ revealed in John 1:1-14.', sermon_date: '2023-12-17', is_featured: false },
+      ];
+      for (const s of sermons) {
+        await query(
+          'INSERT INTO sermons (title, speaker, series, scripture_reference, description, sermon_date, is_featured) VALUES ($1,$2,$3,$4,$5,$6,$7)',
+          [s.title, s.speaker, s.series, s.scripture_reference, s.description, s.sermon_date, s.is_featured]
+        );
+      }
+      results.sermons = sermons.length;
+    } else {
+      results.sermons = 0;
+    }
+
+    // ── SPECIAL SERVICES ───────────────────────────────────────────────────
+    const existingSvc = await query('SELECT COUNT(*) FROM church_services');
+    if (parseInt(existingSvc.rows[0].count, 10) === 0) {
+      const services = [
+        { title: 'Christmas Service', description: 'Celebrate the birth of our Savior Jesus Christ with special music and message.', service_type: 'christmas', service_date: '2024-12-25' },
+        { title: 'Easter Service', description: 'Rejoice in the resurrection of Jesus Christ with communion and baptisms.', service_type: 'easter', service_date: '2024-03-31' },
+        { title: 'Baptism Service — September 2025', description: 'We rejoice with the believers who publicly declared their faith through baptism. A blessed day as we witnessed precious souls take this important step in their walk with Christ.', service_type: 'baptism', service_date: '2025-09-07' },
+      ];
+      for (const s of services) {
+        await query(
+          'INSERT INTO church_services (title, description, service_type, service_date, media_urls) VALUES ($1,$2,$3,$4,$5)',
+          [s.title, s.description, s.service_type, s.service_date, '[]']
+        );
+      }
+      results.church_services = services.length;
+    } else {
+      results.church_services = 0;
+    }
+
     res.status(200).json({
       success: true,
       message: 'Default data seeded successfully',

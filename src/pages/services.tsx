@@ -5,6 +5,7 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import SermonCard from '@/components/SermonCard';
 import { Clock, MapPin, Calendar, Play, Search, Filter, Users, BookOpen, Radio, Loader2, FileText } from 'lucide-react';
+import MediaCarousel from '@/components/MediaCarousel';
 
 interface Sermon {
   id?: number;
@@ -373,28 +374,27 @@ export default function Services() {
               ) : churchServices.length > 0 ? (
                 <div className="grid lg:grid-cols-3 gap-8">
                   {churchServices.map((svc) => {
-                    const media = Array.isArray(svc.media_urls) ? svc.media_urls : [];
-                    const firstImage = media.find(u => /\.(jpg|jpeg|png|webp|gif|jfif)/i.test(u));
-                    const firstVideo = media.find(u => /\.(mp4|mov|webm)/i.test(u) || u.includes('youtube') || u.includes('youtu.be') || u.includes('cloudinary'));
+                    const media = Array.isArray(svc.media_urls) ? svc.media_urls.filter(Boolean) : [];
+                    const isPast = svc.service_date && new Date(svc.service_date) < new Date();
                     return (
                       <div key={svc.id} className="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow">
-                        {firstImage ? (
-                          <img src={firstImage} alt={svc.title} className="w-full h-48 object-cover" onError={e => { (e.target as HTMLImageElement).style.display = 'none'; }} />
-                        ) : firstVideo ? (
-                          <div className="w-full h-48 bg-slate-900 flex items-center justify-center">
-                            <Play className="w-12 h-12 text-amber-400" />
-                          </div>
+                        {media.length > 0 ? (
+                          <MediaCarousel items={media} autoPlay={false} />
                         ) : (
-                          <div className="w-full h-48 bg-gradient-to-br from-amber-100 to-amber-200 flex items-center justify-center">
+                          <div className="aspect-video bg-gradient-to-br from-amber-100 to-amber-200 flex items-center justify-center">
                             <Calendar className="w-12 h-12 text-amber-600" />
                           </div>
                         )}
                         <div className="p-6">
-                          {svc.service_type && (
-                            <span className="inline-block bg-amber-100 text-amber-700 text-xs font-semibold px-2 py-1 rounded mb-2 capitalize">
-                              {svc.service_type}
-                            </span>
-                          )}
+                          <div className="flex flex-wrap gap-2 mb-2">
+                            {svc.service_type && (
+                              <span className="bg-amber-100 text-amber-700 text-xs font-semibold px-2 py-1 rounded capitalize">{svc.service_type}</span>
+                            )}
+                            {isPast
+                              ? <span className="bg-gray-100 text-gray-500 text-xs font-medium px-2 py-1 rounded">Past</span>
+                              : <span className="bg-green-100 text-green-700 text-xs font-medium px-2 py-1 rounded">Upcoming</span>
+                            }
+                          </div>
                           <h3 className="text-xl font-bold text-slate-900 mb-3">{svc.title}</h3>
                           {svc.service_date && (
                             <div className="flex items-center text-sm text-slate-500 mb-3">
@@ -403,19 +403,6 @@ export default function Services() {
                             </div>
                           )}
                           {svc.description && <p className="text-slate-600 text-sm">{svc.description}</p>}
-                          {firstVideo && (
-                            <div className="mt-4 aspect-video rounded-lg overflow-hidden bg-slate-900">
-                              {firstVideo.includes('youtube') || firstVideo.includes('youtu.be') ? (
-                                <iframe
-                                  src={(() => { const m = firstVideo.match(/(?:youtube\.com\/(?:watch\?v=|live\/)|youtu\.be\/)([a-zA-Z0-9_-]+)/); return m ? `https://www.youtube.com/embed/${m[1]}` : firstVideo; })()}
-                                  className="w-full h-full" allowFullScreen frameBorder="0"
-                                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                                />
-                              ) : (
-                                <video src={firstVideo} controls className="w-full h-full object-cover" />
-                              )}
-                            </div>
-                          )}
                         </div>
                       </div>
                     );
@@ -505,6 +492,12 @@ export default function Services() {
                 <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
                   {filteredSermons.map((sermon, index) => (
                     <div key={sermon.id || index} className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden hover:shadow-md transition-shadow">
+                      {(sermon.video_url || sermon.videoUrl || sermon.thumbnail_url || sermon.thumbnail) ? (
+                        <MediaCarousel
+                          items={[sermon.video_url || sermon.videoUrl, sermon.thumbnail_url || sermon.thumbnail].filter(Boolean) as string[]}
+                          autoPlay={false}
+                        />
+                      ) : null}
                       <SermonCard sermon={{
                         title: sermon.title,
                         speaker: sermon.speaker || 'Pastor Bruce',

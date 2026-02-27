@@ -415,6 +415,34 @@ const UpcomingEventsPage: React.FC = () => {
   const [filter, setFilter] = useState<string>('all');
   const [registrations, setRegistrations] = useState<Registration[]>([]);
   const [rsvpList, setRsvpList] = useState<string[]>([]);
+  const [dbEvents, setDbEvents] = useState<UpcomingEvent[]>([]);
+
+  useEffect(() => {
+    fetch('/api/public/events?limit=100')
+      .then(r => r.json())
+      .then((data: Array<{ id: number; title: string; event_date: string; location?: string; description?: string; category?: string; image_url?: string; is_featured?: boolean }>) => {
+        if (!Array.isArray(data)) return;
+        const upcoming = data
+          .filter(e => new Date(e.event_date) >= new Date())
+          .map(e => ({
+            id: String(e.id),
+            title: e.title,
+            date: e.event_date.split('T')[0],
+            time: new Date(e.event_date).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }),
+            location: e.location || "Nyaduong' Village",
+            description: e.description || '',
+            category: (e.category as UpcomingEvent['category']) || 'special',
+            image: e.image_url || '/images/events/worship-service.jpg',
+            attendees: 0,
+            maxAttendees: 150,
+            featured: e.is_featured || false,
+            registrationRequired: false,
+            isDynamic: false,
+          }));
+        setDbEvents(upcoming);
+      })
+      .catch(() => {});
+  }, []);
 
   // Static events (keep some original events)
   const staticEvents: UpcomingEvent[] = [
@@ -521,8 +549,12 @@ const UpcomingEventsPage: React.FC = () => {
     return events;
   }, []);
 
-  const allEvents = [...staticEvents, ...dynamicEvents]
+  // DB events take priority; merge with computed, deduplicate by date+title
+  const allEvents = [...dbEvents, ...staticEvents, ...dynamicEvents]
     .filter(event => new Date(event.date) >= new Date())
+    .filter((event, idx, arr) =>
+      idx === arr.findIndex(e => e.date === event.date && e.title === event.title)
+    )
     .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
 
   const filteredEvents = filter === 'all' 

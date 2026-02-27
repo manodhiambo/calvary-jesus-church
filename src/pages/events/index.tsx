@@ -1,240 +1,194 @@
-import React, { useState } from 'react';
-import { Calendar, Clock, MapPin, Users, ChevronRight, Filter } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { Calendar, Clock, MapPin, Filter, Loader2, ChevronRight } from 'lucide-react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import Link from 'next/link';
+import MediaCarousel from '@/components/MediaCarousel';
 
-interface Event {
-  id: string;
+interface DBEvent {
+  id: number;
   title: string;
-  date: string;
-  time: string;
-  location: string;
-  description: string;
-  category: 'worship' | 'ministry' | 'outreach' | 'special';
-  image: string;
-  attendees?: number;
-  maxAttendees?: number;
-  isUpcoming: boolean;
+  description?: string;
+  event_date: string;
+  end_date?: string;
+  location?: string;
+  category?: string;
+  image_url?: string;
+  status?: string;
+  is_featured?: boolean;
 }
 
-const mockEvents: Event[] = [
-  {
-    id: '1',
-    title: 'Sunday Worship Service',
-    date: '2025-07-27',
-    time: '9:00 AM - 12:00 PM',
-    location: "Nyaduong' Village",
-    description: 'Join us for worship, prayer, and biblical teaching as we gather to honor God.',
-    category: 'worship',
-    image: '/images/events/worship-service.jpg',
-    attendees: 85,
-    maxAttendees: 150,
-    isUpcoming: true
-  },
-  {
-    id: '2',
-    title: 'Bible Study Fellowship',
-    date: '2025-07-30',
-    time: '6:00 PM - 8:00 PM',
-    location: 'Church Hall',
-    description: 'Deep dive into Scripture with expository teaching and group discussion.',
-    category: 'ministry',
-    image: '/images/events/bible-study.jpg',
-    attendees: 32,
-    maxAttendees: 50,
-    isUpcoming: true
-  },
-  {
-    id: '3',
-    title: 'Community Outreach Program',
-    date: '2025-08-03',
-    time: '8:00 AM - 4:00 PM',
-    location: 'Migori Town Center',
-    description: 'Serving our community through practical love and sharing the Gospel.',
-    category: 'outreach',
-    image: '/images/events/community-outreach.jpg',
-    attendees: 25,
-    maxAttendees: 40,
-    isUpcoming: true
-  },
-  {
-    id: '4',
-    title: 'Annual Church Conference',
-    date: '2025-12-07',
-    time: '9:00 AM - 5:00 PM',
-    location: 'Main Sanctuary',
-    description: 'A day of spiritual renewal, teaching, and fellowship with guest speakers.',
-    category: 'special',
-    image: '/images/events/conference.jpg',
-    attendees: 120,
-    maxAttendees: 200,
-    isUpcoming: true
-  }
-];
-
-const categoryColors = {
-  worship: 'bg-blue-100 text-blue-800',
-  ministry: 'bg-green-100 text-green-800',
-  outreach: 'bg-purple-100 text-purple-800',
-  special: 'bg-yellow-100 text-yellow-800'
+const categoryColors: Record<string, string> = {
+  worship:   'bg-blue-100 text-blue-800',
+  ministry:  'bg-green-100 text-green-800',
+  outreach:  'bg-purple-100 text-purple-800',
+  special:   'bg-yellow-100 text-yellow-800',
+  general:   'bg-gray-100 text-gray-700',
 };
 
-const EventCard: React.FC<{ event: Event }> = ({ event }) => {
-  return (
-    <div className="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300">
-      <div className="relative h-48 bg-gradient-to-r from-navy-900 to-navy-700">
-        <div className="absolute inset-0 bg-black bg-opacity-40"></div>
-        <div className="absolute bottom-4 left-4 text-white">
-          <span className={`inline-block px-3 py-1 rounded-full text-sm font-medium ${categoryColors[event.category]} bg-opacity-90`}>
-            {event.category.charAt(0).toUpperCase() + event.category.slice(1)}
-          </span>
-        </div>
-      </div>
-      
-      <div className="p-6">
-        <h3 className="text-xl font-bold text-gray-900 mb-3">{event.title}</h3>
-        
-        <div className="space-y-2 mb-4">
-          <div className="flex items-center text-gray-600">
-            <Calendar className="w-4 h-4 mr-2" />
-            <span>{new Date(event.date).toLocaleDateString('en-US', { 
-              weekday: 'long', 
-              year: 'numeric', 
-              month: 'long', 
-              day: 'numeric' 
-            })}</span>
-          </div>
-          
-          <div className="flex items-center text-gray-600">
-            <Clock className="w-4 h-4 mr-2" />
-            <span>{event.time}</span>
-          </div>
-          
-          <div className="flex items-center text-gray-600">
-            <MapPin className="w-4 h-4 mr-2" />
-            <span>{event.location}</span>
-          </div>
-          
-          {event.attendees && event.maxAttendees && (
-            <div className="flex items-center text-gray-600">
-              <Users className="w-4 h-4 mr-2" />
-              <span>{event.attendees}/{event.maxAttendees} attending</span>
-            </div>
-          )}
-        </div>
-        
-        <p className="text-gray-700 mb-4 line-clamp-2">{event.description}</p>
-        
-        <div className="flex justify-between items-center">
-          <button className="bg-navy-900 text-white px-4 py-2 rounded-lg hover:bg-navy-800 transition-colors">
-            RSVP
-          </button>
-          <button className="text-navy-900 hover:text-navy-700 font-medium flex items-center">
-            Learn More <ChevronRight className="w-4 h-4 ml-1" />
-          </button>
-        </div>
-      </div>
-    </div>
-  );
-};
+const isPast = (dateStr: string) => new Date(dateStr) < new Date();
 
-const EventsPage: React.FC = () => {
-  const [selectedCategory, setSelectedCategory] = useState<string>('all');
+export default function EventsPage() {
+  const [events, setEvents] = useState<DBEvent[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [category, setCategory] = useState('all');
+  const [tab, setTab] = useState<'upcoming' | 'past'>('upcoming');
 
-  const filteredEvents = selectedCategory === 'all' 
-    ? mockEvents 
-    : mockEvents.filter(event => event.category === selectedCategory);
+  useEffect(() => {
+    fetch('/api/public/events?limit=100')
+      .then(r => r.json())
+      .then(data => { if (Array.isArray(data)) setEvents(data); })
+      .catch(() => {})
+      .finally(() => setLoading(false));
+  }, []);
+
+  const categories = ['all', ...Array.from(new Set(events.map(e => e.category || 'general')))];
+
+  const filtered = events
+    .filter(e => category === 'all' || (e.category || 'general') === category)
+    .filter(e => tab === 'past' ? isPast(e.event_date) : !isPast(e.event_date))
+    .sort((a, b) =>
+      tab === 'past'
+        ? new Date(b.event_date).getTime() - new Date(a.event_date).getTime()
+        : new Date(a.event_date).getTime() - new Date(b.event_date).getTime()
+    );
+
+  const upcomingCount = events.filter(e => !isPast(e.event_date)).length;
+  const pastCount = events.filter(e => isPast(e.event_date)).length;
 
   return (
     <>
       <Header />
-      
       <main className="min-h-screen bg-gray-50">
-        {/* Hero Section */}
-        <section className="bg-gradient-to-r from-navy-900 via-navy-800 to-navy-700 text-white py-20">
-          <div className="container mx-auto px-4">
-            <div className="text-center">
-              <h1 className="text-5xl font-bold mb-6">Church Events</h1>
-              <p className="text-xl text-gray-200 max-w-3xl mx-auto mb-8">
-                Join us as we gather to worship, learn, and serve together. 
-                Discover upcoming events and be part of our church community.
-              </p>
-              
-              {/* Quick Navigation */}
-              <div className="flex flex-wrap justify-center gap-4">
-                <Link href="/events/upcoming" className="bg-white text-navy-900 px-6 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors">
-                  Upcoming Events
-                </Link>
-                <Link href="/events/calendar" className="border-2 border-white text-white px-6 py-3 rounded-lg font-semibold hover:bg-white hover:text-navy-900 transition-colors">
-                  View Calendar
-                </Link>
-                <Link href="/events/past" className="border-2 border-white text-white px-6 py-3 rounded-lg font-semibold hover:bg-white hover:text-navy-900 transition-colors">
-                  Past Events
-                </Link>
-              </div>
+        {/* Hero */}
+        <section className="bg-gradient-to-r from-slate-900 via-slate-800 to-slate-700 text-white py-20">
+          <div className="container mx-auto px-4 text-center">
+            <h1 className="text-5xl font-bold mb-4">Church Events</h1>
+            <p className="text-xl text-gray-200 max-w-2xl mx-auto mb-8">
+              Join us as we worship, learn, and serve together as a church community.
+            </p>
+            <div className="flex flex-wrap justify-center gap-4">
+              <Link href="/events/upcoming" className="bg-amber-600 hover:bg-amber-700 text-white px-6 py-3 rounded-lg font-semibold transition-colors">
+                Upcoming Events
+              </Link>
+              <Link href="/events/calendar" className="border-2 border-white text-white hover:bg-white hover:text-slate-900 px-6 py-3 rounded-lg font-semibold transition-colors">
+                View Calendar
+              </Link>
+              <Link href="/events/past" className="border-2 border-white text-white hover:bg-white hover:text-slate-900 px-6 py-3 rounded-lg font-semibold transition-colors">
+                Past Events
+              </Link>
             </div>
           </div>
         </section>
 
-        {/* Events Listing */}
-        <section className="py-16">
+        {/* Tabs + Filter */}
+        <section className="bg-white border-b sticky top-0 z-20">
           <div className="container mx-auto px-4">
-            {/* Filter Section */}
-            <div className="flex flex-wrap items-center justify-between mb-8">
-              <h2 className="text-3xl font-bold text-gray-900">Featured Events</h2>
-              
-              <div className="flex items-center space-x-4">
-                <Filter className="w-5 h-5 text-gray-600" />
-                <select 
-                  value={selectedCategory}
-                  onChange={(e) => setSelectedCategory(e.target.value)}
-                  className="border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-navy-500 focus:border-transparent"
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 py-3">
+              {/* Tabs */}
+              <div className="flex gap-1">
+                <button
+                  onClick={() => setTab('upcoming')}
+                  className={`px-4 py-2 rounded-lg text-sm font-semibold transition-colors ${tab === 'upcoming' ? 'bg-amber-600 text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'}`}
                 >
-                  <option value="all">All Categories</option>
-                  <option value="worship">Worship</option>
-                  <option value="ministry">Ministry</option>
-                  <option value="outreach">Outreach</option>
-                  <option value="special">Special Events</option>
+                  Upcoming {upcomingCount > 0 && <span className="ml-1 opacity-80">({upcomingCount})</span>}
+                </button>
+                <button
+                  onClick={() => setTab('past')}
+                  className={`px-4 py-2 rounded-lg text-sm font-semibold transition-colors ${tab === 'past' ? 'bg-slate-700 text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'}`}
+                >
+                  Past {pastCount > 0 && <span className="ml-1 opacity-80">({pastCount})</span>}
+                </button>
+              </div>
+              {/* Category filter */}
+              <div className="flex items-center gap-2">
+                <Filter className="w-4 h-4 text-gray-500" />
+                <select
+                  value={category}
+                  onChange={e => setCategory(e.target.value)}
+                  className="border border-gray-300 rounded-lg px-3 py-1.5 text-sm focus:ring-2 focus:ring-amber-500 focus:border-transparent capitalize"
+                >
+                  {categories.map(c => (
+                    <option key={c} value={c} className="capitalize">{c === 'all' ? 'All Categories' : c}</option>
+                  ))}
                 </select>
               </div>
             </div>
+          </div>
+        </section>
 
-            {/* Events Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {filteredEvents.map((event) => (
-                <EventCard key={event.id} event={event} />
-              ))}
-            </div>
-
-            {/* CTA Section */}
-            <div className="text-center mt-16">
-              <div className="bg-white rounded-lg shadow-lg p-8 max-w-2xl mx-auto">
-                <h3 className="text-2xl font-bold text-gray-900 mb-4">
-                  Want to Stay Updated?
-                </h3>
-                <p className="text-gray-700 mb-6">
-                  Subscribe to our newsletter to receive notifications about upcoming events and church announcements.
+        {/* Events Grid */}
+        <section className="py-12">
+          <div className="container mx-auto px-4">
+            {loading ? (
+              <div className="flex justify-center py-20"><Loader2 className="w-8 h-8 animate-spin text-amber-600" /></div>
+            ) : filtered.length === 0 ? (
+              <div className="text-center py-20">
+                <Calendar className="w-16 h-16 text-gray-300 mx-auto mb-4" />
+                <h3 className="text-xl font-semibold text-gray-500 mb-2">No {tab} events found</h3>
+                <p className="text-gray-400">
+                  {tab === 'upcoming'
+                    ? 'Check back soon or view past events.'
+                    : 'No past events recorded yet.'}
                 </p>
-                <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                  <input 
-                    type="email" 
-                    placeholder="Enter your email address"
-                    className="flex-1 max-w-md px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-navy-500 focus:border-transparent"
-                  />
-                  <button className="bg-navy-900 text-white px-8 py-3 rounded-lg font-semibold hover:bg-navy-800 transition-colors">
-                    Subscribe
-                  </button>
-                </div>
               </div>
-            </div>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                {filtered.map(event => {
+                  const past = isPast(event.event_date);
+                  const cat = event.category || 'general';
+                  const media = event.image_url ? [event.image_url] : [];
+                  return (
+                    <div key={event.id} className={`bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-shadow ${event.is_featured ? 'ring-2 ring-amber-400' : ''}`}>
+                      {event.is_featured && (
+                        <div className="bg-gradient-to-r from-amber-500 to-amber-400 text-white text-xs text-center py-1.5 font-semibold">
+                          ⭐ Featured Event
+                        </div>
+                      )}
+                      {media.length > 0 ? (
+                        <MediaCarousel items={media} autoPlay={false} className="rounded-t-none" />
+                      ) : (
+                        <div className="h-40 bg-gradient-to-br from-slate-700 to-slate-800 flex items-center justify-center">
+                          <Calendar className="w-12 h-12 text-white/30" />
+                        </div>
+                      )}
+                      <div className="p-5">
+                        <div className="flex items-center gap-2 mb-2 flex-wrap">
+                          <span className={`text-xs px-2 py-0.5 rounded-full font-medium capitalize ${categoryColors[cat] || categoryColors.general}`}>
+                            {cat}
+                          </span>
+                          {past ? (
+                            <span className="text-xs px-2 py-0.5 rounded-full bg-gray-100 text-gray-500 font-medium">Past</span>
+                          ) : (
+                            <span className="text-xs px-2 py-0.5 rounded-full bg-green-100 text-green-700 font-medium">Upcoming</span>
+                          )}
+                        </div>
+                        <h3 className="text-lg font-bold text-gray-900 mb-2 line-clamp-2">{event.title}</h3>
+                        <div className="space-y-1.5 text-sm text-gray-600 mb-3">
+                          <div className="flex items-center gap-2">
+                            <Calendar className="w-4 h-4 text-amber-500 flex-shrink-0" />
+                            <span>{new Date(event.event_date).toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</span>
+                          </div>
+                          {event.location && (
+                            <div className="flex items-center gap-2">
+                              <MapPin className="w-4 h-4 text-amber-500 flex-shrink-0" />
+                              <span className="line-clamp-1">{event.location}</span>
+                            </div>
+                          )}
+                        </div>
+                        {event.description && (
+                          <p className="text-sm text-gray-600 line-clamp-2">{event.description}</p>
+                        )}
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            )}
           </div>
         </section>
       </main>
-      
       <Footer />
     </>
   );
-};
-
-export default EventsPage;
+}
