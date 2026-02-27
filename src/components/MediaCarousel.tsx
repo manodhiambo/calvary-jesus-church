@@ -27,15 +27,18 @@ export default function MediaCarousel({ items, autoPlay = true, interval = 4000,
   const valid = items.filter(Boolean);
   const [idx, setIdx] = useState(0);
 
+  // Only reset to first slide when the actual content changes, not just the array reference
+  const itemsKey = items.join('|');
   useEffect(() => {
     setIdx(0);
-  }, [items]);
+  }, [itemsKey]);
 
+  const validLength = valid.length;
   useEffect(() => {
-    if (!autoPlay || valid.length <= 1 || isVideo(valid[idx])) return;
-    const t = setInterval(() => setIdx(p => (p + 1) % valid.length), interval);
+    if (!autoPlay || validLength <= 1 || isVideo(valid[idx])) return;
+    const t = setInterval(() => setIdx(p => (p + 1) % validLength), interval);
     return () => clearInterval(t);
-  }, [autoPlay, idx, valid, interval]);
+  }, [autoPlay, idx, validLength, interval]);
 
   if (!valid.length) return null;
 
