@@ -224,7 +224,7 @@ const EventCard: React.FC<{
         </div>
       )}
       
-      <div className="relative h-48 bg-gradient-to-r from-blue-900 to-blue-700">
+      <div className="relative h-48 bg-cjc-navy">
         <div className="absolute inset-0 bg-black bg-opacity-40"></div>
         <div className="absolute top-4 left-4">
           <span className={`inline-block px-3 py-1 rounded-full text-sm font-medium border ${categoryColors[event.category]} bg-opacity-90`}>
@@ -232,8 +232,8 @@ const EventCard: React.FC<{
           </span>
         </div>
         <div className="absolute top-4 right-4 bg-white bg-opacity-90 rounded-lg p-2 text-center">
-          <div className="text-2xl font-bold text-blue-900">{new Date(event.date).getDate()}</div>
-          <div className="text-xs text-blue-700 uppercase">
+          <div className="text-2xl font-bold text-cjc-navy">{new Date(event.date).getDate()}</div>
+          <div className="text-xs text-cjc-navy uppercase">
             {new Date(event.date).toLocaleDateString('en-US', { month: 'short' })}
           </div>
         </div>
@@ -245,11 +245,11 @@ const EventCard: React.FC<{
       </div>
       
       <div className="p-6">
-        <h3 className="text-xl font-bold text-gray-900 mb-3">{event.title}</h3>
+        <h3 className="text-xl font-bold font-heading text-cjc-navy mb-3">{event.title}</h3>
         
         <div className="space-y-2 mb-4">
           <div className="flex items-center text-gray-600">
-            <Calendar className="w-4 h-4 mr-2 text-blue-600" />
+            <Calendar className="w-4 h-4 mr-2 text-cjc-gold" />
             <span>{new Date(event.date).toLocaleDateString('en-US', { 
               weekday: 'long', 
               year: 'numeric', 
@@ -259,21 +259,21 @@ const EventCard: React.FC<{
           </div>
           
           <div className="flex items-center text-gray-600">
-            <Clock className="w-4 h-4 mr-2 text-blue-600" />
+            <Clock className="w-4 h-4 mr-2 text-cjc-gold" />
             <span>{event.time}</span>
           </div>
           
           <div className="flex items-center text-gray-600">
-            <MapPin className="w-4 h-4 mr-2 text-blue-600" />
+            <MapPin className="w-4 h-4 mr-2 text-cjc-gold" />
             <span className="line-clamp-1">{event.location}</span>
           </div>
           
           <div className="flex items-center text-gray-600">
-            <Users className="w-4 h-4 mr-2 text-blue-600" />
+            <Users className="w-4 h-4 mr-2 text-cjc-gold" />
             <span>{event.attendees}/{event.maxAttendees} registered</span>
             <div className="ml-2 bg-gray-200 rounded-full h-2 flex-1 max-w-20">
               <div 
-                className="bg-blue-600 h-2 rounded-full transition-all duration-300"
+                className="bg-cjc-gold h-2 rounded-full transition-all duration-300"
                 style={{ width: `${(event.attendees / event.maxAttendees) * 100}%` }}
               ></div>
             </div>
@@ -281,7 +281,7 @@ const EventCard: React.FC<{
           
           {event.speaker && (
             <div className="flex items-center text-gray-600">
-              <Heart className="w-4 h-4 mr-2 text-blue-600" />
+              <Heart className="w-4 h-4 mr-2 text-cjc-gold" />
               <span>Speaker: {event.speaker}</span>
             </div>
           )}
@@ -302,7 +302,7 @@ const EventCard: React.FC<{
               {!isRegistered ? (
                 <button 
                   onClick={() => setShowRSVP(true)}
-                  className="bg-blue-900 text-white px-4 py-2 rounded-lg hover:bg-blue-800 transition-colors font-semibold"
+                  className="bg-cjc-gold hover:bg-cjc-gold-mid text-white px-4 py-2 rounded-lg transition-colors font-semibold"
                 >
                   Register Now
                 </button>
@@ -317,9 +317,9 @@ const EventCard: React.FC<{
             <button 
               onClick={handleRSVP}
               className={`px-4 py-2 rounded-lg font-semibold transition-colors flex items-center ${
-                isRSVPd 
-                  ? 'bg-green-600 text-white' 
-                  : 'bg-blue-900 text-white hover:bg-blue-800'
+                isRSVPd
+                  ? 'bg-green-600 text-white'
+                  : 'bg-cjc-gold hover:bg-cjc-gold-mid text-white'
               }`}
             >
               {isRSVPd ? (
@@ -334,10 +334,10 @@ const EventCard: React.FC<{
           )}
           
           <div className="flex space-x-2">
-            <button className="p-2 text-gray-600 hover:text-blue-600 hover:bg-gray-100 rounded-lg transition-colors">
+            <button className="p-2 text-gray-600 hover:text-cjc-gold hover:bg-gray-100 rounded-lg transition-colors">
               <Bell className="w-4 h-4" />
             </button>
-            <button className="p-2 text-gray-600 hover:text-blue-600 hover:bg-gray-100 rounded-lg transition-colors">
+            <button className="p-2 text-gray-600 hover:text-cjc-gold hover:bg-gray-100 rounded-lg transition-colors">
               <Share2 className="w-4 h-4" />
             </button>
           </div>
@@ -362,7 +362,7 @@ const EventCard: React.FC<{
                   value={formData.name}
                   onChange={(e) => setFormData({...formData, name: e.target.value})}
                   required
-                  className="w-full px-3 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full px-3 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-cjc-gold/40 focus:border-cjc-gold outline-none"
                 />
                 <input 
                   type="email" 
@@ -370,20 +370,20 @@ const EventCard: React.FC<{
                   value={formData.email}
                   onChange={(e) => setFormData({...formData, email: e.target.value})}
                   required
-                  className="w-full px-3 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full px-3 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-cjc-gold/40 focus:border-cjc-gold outline-none"
                 />
                 <input 
                   type="tel" 
                   placeholder="Phone Number" 
                   value={formData.phone}
                   onChange={(e) => setFormData({...formData, phone: e.target.value})}
-                  className="w-full px-3 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full px-3 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-cjc-gold/40 focus:border-cjc-gold outline-none"
                 />
                 <div className="flex gap-2">
                   <button 
                     type="submit"
                     disabled={isSubmitting || !formData.name || !formData.email}
-                    className="bg-blue-900 text-white px-4 py-2 rounded font-semibold hover:bg-blue-800 transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed flex items-center"
+                    className="bg-cjc-gold hover:bg-cjc-gold-mid text-white px-4 py-2 rounded font-semibold transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed flex items-center"
                   >
                     {isSubmitting ? (
                       <>
@@ -584,13 +584,15 @@ const UpcomingEventsPage: React.FC = () => {
   };
 
   return (
-    <main className="min-h-screen bg-gray-50">
+    <main className="min-h-screen bg-cjc-cream">
       {/* Hero Section */}
-      <section className="bg-gradient-to-r from-blue-900 via-blue-800 to-blue-700 text-white py-16">
+      <section className="relative py-36 bg-cjc-navy overflow-hidden">
+        <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-transparent via-cjc-gold to-transparent" />
         <div className="container mx-auto px-4">
           <div className="text-center">
-            <h1 className="text-4xl font-bold mb-4">Upcoming Events</h1>
-            <p className="text-xl text-gray-200 max-w-2xl mx-auto mb-8">
+            <div className="w-12 h-0.5 bg-cjc-gold mx-auto mb-6" />
+            <h1 className="text-4xl font-bold font-heading mb-4 text-white">Upcoming Events</h1>
+            <p className="text-xl text-gray-200 max-w-2xl mx-auto mb-8 mt-4">
               Don't miss out on these upcoming opportunities to worship, learn, and serve together
             </p>
             
@@ -623,7 +625,7 @@ const UpcomingEventsPage: React.FC = () => {
                 onClick={() => setFilter(category)}
                 className={`px-6 py-2 rounded-full font-semibold transition-colors ${
                   filter === category
-                    ? 'bg-blue-900 text-white'
+                    ? 'bg-cjc-navy text-white'
                     : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
                 }`}
               >
@@ -643,7 +645,7 @@ const UpcomingEventsPage: React.FC = () => {
       {featuredEvents.length > 0 && (
         <section className="py-12">
           <div className="container mx-auto px-4">
-            <h2 className="text-3xl font-bold text-gray-900 mb-8 text-center">Featured Events</h2>
+            <h2 className="text-3xl font-bold font-heading text-cjc-navy mb-8 text-center">Featured Events</h2>
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
               {featuredEvents.map((event) => (
                 <EventCard 
@@ -665,7 +667,7 @@ const UpcomingEventsPage: React.FC = () => {
       {regularEvents.length > 0 && (
         <section className="py-12">
           <div className="container mx-auto px-4">
-            <h2 className="text-3xl font-bold text-gray-900 mb-8 text-center">All Upcoming Events</h2>
+            <h2 className="text-3xl font-bold font-heading text-cjc-navy mb-8 text-center">All Upcoming Events</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {regularEvents.map((event) => (
                 <EventCard 
@@ -683,9 +685,9 @@ const UpcomingEventsPage: React.FC = () => {
       )}
 
       {/* Newsletter Signup */}
-      <section className="py-16 bg-blue-900 text-white">
+      <section className="py-16 bg-cjc-navy text-white">
         <div className="container mx-auto px-4 text-center">
-          <h2 className="text-3xl font-bold mb-4">Stay Updated</h2>
+          <h2 className="text-3xl font-bold font-heading mb-4">Stay Updated</h2>
           <p className="text-xl text-gray-200 mb-8 max-w-2xl mx-auto">
             Subscribe to our newsletter to receive notifications about new events and church announcements
           </p>

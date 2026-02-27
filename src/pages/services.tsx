@@ -156,26 +156,24 @@ export default function Services() {
       <Header />
 
       <main className="min-h-screen">
-        {/* Hero Section */}
-        <section className="relative h-96 flex items-center justify-center bg-gradient-to-r from-slate-900 to-slate-800">
-          <div className="absolute inset-0 bg-black/30"></div>
-          <img
-            src="/images/services/worship-service.jpg"
-            alt="Church Services"
-            className="absolute inset-0 w-full h-full object-cover mix-blend-overlay"
-          />
-          <div className="relative z-10 text-center text-white max-w-4xl mx-auto px-6">
-            <h1 className="text-5xl md:text-6xl font-bold mb-6">Our Services</h1>
-            <p className="text-xl md:text-2xl opacity-90">
-              Join us as we worship together and study God's Word
-            </p>
+        {/* Hero */}
+        <section className="relative py-36 bg-cjc-navy overflow-hidden">
+          <div className="absolute inset-0">
+            <img src="/images/services/worship-service.jpg" alt="Church Services" className="w-full h-full object-cover opacity-15" />
           </div>
+          <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-transparent via-cjc-gold to-transparent" />
+          <div className="relative z-10 text-center text-white max-w-4xl mx-auto px-6">
+            <div className="w-12 h-0.5 bg-cjc-gold mx-auto mb-6" />
+            <h1 className="font-heading text-5xl md:text-7xl font-bold mb-6">Our Services</h1>
+            <p className="text-gray-300 text-xl max-w-2xl mx-auto">Join us as we worship together and study God's Word</p>
+          </div>
+          <div className="absolute inset-x-0 bottom-0 h-1 bg-gradient-to-r from-transparent via-cjc-gold to-transparent" />
         </section>
 
         {/* Navigation Tabs */}
-        <section className="bg-white border-b border-slate-200">
+        <section className="bg-white border-b border-gray-100 sticky top-0 z-20">
           <div className="max-w-6xl mx-auto px-6">
-            <nav className="flex space-x-8">
+            <nav className="flex space-x-8 overflow-x-auto">
               {[
                 { id: 'times', label: 'Service Times', icon: Clock },
                 { id: 'online', label: 'Online Services', icon: Play },
@@ -185,10 +183,10 @@ export default function Services() {
                 <button
                   key={id}
                   onClick={() => setActiveTab(id)}
-                  className={`flex items-center space-x-2 py-4 px-2 border-b-2 font-medium text-sm transition-colors ${
+                  className={`flex items-center space-x-2 py-4 px-2 border-b-2 font-medium text-sm whitespace-nowrap transition-colors ${
                     activeTab === id
-                      ? 'border-amber-500 text-amber-600'
-                      : 'border-transparent text-slate-500 hover:text-slate-700'
+                      ? 'border-cjc-gold text-cjc-gold'
+                      : 'border-transparent text-gray-500 hover:text-cjc-navy'
                   }`}
                 >
                   <Icon className="w-4 h-4" />
@@ -204,7 +202,7 @@ export default function Services() {
           <section id="times" className="py-20 bg-white">
             <div className="max-w-6xl mx-auto px-6">
               <div className="text-center mb-16">
-                <h2 className="text-4xl md:text-5xl font-bold text-slate-900 mb-6">
+                <h2 className="font-heading text-4xl md:text-5xl font-bold text-cjc-navy mb-6">
                   Service Times
                 </h2>
                 <p className="text-xl text-slate-600 max-w-3xl mx-auto">
@@ -215,7 +213,7 @@ export default function Services() {
 
               <div className="grid lg:grid-cols-2 gap-8">
                 {serviceLocations.map((service, index) => (
-                  <div key={index} className="bg-slate-50 rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow">
+                  <div key={index} className="bg-cjc-cream rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow">
                     <img
                       src={service.image}
                       alt={service.name}
@@ -250,7 +248,7 @@ export default function Services() {
               </div>
 
               <div className="mt-16 text-center">
-                <div className="bg-slate-900 text-white p-8 rounded-lg max-w-4xl mx-auto">
+                <div className="bg-cjc-navy text-white p-8 rounded-lg max-w-4xl mx-auto">
                   <Users className="w-12 h-12 text-amber-500 mx-auto mb-4" />
                   <h3 className="text-2xl font-bold mb-4">What to Expect</h3>
                   <p className="text-slate-300 mb-6">
@@ -286,7 +284,7 @@ export default function Services() {
           <section id="online" className="py-20 bg-white">
             <div className="max-w-6xl mx-auto px-6">
               <div className="text-center mb-16">
-                <h2 className="text-4xl md:text-5xl font-bold text-slate-900 mb-6">Online Services</h2>
+                <h2 className="font-heading text-4xl md:text-5xl font-bold text-cjc-navy mb-6">Online Services</h2>
                 <p className="text-xl text-slate-600 max-w-3xl mx-auto">
                   Can't make it physically? Join us online or catch up on past services.
                 </p>
@@ -358,7 +356,7 @@ export default function Services() {
           <section id="special-events" className="py-20 bg-white">
             <div className="max-w-6xl mx-auto px-6">
               <div className="text-center mb-16">
-                <h2 className="text-4xl md:text-5xl font-bold text-slate-900 mb-6">
+                <h2 className="font-heading text-4xl md:text-5xl font-bold text-cjc-navy mb-6">
                   Special Services
                 </h2>
                 <p className="text-xl text-slate-600 max-w-3xl mx-auto">
@@ -369,7 +367,7 @@ export default function Services() {
 
               {loadingSpecial ? (
                 <div className="flex justify-center py-12">
-                  <Loader2 className="w-8 h-8 animate-spin text-amber-600" />
+                  <Loader2 className="w-8 h-8 animate-spin text-cjc-gold" />
                 </div>
               ) : churchServices.length > 0 ? (
                 <div className="grid lg:grid-cols-3 gap-8">
@@ -382,7 +380,7 @@ export default function Services() {
                           <MediaCarousel items={media} autoPlay={false} />
                         ) : (
                           <div className="aspect-video bg-gradient-to-br from-amber-100 to-amber-200 flex items-center justify-center">
-                            <Calendar className="w-12 h-12 text-amber-600" />
+                            <Calendar className="w-12 h-12 text-cjc-gold" />
                           </div>
                         )}
                         <div className="p-6">
@@ -441,7 +439,7 @@ export default function Services() {
           <section id="archive" className="py-20 bg-white">
             <div className="max-w-6xl mx-auto px-6">
               <div className="text-center mb-16">
-                <h2 className="text-4xl md:text-5xl font-bold text-slate-900 mb-6">
+                <h2 className="font-heading text-4xl md:text-5xl font-bold text-cjc-navy mb-6">
                   Sermon Archive
                 </h2>
                 <p className="text-xl text-slate-600 max-w-3xl mx-auto">
@@ -483,7 +481,7 @@ export default function Services() {
               {/* Loading */}
               {loadingSermons && (
                 <div className="flex justify-center py-12">
-                  <Loader2 className="w-8 h-8 animate-spin text-amber-600" />
+                  <Loader2 className="w-8 h-8 animate-spin text-cjc-gold" />
                 </div>
               )}
 
@@ -541,7 +539,7 @@ export default function Services() {
               Experience worship, fellowship, and Bible teaching that will strengthen your faith
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link href="/contact" className="bg-amber-600 hover:bg-amber-700 text-white px-8 py-4 rounded-lg font-semibold text-lg transition-colors">
+              <Link href="/contact" className="bg-cjc-gold hover:bg-cjc-gold-mid text-white px-8 py-4 rounded-lg font-semibold text-lg transition-colors">
                 Plan Your Visit
               </Link>
               <Link href="/resources/prayer" className="border-2 border-white text-white hover:bg-white hover:text-slate-900 px-8 py-4 rounded-lg font-semibold text-lg transition-colors">

@@ -19,11 +19,11 @@ interface DBEvent {
 }
 
 const categoryColors: Record<string, string> = {
-  worship:   'bg-blue-100 text-blue-800',
-  ministry:  'bg-green-100 text-green-800',
-  outreach:  'bg-purple-100 text-purple-800',
-  special:   'bg-yellow-100 text-yellow-800',
-  general:   'bg-gray-100 text-gray-700',
+  worship:  'bg-cjc-gold/15 text-cjc-gold',
+  ministry: 'bg-cjc-gold/15 text-cjc-gold',
+  outreach: 'bg-cjc-gold/15 text-cjc-gold',
+  special:  'bg-cjc-gold/15 text-cjc-gold',
+  general:  'bg-gray-100 text-gray-600',
 };
 
 const isPast = (dateStr: string) => new Date(dateStr) < new Date();
@@ -59,54 +59,43 @@ export default function EventsPage() {
   return (
     <>
       <Header />
-      <main className="min-h-screen bg-gray-50">
+      <main className="min-h-screen bg-white">
         {/* Hero */}
-        <section className="bg-gradient-to-r from-slate-900 via-slate-800 to-slate-700 text-white py-20">
-          <div className="container mx-auto px-4 text-center">
-            <h1 className="text-5xl font-bold mb-4">Church Events</h1>
-            <p className="text-xl text-gray-200 max-w-2xl mx-auto mb-8">
+        <section className="relative py-36 bg-cjc-navy overflow-hidden">
+          <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-transparent via-cjc-gold to-transparent" />
+          <div className="container mx-auto px-4 text-center relative z-10">
+            <div className="w-12 h-0.5 bg-cjc-gold mx-auto mb-6" />
+            <h1 className="font-heading text-5xl md:text-7xl font-bold text-white mb-6">Church Events</h1>
+            <p className="text-gray-300 text-xl max-w-2xl mx-auto mb-10">
               Join us as we worship, learn, and serve together as a church community.
             </p>
             <div className="flex flex-wrap justify-center gap-4">
-              <Link href="/events/upcoming" className="bg-amber-600 hover:bg-amber-700 text-white px-6 py-3 rounded-lg font-semibold transition-colors">
-                Upcoming Events
-              </Link>
-              <Link href="/events/calendar" className="border-2 border-white text-white hover:bg-white hover:text-slate-900 px-6 py-3 rounded-lg font-semibold transition-colors">
-                View Calendar
-              </Link>
-              <Link href="/events/past" className="border-2 border-white text-white hover:bg-white hover:text-slate-900 px-6 py-3 rounded-lg font-semibold transition-colors">
-                Past Events
-              </Link>
+              <Link href="/events/upcoming" className="bg-cjc-gold hover:bg-cjc-gold-mid text-white px-6 py-3 rounded-xl font-semibold transition-all duration-300">Upcoming Events</Link>
+              <Link href="/events/calendar" className="border border-white/40 text-white hover:bg-white hover:text-cjc-navy px-6 py-3 rounded-xl font-semibold transition-all duration-300">View Calendar</Link>
+              <Link href="/events/past" className="border border-white/40 text-white hover:bg-white hover:text-cjc-navy px-6 py-3 rounded-xl font-semibold transition-all duration-300">Past Events</Link>
             </div>
           </div>
+          <div className="absolute inset-x-0 bottom-0 h-1 bg-gradient-to-r from-transparent via-cjc-gold to-transparent" />
         </section>
 
         {/* Tabs + Filter */}
-        <section className="bg-white border-b sticky top-0 z-20">
+        <section className="bg-white border-b border-gray-100 sticky top-0 z-20">
           <div className="container mx-auto px-4">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 py-3">
-              {/* Tabs */}
               <div className="flex gap-1">
-                <button
-                  onClick={() => setTab('upcoming')}
-                  className={`px-4 py-2 rounded-lg text-sm font-semibold transition-colors ${tab === 'upcoming' ? 'bg-amber-600 text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'}`}
-                >
+                <button onClick={() => setTab('upcoming')}
+                  className={`px-4 py-2 rounded-lg text-sm font-semibold transition-colors ${tab === 'upcoming' ? 'bg-cjc-gold text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'}`}>
                   Upcoming {upcomingCount > 0 && <span className="ml-1 opacity-80">({upcomingCount})</span>}
                 </button>
-                <button
-                  onClick={() => setTab('past')}
-                  className={`px-4 py-2 rounded-lg text-sm font-semibold transition-colors ${tab === 'past' ? 'bg-slate-700 text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'}`}
-                >
+                <button onClick={() => setTab('past')}
+                  className={`px-4 py-2 rounded-lg text-sm font-semibold transition-colors ${tab === 'past' ? 'bg-cjc-navy text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'}`}>
                   Past {pastCount > 0 && <span className="ml-1 opacity-80">({pastCount})</span>}
                 </button>
               </div>
-              {/* Category filter */}
               <div className="flex items-center gap-2">
                 <Filter className="w-4 h-4 text-gray-500" />
-                <select
-                  value={category}
-                  onChange={e => setCategory(e.target.value)}
-                  className="border border-gray-300 rounded-lg px-3 py-1.5 text-sm focus:ring-2 focus:ring-amber-500 focus:border-transparent capitalize"
+                <select value={category} onChange={e => setCategory(e.target.value)}
+                  className="border border-gray-200 rounded-lg px-3 py-1.5 text-sm focus:ring-2 focus:ring-cjc-gold/40 focus:border-cjc-gold outline-none capitalize"
                 >
                   {categories.map(c => (
                     <option key={c} value={c} className="capitalize">{c === 'all' ? 'All Categories' : c}</option>
@@ -121,7 +110,7 @@ export default function EventsPage() {
         <section className="py-12">
           <div className="container mx-auto px-4">
             {loading ? (
-              <div className="flex justify-center py-20"><Loader2 className="w-8 h-8 animate-spin text-amber-600" /></div>
+              <div className="flex justify-center py-20"><Loader2 className="w-8 h-8 animate-spin text-cjc-gold" /></div>
             ) : filtered.length === 0 ? (
               <div className="text-center py-20">
                 <Calendar className="w-16 h-16 text-gray-300 mx-auto mb-4" />

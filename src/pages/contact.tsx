@@ -72,95 +72,75 @@ const Contact: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-white">
       <Header />
-      
-      {/* Hero Section */}
-      <section className="relative bg-gradient-to-r from-blue-900 to-blue-800 text-white py-16">
-        <div className="absolute inset-0 bg-black opacity-20"></div>
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h1 className="text-4xl md:text-5xl font-bold mb-4">Get in Touch</h1>
-          <p className="text-xl md:text-2xl mb-8 max-w-3xl mx-auto">
+
+      {/* ── Hero ── */}
+      <section className="relative py-36 bg-cjc-navy overflow-hidden">
+        <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-transparent via-cjc-gold to-transparent" />
+        <div className="relative z-10 text-center text-white max-w-4xl mx-auto px-6">
+          <div className="w-12 h-0.5 bg-cjc-gold mx-auto mb-6" />
+          <h1 className="font-heading text-5xl md:text-7xl font-bold mb-6">Get in Touch</h1>
+          <p className="text-gray-300 text-xl max-w-2xl mx-auto">
             We'd love to hear from you. Send us a message and we'll respond as soon as possible.
           </p>
         </div>
+        <div className="absolute inset-x-0 bottom-0 h-1 bg-gradient-to-r from-transparent via-cjc-gold to-transparent" />
       </section>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        
-        {/* Contact Information */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+
+        {/* Contact Info Cards */}
         <section className="mb-16">
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {/* Location */}
-            <div className="bg-white rounded-lg shadow-lg p-6 text-center hover:shadow-xl transition-shadow duration-300">
-              <MapPin className="h-12 w-12 text-blue-600 mx-auto mb-4" />
-              <h3 className="text-xl font-semibold text-gray-900 mb-2">Our Location</h3>
-              <div className="text-gray-600 space-y-2">
-                <p className="font-medium">Nyaduong' Village</p>
-                <p className="text-sm">Next to Nyaduong' Secondary & Primary Schools</p>
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {[
+              { icon: MapPin, label: 'Our Location', value: "Nyaduong' Village", sub: "Next to Nyaduong' Secondary & Primary Schools" },
+              { icon: Clock,  label: 'Service Times', value: 'Sunday Services', sub: '9:00 AM – 12:00 PM, Nyaduong\' Village' },
+              { icon: Phone,  label: 'Call Us', value: '+254 735 464 102', href: 'tel:+254735464102' },
+              { icon: Mail,   label: 'Email Us', value: 'Pst.bruce67@gmail.com', href: 'mailto:Pst.bruce67@gmail.com' },
+            ].map(({ icon: Icon, label, value, sub, href }) => (
+              <div key={label} className="group bg-white rounded-2xl shadow-sm border border-gray-100 hover:border-cjc-gold/30 hover:shadow-lg p-7 text-center transition-all duration-300">
+                <div className="w-14 h-14 bg-cjc-gold/10 rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:bg-cjc-gold/20 transition-colors">
+                  <Icon className="w-7 h-7 text-cjc-gold" />
+                </div>
+                <h3 className="font-heading text-lg font-bold text-cjc-navy mb-2">{label}</h3>
+                {href ? (
+                  <a href={href} className="text-gray-600 hover:text-cjc-gold transition-colors font-medium text-sm">{value}</a>
+                ) : (
+                  <p className="text-gray-700 font-medium text-sm">{value}</p>
+                )}
+                {sub && <p className="text-gray-400 text-xs mt-1">{sub}</p>}
               </div>
-            </div>
-
-            {/* Service Times */}
-            <div className="bg-white rounded-lg shadow-lg p-6 text-center hover:shadow-xl transition-shadow duration-300">
-              <Clock className="h-12 w-12 text-green-600 mx-auto mb-4" />
-              <h3 className="text-xl font-semibold text-gray-900 mb-2">Service Times</h3>
-              <div className="text-gray-600 space-y-2">
-                <p className="font-medium">Sunday Services</p>
-                <p className="text-sm">9:00 AM - 12:00 PM<br />Nyaduong' Village</p>
-              </div>
-            </div>
-
-            {/* Phone */}
-            <div className="bg-white rounded-lg shadow-lg p-6 text-center hover:shadow-xl transition-shadow duration-300">
-              <Phone className="h-12 w-12 text-purple-600 mx-auto mb-4" />
-              <h3 className="text-xl font-semibold text-gray-900 mb-2">Call Us</h3>
-              <div className="text-gray-600 space-y-2">
-                <a href="tel:+254735464102" className="block hover:text-purple-600 transition duration-300 font-medium">
-                  +254 735 464 102
-                </a>
-              </div>
-            </div>
-
-            {/* Email */}
-            <div className="bg-white rounded-lg shadow-lg p-6 text-center hover:shadow-xl transition-shadow duration-300">
-              <Mail className="h-12 w-12 text-red-600 mx-auto mb-4" />
-              <h3 className="text-xl font-semibold text-gray-900 mb-2">Email Us</h3>
-              <div className="text-gray-600 space-y-2">
-                <a href="mailto:Pst.bruce67@gmail.com" className="block hover:text-red-600 transition duration-300 font-medium">
-                  Pst.bruce67@gmail.com
-                </a>
-              </div>
-            </div>
+            ))}
           </div>
         </section>
 
         <div className="grid lg:grid-cols-2 gap-12">
-          
-          {/* Contact Form Section */}
-          <div className="bg-white rounded-xl shadow-lg p-8">
-            {/* Tab Navigation */}
-            <div className="flex mb-8 border-b border-gray-200">
+
+          {/* Contact Form */}
+          <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-8">
+            {/* Tabs */}
+            <div className="flex mb-8 border-b border-gray-100">
               <button
                 onClick={() => setActiveTab('contact')}
-                className={`flex-1 py-4 px-6 text-center font-semibold transition duration-300 rounded-t-lg ${
+                className={`flex-1 py-3.5 px-6 text-center font-semibold transition-all duration-200 text-sm ${
                   activeTab === 'contact'
-                    ? 'border-b-2 border-blue-600 text-blue-600 bg-blue-50'
-                    : 'text-gray-600 hover:text-blue-600 hover:bg-gray-50'
+                    ? 'border-b-2 border-cjc-gold text-cjc-gold'
+                    : 'text-gray-500 hover:text-gray-700'
                 }`}
               >
-                <MessageSquare className="h-5 w-5 inline-block mr-2" />
+                <MessageSquare className="h-4 w-4 inline-block mr-2" />
                 General Contact
               </button>
               <button
                 onClick={() => setActiveTab('prayer')}
-                className={`flex-1 py-4 px-6 text-center font-semibold transition duration-300 rounded-t-lg ${
+                className={`flex-1 py-3.5 px-6 text-center font-semibold transition-all duration-200 text-sm ${
                   activeTab === 'prayer'
-                    ? 'border-b-2 border-blue-600 text-blue-600 bg-blue-50'
-                    : 'text-gray-600 hover:text-blue-600 hover:bg-gray-50'
+                    ? 'border-b-2 border-cjc-gold text-cjc-gold'
+                    : 'text-gray-500 hover:text-gray-700'
                 }`}
               >
-                <Heart className="h-5 w-5 inline-block mr-2" />
+                <Heart className="h-4 w-4 inline-block mr-2" />
                 Prayer Request
               </button>
             </div>
@@ -208,7 +188,7 @@ const Contact: React.FC = () => {
                     value={formData.fullName}
                     onChange={handleInputChange}
                     required
-                    className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors duration-300"
+                    className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-cjc-gold/40 focus:border-cjc-gold outline-none transition-all duration-200"
                     placeholder="Enter your full name"
                   />
                 </div>
@@ -228,7 +208,7 @@ const Contact: React.FC = () => {
                       value={formData.email}
                       onChange={handleInputChange}
                       required
-                      className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors duration-300"
+                      className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-cjc-gold/40 focus:border-cjc-gold outline-none transition-all duration-200"
                       placeholder="your.email@example.com"
                     />
                   </div>
@@ -246,7 +226,7 @@ const Contact: React.FC = () => {
                       name="phone"
                       value={formData.phone}
                       onChange={handleInputChange}
-                      className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors duration-300"
+                      className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-cjc-gold/40 focus:border-cjc-gold outline-none transition-all duration-200"
                       placeholder="Optional"
                     />
                   </div>
@@ -266,7 +246,7 @@ const Contact: React.FC = () => {
                       value={formData.subject}
                       onChange={handleInputChange}
                       required
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors duration-300"
+                      className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-cjc-gold/40 focus:border-cjc-gold outline-none transition-all duration-200"
                     >
                       <option value="">Select a subject</option>
                       <option value="general">General Inquiry</option>
@@ -324,7 +304,7 @@ const Contact: React.FC = () => {
                       name="urgency"
                       value={formData.urgency}
                       onChange={handleInputChange}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors duration-300"
+                      className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-cjc-gold/40 focus:border-cjc-gold outline-none transition-all duration-200"
                     >
                       <option value="normal">Normal</option>
                       <option value="urgent">Urgent</option>
@@ -333,9 +313,9 @@ const Contact: React.FC = () => {
                   </div>
 
                   {/* Privacy Options */}
-                  <div className="space-y-4 bg-gray-50 p-6 rounded-lg">
-                    <h3 className="text-lg font-semibold text-gray-800 flex items-center gap-2">
-                      <Shield className="w-5 h-5 text-blue-600" />
+                  <div className="space-y-4 bg-cjc-cream p-6 rounded-xl border border-gray-100">
+                    <h3 className="text-base font-semibold text-cjc-navy flex items-center gap-2">
+                      <Shield className="w-5 h-5 text-cjc-gold" />
                       Privacy Options
                     </h3>
                     
@@ -385,7 +365,7 @@ const Contact: React.FC = () => {
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 text-white py-3 px-6 rounded-lg transition-colors duration-300 font-semibold text-lg flex items-center justify-center gap-2"
+                className="w-full bg-cjc-gold hover:bg-cjc-gold-mid disabled:opacity-60 text-white py-3 px-6 rounded-xl transition-all duration-300 font-semibold text-base flex items-center justify-center gap-2"
               >
                 {isSubmitting ? (
                   <>
@@ -405,12 +385,10 @@ const Contact: React.FC = () => {
           {/* Map and Additional Info */}
           <div className="space-y-8">
             {/* Google Map */}
-            <div className="bg-white rounded-xl shadow-lg overflow-hidden">
+            <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
               <div className="p-6">
-                <h3 className="text-2xl font-semibold text-gray-900 mb-4">Find Us</h3>
-                <p className="text-gray-600 mb-4">
-                  Visit us at our service location. We'd love to welcome you to our church family.
-                </p>
+                <h3 className="font-heading text-2xl font-bold text-cjc-navy mb-2">Find Us</h3>
+                <p className="text-gray-500 text-sm">Visit us at our service location. We'd love to welcome you to our church family.</p>
               </div>
 
               <div className="h-96">
@@ -427,132 +405,49 @@ const Contact: React.FC = () => {
               </div>
             </div>
 
-            {/* Staff Directory */}
-            <div className="bg-white rounded-xl shadow-lg p-6">
-              <h3 className="text-2xl font-semibold text-gray-900 mb-6">Church Leadership</h3>
-              <div className="space-y-4">
-
-                {/* Pastor Bruce */}
-                <div className="flex items-center p-4 border border-gray-200 rounded-lg hover:shadow-md transition-shadow duration-300">
-                  <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mr-4">
-                    <User className="h-6 w-6 text-blue-600" />
+            {/* Leadership contacts */}
+            <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
+              <h3 className="font-heading text-xl font-bold text-cjc-navy mb-5">Church Leadership</h3>
+              <div className="space-y-3">
+                {[
+                  { name: 'Pastor Bruce',   role: 'Missionary Pastor',  email: 'Pst.bruce67@gmail.com' },
+                  { name: 'Oliver Oyando',  role: 'Church Secretary',   email: 'oyandooliver6@gmail.com' },
+                  { name: 'Kevin Odhiambo', role: 'Secretary',          email: 'manodhiambo@gmail.com' },
+                  { name: 'Joyce Akoth',    role: 'Vice Secretary',     email: 'joyceakoth@gmail.com' },
+                  { name: 'Samuel Ondieki', role: 'Vice Chairman',      email: 'samuelondieki@gmail.com' },
+                  { name: 'Felix Ochieng',  role: 'Treasurer',          email: 'felixochieng@gmail.com' },
+                  { name: 'John Olary',     role: 'Vice Treasurer',     email: 'johnolary@gmail.com' },
+                ].map(person => (
+                  <div key={person.name} className="flex items-center gap-4 p-3 border border-gray-100 rounded-xl hover:border-cjc-gold/30 hover:bg-cjc-gold/5 transition-all duration-200">
+                    <div className="w-10 h-10 bg-cjc-gold/15 rounded-full flex items-center justify-center flex-shrink-0">
+                      <User className="w-5 h-5 text-cjc-gold" />
+                    </div>
+                    <div>
+                      <p className="font-semibold text-cjc-navy text-sm">{person.name}</p>
+                      <p className="text-xs text-gray-400">{person.role}</p>
+                      <a href={`mailto:${person.email}`} className="text-xs text-cjc-gold hover:text-cjc-gold-mid transition-colors">{person.email}</a>
+                    </div>
                   </div>
-                  <div>
-                    <h4 className="font-semibold text-gray-900">Pastor Bruce</h4>
-                    <p className="text-sm text-gray-600">Missionary Pastor</p>
-                    <a href="mailto:Pst.bruce67@gmail.com" className="text-sm text-blue-600 hover:underline">
-                      Pst.bruce67@gmail.com
-                    </a>
-                  </div>
-                </div>
-
-                {/* Oliver Oyando */}
-                <div className="flex items-center p-4 border border-gray-200 rounded-lg hover:shadow-md transition-shadow duration-300">
-                  <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mr-4">
-                    <User className="h-6 w-6 text-green-600" />
-                  </div>
-                  <div>
-                    <h4 className="font-semibold text-gray-900">Oliver Oyando</h4>
-                    <p className="text-sm text-gray-600">Church Secretary</p>
-                    <a href="mailto:oyandooliver6@gmail.com" className="text-sm text-blue-600 hover:underline">
-                      oyandooliver6@gmail.com
-                    </a>
-                  </div>
-                </div>
-
-                {/* Kevin Odhiambo */}
-                <div className="flex items-center p-4 border border-gray-200 rounded-lg hover:shadow-md transition-shadow duration-300">
-                  <div className="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center mr-4">
-                    <User className="h-6 w-6 text-purple-600" />
-                  </div>
-                  <div>
-                    <h4 className="font-semibold text-gray-900">Kevin Odhiambo</h4>
-                    <p className="text-sm text-gray-600">Secretary</p>
-                    <a href="mailto:manodhiambo@gmail.com" className="text-sm text-blue-600 hover:underline">
-                      manodhiambo@gmail.com
-                    </a>
-                  </div>
-                </div>
-
-                {/* Joyce Akoth */}
-                <div className="flex items-center p-4 border border-gray-200 rounded-lg hover:shadow-md transition-shadow duration-300">
-                  <div className="w-12 h-12 bg-yellow-100 rounded-full flex items-center justify-center mr-4">
-                    <User className="h-6 w-6 text-yellow-600" />
-                  </div>
-                  <div>
-                    <h4 className="font-semibold text-gray-900">Joyce Akoth</h4>
-                    <p className="text-sm text-gray-600">Vice Secretary</p>
-                    <a href="mailto:joyceakoth@gmail.com" className="text-sm text-blue-600 hover:underline">
-                      joyceakoth@gmail.com
-                    </a>
-                  </div>
-                </div>
-
-                {/* Samuel Ondieki */}
-                <div className="flex items-center p-4 border border-gray-200 rounded-lg hover:shadow-md transition-shadow duration-300">
-                  <div className="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center mr-4">
-                    <User className="h-6 w-6 text-red-600" />
-                  </div>
-                  <div>
-                    <h4 className="font-semibold text-gray-900">Samuel Ondieki</h4>
-                    <p className="text-sm text-gray-600">Vice Chairman</p>
-                    <a href="mailto:samuelondieki@gmail.com" className="text-sm text-blue-600 hover:underline">
-                      samuelondieki@gmail.com
-                    </a>
-                  </div>
-                </div>
-
-                {/* Felix Ochieng */}
-                <div className="flex items-center p-4 border border-gray-200 rounded-lg hover:shadow-md transition-shadow duration-300">
-                  <div className="w-12 h-12 bg-pink-100 rounded-full flex items-center justify-center mr-4">
-                    <User className="h-6 w-6 text-pink-600" />
-                  </div>
-                  <div>
-                    <h4 className="font-semibold text-gray-900">Felix Ochieng</h4>
-                    <p className="text-sm text-gray-600">Treasurer</p>
-                    <a href="mailto:felixochieng@gmail.com" className="text-sm text-blue-600 hover:underline">
-                      felixochieng@gmail.com
-                    </a>
-                  </div>
-                </div>
-
-                {/* John Olary */}
-                <div className="flex items-center p-4 border border-gray-200 rounded-lg hover:shadow-md transition-shadow duration-300">
-                  <div className="w-12 h-12 bg-indigo-100 rounded-full flex items-center justify-center mr-4">
-                    <User className="h-6 w-6 text-indigo-600" />
-                  </div>
-                  <div>
-                    <h4 className="font-semibold text-gray-900">John Olary</h4>
-                    <p className="text-sm text-gray-600">Vice Treasurer</p>
-                    <a href="mailto:johnolary@gmail.com" className="text-sm text-blue-600 hover:underline">
-                      johnolary@gmail.com
-                    </a>
-                  </div>
-                </div>
-
+                ))}
               </div>
             </div>
 
-            {/* Quick Contact Info */}
-            <div className="bg-gradient-to-r from-blue-600 to-blue-700 rounded-xl shadow-lg p-6 text-white">
-              <h3 className="text-xl font-semibold mb-4">Need Immediate Prayer?</h3>
-              <p className="mb-4">
+            {/* Urgent prayer CTA */}
+            <div className="bg-cjc-navy rounded-2xl p-6 text-white">
+              <div className="w-10 h-10 bg-cjc-gold/20 rounded-xl flex items-center justify-center mb-4">
+                <Heart className="w-5 h-5 text-cjc-gold" />
+              </div>
+              <h3 className="font-heading text-xl font-semibold mb-3">Need Immediate Prayer?</h3>
+              <p className="text-gray-300 text-sm mb-5 leading-relaxed">
                 If you have an urgent prayer need, don't hesitate to call us directly. We're here for you.
               </p>
               <div className="flex flex-col sm:flex-row gap-3">
-                <a
-                  href="tel:+254735464102"
-                  className="flex items-center jusy-center bg-white text-blue-600 px-4 py-2 rounded-lg hover:bg-gray-100 transition duration-300 font-semibold"
-                >
-                  <Phone className="h-4 w-4 mr-2" />
-                  Call Now
+                <a href="tel:+254735464102"
+                  className="flex items-center justify-center gap-2 bg-cjc-gold hover:bg-cjc-gold-mid text-white px-4 py-2.5 rounded-xl text-sm font-semibold transition-colors">
+                  <Phone className="w-4 h-4" /> Call Now
                 </a>
-                <a
-                  href="https://www.facebook.com/profile.php?id=100064378341874"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center justify-center bg-blue-800 text-white px-4 py-2 rounded-lgbg-blue-900 transition duration-300 font-semibold"
-                >
+                <a href="https://www.facebook.com/profile.php?id=100064378341874" target="_blank" rel="noopener noreferrer"
+                  className="flex items-center justify-center gap-2 bg-white/10 hover:bg-white/20 text-white px-4 py-2.5 rounded-xl text-sm font-semibold transition-colors">
                   Message on Facebook
                 </a>
               </div>
@@ -560,13 +455,14 @@ const Contact: React.FC = () => {
           </div>
         </div>
 
-        {/* Bible Verse */}
-        <section className="text-center py-12">
-          <div className="bg-white rounded-xl shadow-lg p-8 max-w-4xl mx-auto">
-            <blockquote className="text-2xl font-medium text-gray-900 italic mb-4">
-              "Call to me and I will answer you and tell you great and nsearchable things you do not know."
+        {/* Scripture quote */}
+        <section className="text-center py-16">
+          <div className="bg-cjc-cream rounded-2xl p-10 max-w-4xl mx-auto border border-gray-100">
+            <div className="w-10 h-0.5 bg-cjc-gold mx-auto mb-6" />
+            <blockquote className="scripture-text text-2xl text-cjc-navy mb-4">
+              "Call to me and I will answer you and tell you great and unsearchable things you do not know."
             </blockquote>
-            <cite className="text-lg text-gray-600">- Jeremiah 33:3</cite>
+            <cite className="text-cjc-gold font-semibold text-sm not-italic">— Jeremiah 33:3</cite>
           </div>
         </section>
       </div>

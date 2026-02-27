@@ -77,15 +77,17 @@ const PrayerRequestPage = () => {
   return (
     <div className="min-h-screen bg-gray-50">
       <Navbar />
-      
+
       {/* Hero Section */}
-      <section className="bg-gradient-to-r from-purple-900 to-purple-700 text-white py-16">
+      <section className="relative py-36 bg-cjc-navy overflow-hidden">
+        <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-transparent via-cjc-gold to-transparent" />
         <div className="container mx-auto px-4">
           <div className="text-center">
-            <h1 className="text-4xl md:text-5xl font-bold mb-4">
+            <div className="w-12 h-0.5 bg-cjc-gold mx-auto mb-6" />
+            <h1 className="text-4xl md:text-5xl font-bold font-heading mb-4 text-white">
               Prayer Requests
             </h1>
-            <p className="text-xl md:text-2xl text-purple-100 max-w-3xl mx-auto">
+            <p className="text-xl md:text-2xl text-gray-200 max-w-3xl mx-auto">
               "Therefore I tell you, whatever you ask in prayer, believe that you have received it, 
               and it will be yours." - Mark 11:24
             </p>
@@ -99,8 +101,8 @@ const PrayerRequestPage = () => {
           <div className="grid md:grid-cols-2 gap-12">
             {/* Prayer Request Form */}
             <div className="bg-white rounded-xl shadow-lg p-8">
-              <h2 className="text-2xl font-bold text-gray-800 mb-6 flex items-center gap-3">
-                <Heart className="w-6 h-6 text-purple-600" />
+              <h2 className="text-2xl font-bold font-heading text-cjc-navy mb-6 flex items-center gap-3">
+                <Heart className="w-6 h-6 text-cjc-gold" />
                 Submit Your Prayer Request
               </h2>
 
@@ -140,7 +142,7 @@ const PrayerRequestPage = () => {
                     value={formData.fullName}
                     onChange={handleInputChange}
                     required
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cjc-gold/40 focus:border-cjc-gold outline-none"
                     placeholder="Enter your full name"
                   />
                 </div>
@@ -157,7 +159,7 @@ const PrayerRequestPage = () => {
                       name="phoneNumber"
                       value={formData.phoneNumber}
                       onChange={handleInputChange}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cjc-gold/40 focus:border-cjc-gold outline-none"
                       placeholder="Optional"
                     />
                   </div>
@@ -171,7 +173,7 @@ const PrayerRequestPage = () => {
                       name="email"
                       value={formData.email}
                       onChange={handleInputChange}
-                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cjc-gold/40 focus:border-cjc-gold outline-none"
                       placeholder="Optional"
                     />
                   </div>
@@ -204,7 +206,7 @@ const PrayerRequestPage = () => {
                     name="urgency"
                     value={formData.urgency}
                     onChange={handleInputChange}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cjc-gold/40 focus:border-cjc-gold outline-none"
                   >
                     <option value="normal">Normal</option>
                     <option value="urgent">Urgent</option>
@@ -214,8 +216,8 @@ const PrayerRequestPage = () => {
 
                 {/* Privacy Options */}
                 <div className="space-y-4 bg-gray-50 p-6 rounded-lg">
-                  <h3 className="text-lg font-semibold text-gray-800 flex items-center gap-2">
-                    <Shield className="w-5 h-5 text-purple-600" />
+                  <h3 className="text-lg font-semibold font-heading text-gray-800 flex items-center gap-2">
+                    <Shield className="w-5 h-5 text-cjc-gold" />
                     Privacy Options
                   </h3>
                   
@@ -226,7 +228,7 @@ const PrayerRequestPage = () => {
                         name="isSecret"
                         checked={formData.isSecret}
                         onChange={handleInputChange}
-                        className="mt-1 w-4 h-4 text-purple-600 border-gray-300 rounded focus:ring-purple-500"
+                        className="mt-1 w-4 h-4 text-cjc-gold border-gray-300 rounded focus:ring-cjc-gold"
                       />
                       <input type="hidden" name="confidential_request" value={formData.isSecret ? 'Yes - Keep confidential' : 'No'} />
                       <div>
@@ -245,7 +247,7 @@ const PrayerRequestPage = () => {
                         name="allowContact"
                         checked={formData.allowContact}
                         onChange={handleInputChange}
-                        className="mt-1 w-4 h-4 text-purple-600 border-gray-300 rounded focus:ring-purple-500"
+                        className="mt-1 w-4 h-4 text-cjc-gold border-gray-300 rounded focus:ring-cjc-gold"
                       />
                       <input type="hidden" name="allow_personal_contact" value={formData.allowContact ? 'Yes - Open to contact' : 'No'} />
                       <div>
@@ -264,7 +266,7 @@ const PrayerRequestPage = () => {
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="w-full bg-purple-600 hover:bg-purple-700 disabled:bg-purple-400 text-white font-semibold py-3 px-6 rounded-lg transition-colors duration-300 flex items-center justify-center gap-2"
+                  className="w-full bg-cjc-gold hover:bg-cjc-gold-mid disabled:opacity-60 text-white font-semibold py-3 px-6 rounded-lg transition-colors duration-300 flex items-center justify-center gap-2"
                 >
                   {isSubmitting ? (
                     <>
@@ -285,7 +287,7 @@ const PrayerRequestPage = () => {
             <div className="space-y-8">
               {/* Prayer Ministry Info */}
               <div className="bg-white rounded-xl shadow-lg p-8">
-                <h3 className="text-2xl font-bold text-gray-800 mb-4">
+                <h3 className="text-2xl font-bold font-heading text-cjc-navy mb-4">
                   Our Prayer Ministry
                 </h3>
                 <p className="text-gray-600 mb-6">
@@ -295,7 +297,7 @@ const PrayerRequestPage = () => {
                 
                 <div className="space-y-4">
                   <div className="flex items-start gap-3">
-                    <Heart className="w-5 h-5 text-purple-600 mt-1" />
+                    <Heart className="w-5 h-5 text-cjc-gold mt-1" />
                     <div>
                       <h4 className="font-semibold text-gray-800">Confidential Prayer</h4>
                       <p className="text-sm text-gray-600">
@@ -305,7 +307,7 @@ const PrayerRequestPage = () => {
                   </div>
                   
                   <div className="flex items-start gap-3">
-                    <Shield className="w-5 h-5 text-purple-600 mt-1" />
+                    <Shield className="w-5 h-5 text-cjc-gold mt-1" />
                     <div>
                       <h4 className="font-semibold text-gray-800">Privacy Protected</h4>
                       <p className="text-sm text-gray-600">
@@ -315,7 +317,7 @@ const PrayerRequestPage = () => {
                   </div>
                   
                   <div className="flex items-start gap-3">
-                    <CheckCircle className="w-5 h-5 text-purple-600 mt-1" />
+                    <CheckCircle className="w-5 h-5 text-cjc-gold mt-1" />
                     <div>
                       <h4 className="font-semibold text-gray-800">Pastoral Care</h4>
                       <p className="text-sm text-gray-600">
@@ -327,8 +329,8 @@ const PrayerRequestPage = () => {
               </div>
 
               {/* Contact Information */}
-              <div className="bg-purple-50 rounded-xl p-8">
-                <h3 className="text-xl font-bold text-gray-800 mb-4">
+              <div className="bg-cjc-cream rounded-xl p-8">
+                <h3 className="text-xl font-bold font-heading text-cjc-navy mb-4">
                   Need Immediate Prayer?
                 </h3>
                 <p className="text-gray-600 mb-6">
@@ -338,7 +340,7 @@ const PrayerRequestPage = () => {
                 <div className="space-y-3">
                   <a
                     href="tel:+254735464102"
-                    className="flex items-center gap-3 text-purple-700 hover:text-purple-800 transition-colors"
+                    className="flex items-center gap-3 text-cjc-navy hover:text-cjc-gold transition-colors"
                   >
                     <Phone className="w-5 h-5" />
                     <span>+254 735 464 102</span>
@@ -346,7 +348,7 @@ const PrayerRequestPage = () => {
                   
                   <a
                     href="mailto:Pst.bruce67@gmail.com"
-                    className="flex items-center gap-3 text-purple-700 hover:text-purple-800 transition-colors"
+                    className="flex items-center gap-3 text-cjc-navy hover:text-cjc-gold transition-colors"
                   >
                     <Mail className="w-5 h-5" />
                     <span>Pst.bruce67@gmail.com</span>
@@ -355,13 +357,13 @@ const PrayerRequestPage = () => {
               </div>
 
               {/* Bible Verse */}
-              <div className="bg-gradient-to-r from-purple-600 to-purple-700 text-white rounded-xl p-8">
+              <div className="bg-cjc-navy text-white rounded-xl p-8">
                 <blockquote className="text-lg italic mb-4">
                   "And this is the confidence that we have toward him, that if we ask anything 
                   according to his will he hears us. And if we know that he hears us in whatever 
                   we ask, we know that we have the requests that we have asked of him."
                 </blockquote>
-                <cite className="text-purple-200">— 1 John 5:14-15</cite>
+                <cite className="text-cjc-gold">— 1 John 5:14-15</cite>
               </div>
             </div>
           </div>

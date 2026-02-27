@@ -47,13 +47,15 @@ export default function BibleStudyPage() {
   );
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-cjc-cream">
       <Header />
 
-      <section className="bg-gradient-to-r from-green-900 to-green-700 text-white py-16">
+      <section className="relative py-36 bg-cjc-navy overflow-hidden">
+        <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-transparent via-cjc-gold to-transparent" />
         <div className="container mx-auto px-4 text-center">
-          <h1 className="text-4xl md:text-5xl font-bold mb-4">Bible Study Resources</h1>
-          <p className="text-xl text-green-100 max-w-3xl mx-auto">
+          <div className="w-12 h-0.5 bg-cjc-gold mx-auto mb-6" />
+          <h1 className="text-4xl md:text-5xl font-bold font-heading mb-4 text-white">Bible Study Resources</h1>
+          <p className="text-xl text-gray-200 max-w-3xl mx-auto">
             "Study to show yourself approved to God, a worker who does not need to be ashamed,
             rightly dividing the word of truth." — 2 Timothy 2:15
           </p>
@@ -69,7 +71,7 @@ export default function BibleStudyPage() {
               placeholder="Search study materials..."
               value={search}
               onChange={e => setSearch(e.target.value)}
-              className="w-full pl-9 pr-4 py-2 border border-gray-200 rounded-lg text-sm focus:ring-2 focus:ring-green-500 focus:border-transparent"
+              className="w-full pl-9 pr-4 py-2 border border-gray-200 rounded-lg text-sm focus:ring-2 focus:ring-cjc-gold/40 focus:border-cjc-gold outline-none"
             />
           </div>
           <div className="flex items-center gap-2">
@@ -84,7 +86,7 @@ export default function BibleStudyPage() {
       <section className="py-12">
         <div className="container mx-auto px-4">
           {loading ? (
-            <div className="flex justify-center py-20"><Loader2 className="w-8 h-8 animate-spin text-green-600" /></div>
+            <div className="flex justify-center py-20"><Loader2 className="w-8 h-8 animate-spin text-cjc-gold" /></div>
           ) : filtered.length === 0 ? (
             <div className="text-center py-16 text-gray-400">No study materials found.</div>
           ) : (
@@ -96,17 +98,17 @@ export default function BibleStudyPage() {
                     {media.length > 0 && <MediaCarousel items={media} autoPlay={false} />}
                     <div className="p-5">
                       <div className="flex items-start justify-between mb-3">
-                        <span className="text-xs bg-green-100 text-green-800 px-2 py-0.5 rounded-full">{m.category || m.resource_type}</span>
+                        <span className="text-xs bg-amber-100 text-amber-800 px-2 py-0.5 rounded-full">{m.category || m.resource_type}</span>
                         {m.author && <span className="text-xs text-gray-400 flex items-center gap-1"><Users className="w-3 h-3" />{m.author}</span>}
                       </div>
-                      <h3 className="text-lg font-bold text-gray-800 mb-2 line-clamp-2">{m.title}</h3>
+                      <h3 className="text-lg font-bold font-heading text-cjc-navy mb-2 line-clamp-2">{m.title}</h3>
                       {m.description && <p className="text-sm text-gray-600 mb-4 line-clamp-3">{m.description}</p>}
                       <div className="flex items-center justify-between text-xs text-gray-400 mb-4">
                         {m.created_at && <span className="flex items-center gap-1"><Calendar className="w-3 h-3" />{new Date(m.created_at).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })}</span>}
                       </div>
                       {m.file_url && (
                         <a href={m.file_url} target="_blank" rel="noreferrer"
-                          className="w-full bg-green-600 hover:bg-green-700 text-white text-sm font-semibold py-2 px-4 rounded-lg transition-colors flex items-center justify-center gap-2">
+                          className="w-full bg-cjc-gold hover:bg-cjc-gold-mid text-white text-sm font-semibold py-2 px-4 rounded-lg transition-colors flex items-center justify-center gap-2">
                           {/\.pdf$/i.test(m.file_url) ? <><FileText className="w-4 h-4" />Download PDF</> : <><Download className="w-4 h-4" />Download</>}
                         </a>
                       )}
@@ -119,9 +121,9 @@ export default function BibleStudyPage() {
         </div>
       </section>
 
-      <section className="bg-green-50 py-12">
+      <section className="bg-cjc-cream py-12">
         <div className="container mx-auto px-4">
-          <h2 className="text-2xl font-bold text-gray-800 mb-8 text-center">Our Bible Study Approach</h2>
+          <h2 className="text-2xl font-bold font-heading text-cjc-navy mb-8 text-center">Our Bible Study Approach</h2>
           <div className="grid md:grid-cols-3 gap-6">
             {[
               { icon: Book, title: 'Scripture Alone', text: "We believe the Bible is complete and nothing outside it claimed to be from God is true." },
@@ -129,8 +131,8 @@ export default function BibleStudyPage() {
               { icon: Users, title: 'Community Learning', text: "Join our Bible study groups to learn together and grow in understanding of God's Word." },
             ].map(({ icon: Icon, title, text }) => (
               <div key={title} className="bg-white rounded-lg p-6 shadow-sm">
-                <Icon className="w-8 h-8 text-green-600 mb-3" />
-                <h3 className="text-lg font-semibold mb-2">{title}</h3>
+                <Icon className="w-8 h-8 text-cjc-gold mb-3" />
+                <h3 className="text-lg font-semibold font-heading mb-2">{title}</h3>
                 <p className="text-gray-600 text-sm">{text}</p>
               </div>
             ))}

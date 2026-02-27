@@ -52,13 +52,15 @@ export default function SermonsPage() {
   });
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-cjc-cream">
       <Header />
 
-      <section className="bg-gradient-to-r from-blue-900 to-blue-700 text-white py-16">
+      <section className="relative py-36 bg-cjc-navy overflow-hidden">
+        <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-transparent via-cjc-gold to-transparent" />
         <div className="container mx-auto px-4 text-center">
-          <h1 className="text-4xl md:text-5xl font-bold mb-4">Sermon Archive</h1>
-          <p className="text-xl text-blue-100 max-w-3xl mx-auto">
+          <div className="w-12 h-0.5 bg-cjc-gold mx-auto mb-6" />
+          <h1 className="text-4xl md:text-5xl font-bold font-heading mb-4 text-white">Sermon Archive</h1>
+          <p className="text-xl text-gray-200 max-w-3xl mx-auto">
             "Unleashing God's truth one verse at a time" — Explore our collection of biblical teachings
           </p>
         </div>
@@ -74,7 +76,7 @@ export default function SermonsPage() {
                 placeholder="Search sermons..."
                 value={search}
                 onChange={e => setSearch(e.target.value)}
-                className="w-full pl-9 pr-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
+                className="w-full pl-9 pr-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-cjc-gold/40 focus:border-cjc-gold outline-none text-sm"
               />
             </div>
             <div className="flex gap-2">
@@ -95,7 +97,7 @@ export default function SermonsPage() {
       <section className="py-12">
         <div className="container mx-auto px-4">
           {loading ? (
-            <div className="flex justify-center py-20"><Loader2 className="w-8 h-8 animate-spin text-blue-600" /></div>
+            <div className="flex justify-center py-20"><Loader2 className="w-8 h-8 animate-spin text-cjc-gold" /></div>
           ) : filtered.length === 0 ? (
             <div className="text-center py-16">
               <BookOpen className="w-16 h-16 text-gray-300 mx-auto mb-4" />
@@ -110,20 +112,20 @@ export default function SermonsPage() {
                     {media.length > 0 ? (
                       <MediaCarousel items={media} autoPlay={false} />
                     ) : (
-                      <div className="aspect-video bg-gradient-to-br from-blue-800 to-blue-900 flex items-center justify-center">
+                      <div className="aspect-video bg-cjc-navy flex items-center justify-center">
                         <Play className="w-12 h-12 text-white/40" />
                       </div>
                     )}
                     <div className="p-5">
                       {sermon.series && (
-                        <span className="inline-block bg-blue-100 text-blue-800 text-xs px-3 py-1 rounded-full mb-2">{sermon.series}</span>
+                        <span className="inline-block bg-amber-100 text-amber-800 text-xs px-3 py-1 rounded-full mb-2">{sermon.series}</span>
                       )}
                       {sermon.is_featured && (
                         <span className="inline-block bg-amber-100 text-amber-700 text-xs px-3 py-1 rounded-full mb-2 ml-1">Featured</span>
                       )}
-                      <h3 className="text-lg font-bold text-gray-800 mb-1 line-clamp-2">{sermon.title}</h3>
+                      <h3 className="text-lg font-bold font-heading text-cjc-navy mb-1 line-clamp-2">{sermon.title}</h3>
                       {sermon.scripture_reference && (
-                        <p className="text-xs text-amber-600 font-medium mb-2">{sermon.scripture_reference}</p>
+                        <p className="text-xs text-cjc-gold font-medium mb-2">{sermon.scripture_reference}</p>
                       )}
                       {sermon.description && (
                         <p className="text-sm text-gray-600 mb-3 line-clamp-2">{sermon.description}</p>
@@ -147,18 +149,18 @@ export default function SermonsPage() {
         </div>
       </section>
 
-      <section className="bg-blue-900 text-white py-12">
+      <section className="bg-cjc-navy text-white py-12">
         <div className="container mx-auto px-4 text-center">
-          <h2 className="text-3xl font-bold mb-4">Join Us for Live Services</h2>
-          <p className="text-blue-100 mb-6">Experience God's Word taught verse by verse every Sunday</p>
+          <h2 className="text-3xl font-bold font-heading mb-4">Join Us for Live Services</h2>
+          <p className="text-gray-200 mb-6">Experience God's Word taught verse by verse every Sunday</p>
           <div className="grid md:grid-cols-2 gap-6 max-w-xl mx-auto">
-            <div className="bg-blue-800 rounded-lg p-5">
+            <div className="bg-white/10 rounded-lg p-5">
               <h3 className="font-semibold mb-1">Nyaduong' Village</h3>
-              <p className="text-blue-200 text-sm">Sundays: 9:00 AM – 12:00 PM</p>
+              <p className="text-gray-200 text-sm">Sundays: 9:00 AM – 12:00 PM</p>
             </div>
-            <div className="bg-blue-800 rounded-lg p-5">
+            <div className="bg-white/10 rounded-lg p-5">
               <h3 className="font-semibold mb-1">Bible Study</h3>
-              <p className="text-blue-200 text-sm">Wednesdays: 6:00 PM – 8:00 PM</p>
+              <p className="text-gray-200 text-sm">Wednesdays: 6:00 PM – 8:00 PM</p>
             </div>
           </div>
         </div>

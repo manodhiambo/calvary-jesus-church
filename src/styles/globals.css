@@ -2,21 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Crimson+Text:wght@400;600&display=swap');
-
-:root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
-  }
-}
+/* Fonts: Inter (body) + Playfair Display (headings) + Crimson Text (scripture) */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,800;1,400;1,600&family=Crimson+Text:ital,wght@0,400;0,600;1,400;1,600&display=swap');
 
 * {
   box-sizing: border-box;
@@ -29,16 +16,9 @@ body {
   max-width: 100vw;
   overflow-x: hidden;
   font-family: 'Inter', system-ui, sans-serif;
-}
-
-body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+  background-color: #ffffff;
+  color: #1a1a2e;
+  scroll-behavior: smooth;
 }
 
 a {
@@ -46,85 +26,63 @@ a {
   text-decoration: none;
 }
 
-@media (prefers-color-scheme: dark) {
-  html {
-    color-scheme: dark;
-  }
-}
+/* ── Custom scrollbar ── */
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: #f1f1f1; }
+::-webkit-scrollbar-thumb { background: #c8972a; border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: #a67820; }
 
-/* Custom scrollbar */
-::-webkit-scrollbar {
-  width: 8px;
+/* ── Typography utilities ── */
+.font-heading {
+  font-family: 'Playfair Display', Georgia, serif;
 }
-
-::-webkit-scrollbar-track {
-  background: #f1f1f1;
-}
-
-::-webkit-scrollbar-thumb {
-  background: #888;
-  border-radius: 4px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: #555;
-}
-
-/* Smooth scrolling */
-html {
-  scroll-behavior: smooth;
-}
-
-/* Scripture text styling */
 .scripture-text {
   font-family: 'Crimson Text', serif;
   font-style: italic;
   line-height: 1.8;
 }
 
-/* Custom animation utilities */
-.animate-fade-in {
-  animation: fadeIn 0.5s ease-in-out;
+/* ── Gold accent divider (used in section headers) ── */
+.gold-divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+.gold-divider::before,
+.gold-divider::after {
+  content: '';
+  display: block;
+  width: 2rem;
+  height: 2px;
+  background-color: #c8972a;
 }
 
-.animate-slide-up {
-  animation: slideUp 0.5s ease-out;
+/* ── Section label (small uppercase above headings) ── */
+.section-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: #c8972a;
+  margin-bottom: 0.75rem;
 }
 
-.animate-bounce-gentle {
-  animation: bounceGentle 2s infinite;
-}
+/* ── Animation utilities ── */
+.animate-fade-in  { animation: fadeIn 0.5s ease-in-out; }
+.animate-slide-up { animation: slideUp 0.5s ease-out; }
+.animate-bounce-gentle { animation: bounceGentle 2s infinite; }
 
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
+@keyframes fadeIn      { from { opacity: 0; } to { opacity: 1; } }
+@keyframes slideUp     { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+@keyframes bounceGentle{ 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
 
-@keyframes slideUp {
-  from { 
-    transform: translateY(20px); 
-    opacity: 0; 
-  }
-  to { 
-    transform: translateY(0); 
-    opacity: 1; 
-  }
-}
+/* ── Accessibility ── */
+.focus-visible:focus { outline: 2px solid #c8972a; outline-offset: 2px; }
 
-@keyframes bounceGentle {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-10px); }
-}
-
-/* Focus styles for accessibility */
-.focus-visible:focus {
-  outline: 2px solid #0ea5e9;
-  outline-offset: 2px;
-}
-
-/* Print styles */
-@media print {
-  .no-print {
-    display: none !important;
-  }
-}
+/* ── Print ── */
+@media print { .no-print { display: none !important; } }

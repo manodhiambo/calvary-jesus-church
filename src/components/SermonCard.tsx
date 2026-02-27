@@ -1,5 +1,5 @@
 import React from 'react';
-import { Calendar, Play, User } from 'lucide-react';
+import { Calendar, Play, User, BookOpen } from 'lucide-react';
 
 interface Sermon {
   title: string;
@@ -18,104 +18,75 @@ interface SermonCardProps {
 }
 
 const SermonCard: React.FC<SermonCardProps> = ({ sermon, featured }) => {
-  const {
-    title,
-    speaker,
-    date,
-    description,
-    videoUrl,
-    thumbnail,
-    series,
-    duration
-  } = sermon;
+  const { title, speaker, date, description, videoUrl, thumbnail, series, duration } = sermon;
 
-  const handlePlay = () => {
-    if (videoUrl) {
-      window.open(videoUrl, '_blank');
-    }
-  };
+  const handlePlay = () => { if (videoUrl) window.open(videoUrl, '_blank'); };
 
   return (
-    <div className={`bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300 group ${featured ? 'border-4 border-amber-500' : ''}`}>
-      {/* Thumbnail Section */}
-      <div className="relative h-48 bg-gradient-to-br from-blue-900 to-blue-700 overflow-hidden">
+    <div className={`bg-white rounded-2xl shadow-sm overflow-hidden hover:shadow-xl transition-all duration-300 group border ${featured ? 'border-cjc-gold/60' : 'border-gray-100 hover:border-cjc-gold/30'}`}>
+      {/* Thumbnail */}
+      <div className="relative h-52 bg-cjc-navy overflow-hidden">
         {thumbnail ? (
-          <img 
-            src={thumbnail} 
-            alt={title}
-            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-          />
+          <img src={thumbnail} alt={title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
         ) : (
-          <div className="w-full h-full flex items-center justify-center">
-            <div className="text-white text-center">
-              <div className="text-6xl mb-2">📖</div>
-              <p className="text-sm opacity-75">Sermon Thumbnail</p>
-            </div>
+          <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-cjc-navy to-cjc-blue">
+            <BookOpen className="w-16 h-16 text-cjc-gold/40" />
           </div>
         )}
 
+        {/* Play overlay */}
         {videoUrl && (
-          <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-40 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-            <button
-              onClick={handlePlay}
-              className="bg-white bg-opacity-90 hover:bg-opacity-100 rounded-full p-4 transition-all duration-200 hover:scale-110"
-            >
-              <Play className="w-8 h-8 text-blue-900 ml-1" />
+          <div className="absolute inset-0 flex items-center justify-center bg-cjc-navy/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+            <button onClick={handlePlay}
+              className="bg-cjc-gold hover:bg-cjc-gold-mid text-white rounded-full p-4 transition-all duration-200 hover:scale-110 shadow-lg">
+              <Play className="w-6 h-6 ml-0.5" />
             </button>
           </div>
         )}
 
         {series && (
-          <div className="absolute top-4 left-4">
-            <span className="bg-yellow-500 text-white px-3 py-1 rounded-full text-xs font-semibold">
-              {series}
-            </span>
+          <div className="absolute top-3 left-3">
+            <span className="bg-cjc-gold text-white px-2.5 py-1 rounded-lg text-xs font-semibold capitalize">{series}</span>
           </div>
         )}
-
         {duration && (
-          <div className="absolute top-4 right-4">
-            <span className="bg-black bg-opacity-50 text-white px-2 py-1 rounded text-xs">
-              {duration}
-            </span>
+          <div className="absolute top-3 right-3">
+            <span className="bg-black/60 text-white px-2 py-1 rounded text-xs">{duration}</span>
+          </div>
+        )}
+        {featured && (
+          <div className="absolute bottom-3 left-3">
+            <span className="bg-cjc-gold/90 text-white px-2.5 py-1 rounded-lg text-xs font-semibold">Featured</span>
           </div>
         )}
       </div>
 
-      {/* Content Section */}
+      {/* Content */}
       <div className="p-6">
-        <h3 className="text-xl font-bold text-gray-900 mb-3 line-clamp-2 hover:text-blue-900 transition-colors">
+        <h3 className="font-heading text-xl font-bold text-cjc-navy mb-3 line-clamp-2 group-hover:text-cjc-gold transition-colors">
           {title}
         </h3>
+        <p className="text-gray-500 mb-5 line-clamp-3 text-sm leading-relaxed">{description}</p>
 
-        <p className="text-gray-600 mb-4 line-clamp-3 text-sm leading-relaxed">
-          {description}
-        </p>
-
-        {/* Meta Information */}
-        <div className="flex items-center justify-between text-sm text-gray-500 mb-4">
-          <div className="flex items-center">
-            <User className="w-4 h-4 mr-1" />
-            <span className="font-medium">{speaker}</span>
+        <div className="flex items-center justify-between text-xs text-gray-400 mb-5">
+          <div className="flex items-center gap-1.5">
+            <User className="w-3.5 h-3.5 text-cjc-gold/70" />
+            <span className="font-medium text-gray-600">{speaker}</span>
           </div>
-          <div className="flex items-center">
-            <Calendar className="w-4 h-4 mr-1" />
-            <span>{new Date(date).toLocaleDateString('en-GB', { day: '2-digit', month: '2-digit', year: 'numeric' })}</span>
+          <div className="flex items-center gap-1.5">
+            <Calendar className="w-3.5 h-3.5 text-cjc-gold/70" />
+            <span>{new Date(date).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })}</span>
           </div>
         </div>
 
-        {/* Action Buttons */}
         <div className="flex gap-2">
           {videoUrl && (
-            <button
-              onClick={handlePlay}
-              className="flex-1 bg-blue-900 hover:bg-blue-800 text-white px-4 py-2 rounded-lg font-medium transition-colors duration-200 flex items-center justify-center gap-2"
-            >
-              <Play className="w-4 h-4" />
-              Watch
+            <button onClick={handlePlay}
+              className="flex-1 bg-cjc-gold hover:bg-cjc-gold-mid text-white px-4 py-2.5 rounded-xl text-sm font-semibold transition-all duration-200 flex items-center justify-center gap-2">
+              <Play className="w-4 h-4" /> Watch
             </button>
           )}
-          <button className="flex-1 border border-blue-900 hover:bg-blue-50 text-blue-900 px-4 py-2 rounded-lg font-medium transition-colors duration-200">
+          <button className="flex-1 border border-cjc-navy/20 hover:border-cjc-gold/40 hover:bg-cjc-gold/5 text-cjc-navy px-4 py-2.5 rounded-xl text-sm font-medium transition-all duration-200">
             Share
           </button>
         </div>
@@ -125,4 +96,3 @@ const SermonCard: React.FC<SermonCardProps> = ({ sermon, featured }) => {
 };
 
 export default SermonCard;
-

@@ -63,14 +63,16 @@ export default function PastEventsPage() {
   return (
     <>
       <Header />
-      <main className="min-h-screen bg-gray-50">
-        <section className="bg-gradient-to-r from-slate-900 via-slate-800 to-slate-700 text-white py-16">
+      <main className="min-h-screen bg-cjc-cream">
+        <section className="relative py-36 bg-cjc-navy overflow-hidden">
+          <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-transparent via-cjc-gold to-transparent" />
           <div className="container mx-auto px-4 text-center">
-            <h1 className="text-4xl font-bold mb-4">Past Events</h1>
+            <div className="w-12 h-0.5 bg-cjc-gold mx-auto mb-6" />
+            <h1 className="text-4xl font-bold font-heading mb-4 text-white">Past Events</h1>
             <p className="text-xl text-gray-200 max-w-2xl mx-auto">
               Relive the memorable moments and see how God has been working in our church community.
             </p>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-10 max-w-md mx-auto">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-10 max-w-md mx-auto text-white">
               <div className="bg-white/10 rounded-xl p-4">
                 <div className="text-3xl font-bold">{events.length}</div>
                 <div className="text-gray-200 text-sm">Events Recorded</div>
@@ -84,6 +86,7 @@ export default function PastEventsPage() {
         </section>
 
         {/* Filter bar */}
+
         <section className="bg-white border-b py-4">
           <div className="container mx-auto px-4 flex flex-wrap gap-3 items-center justify-between">
             <div className="flex flex-wrap gap-2">
@@ -91,7 +94,7 @@ export default function PastEventsPage() {
                 <button
                   key={c}
                   onClick={() => setCategory(c)}
-                  className={`px-4 py-1.5 rounded-full text-sm font-semibold capitalize transition-colors ${category === c ? 'bg-slate-800 text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'}`}
+                  className={`px-4 py-1.5 rounded-full text-sm font-semibold capitalize transition-colors ${category === c ? 'bg-cjc-navy text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'}`}
                 >
                   {c === 'all' ? 'All' : c}
                 </button>
@@ -114,7 +117,7 @@ export default function PastEventsPage() {
         <section className="py-12">
           <div className="container mx-auto px-4">
             {loading ? (
-              <div className="flex justify-center py-20"><Loader2 className="w-8 h-8 animate-spin text-amber-600" /></div>
+              <div className="flex justify-center py-20"><Loader2 className="w-8 h-8 animate-spin text-cjc-gold" /></div>
             ) : filtered.length === 0 ? (
               <div className="text-center py-20 text-gray-400">No past events found.</div>
             ) : (
@@ -136,15 +139,15 @@ export default function PastEventsPage() {
                           <span className={`text-xs px-2 py-0.5 rounded-full font-medium capitalize ${categoryColors[cat] || categoryColors.general}`}>{cat}</span>
                           <span className="text-xs px-2 py-0.5 rounded-full bg-gray-100 text-gray-500 font-medium">Past</span>
                         </div>
-                        <h3 className="text-lg font-bold text-gray-900 mb-2">{event.title}</h3>
+                        <h3 className="text-lg font-bold font-heading text-cjc-navy mb-2">{event.title}</h3>
                         <div className="space-y-1 text-sm text-gray-500 mb-3">
                           <div className="flex items-center gap-2">
-                            <Calendar className="w-4 h-4 text-amber-500" />
+                            <Calendar className="w-4 h-4 text-cjc-gold" />
                             {new Date(event.event_date).toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
                           </div>
                           {event.location && (
                             <div className="flex items-center gap-2">
-                              <MapPin className="w-4 h-4 text-amber-500" />
+                              <MapPin className="w-4 h-4 text-cjc-gold" />
                               {event.location}
                             </div>
                           )}
