@@ -46,7 +46,7 @@ export default function Home() {
   const [featuredSermon, setFeaturedSermon] = useState<Sermon | null>(null);
   const [onlineService, setOnlineService] = useState<{ video_url?: string; title?: string; is_live?: boolean } | null>(null);
   const [churchServices, setChurchServices] = useState<Array<{ id: number; title: string; description?: string; service_type?: string; service_date?: string; media_urls?: string[] }>>([]);
-  const [serviceTab, setServiceTab] = useState(0);
+  const [selectedServiceId, setSelectedServiceId] = useState<number | null>(null);
 
   const heroSlides = [
     {
@@ -312,7 +312,7 @@ export default function Home() {
           </section>
         )}
 
-        {/* Recent Services — DB driven with category tabs + carousel */}
+        {/* Recent Services — featured latest + past services grid */}
         <section className="py-20 bg-white">
           <div className="max-w-6xl mx-auto px-6">
             <div className="text-center mb-10">
@@ -321,82 +321,107 @@ export default function Home() {
               <p className="text-lg text-slate-500 italic">"Therefore go and make disciples of all nations" — Matthew 28:19</p>
             </div>
 
-            {churchServices.length > 0 ? (
-              <div className="max-w-4xl mx-auto">
-                {/* Category Tabs */}
-                {churchServices.length > 1 && (
-                  <div className="flex flex-wrap gap-2 justify-center mb-6">
-                    {churchServices.map((svc, i) => {
-                      const isPast = svc.service_date && new Date(svc.service_date) < new Date();
-                      return (
-                        <button
-                          key={svc.id}
-                          onClick={() => setServiceTab(i)}
-                          className={`px-4 py-2 rounded-full text-sm font-semibold transition-colors flex items-center gap-2 ${
-                            serviceTab === i ? 'bg-amber-600 text-white' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
-                          }`}
-                        >
-                          <span className="capitalize">{svc.service_type || 'service'}</span>
-                          {isPast && <span className={`text-xs px-1.5 py-0.5 rounded-full ${serviceTab === i ? 'bg-amber-500 text-amber-100' : 'bg-gray-200 text-gray-500'}`}>Past</span>}
-                        </button>
-                      );
-                    })}
-                  </div>
-                )}
+            {churchServices.length > 0 ? (() => {
+              const now = new Date();
+              // Sort: upcoming (soonest first), then past (most recent first)
+              const sorted = [...churchServices].sort((a, b) => {
+                const aDate = a.service_date ? new Date(a.service_date) : new Date(0);
+                const bDate = b.service_date ? new Date(b.service_date) : new Date(0);
+                const aUp = aDate >= now, bUp = bDate >= now;
+                if (aUp && !bUp) return -1;
+                if (!aUp && bUp) return 1;
+                return aUp ? aDate.getTime() - bDate.getTime() : bDate.getTime() - aDate.getTime();
+              });
 
-                {/* Active Service */}
-                {(() => {
-                  const svc = churchServices[serviceTab] || churchServices[0];
-                  const media = Array.isArray(svc?.media_urls) ? svc.media_urls.filter(Boolean) : [];
-                  const isPast = svc?.service_date && new Date(svc.service_date) < new Date();
-                  return (
-                    <div className="bg-white rounded-xl shadow-lg overflow-hidden border border-slate-100">
-                      {media.length > 0 ? (
-                        <MediaCarousel items={media} interval={3000} />
-                      ) : (
-                        /* Fallback: show static baptism photos if no media uploaded */
-                        <div className="relative h-96 md:h-[440px] bg-slate-100">
-                          {baptismPhotos.map((photo, index) => (
-                            <div key={index} className={`absolute inset-0 transition-opacity duration-700 ${index === currentBaptismPhoto ? 'opacity-100' : 'opacity-0'}`}>
-                              <img src={photo} alt="Service photo" className="w-full h-full object-cover" />
-                            </div>
-                          ))}
-                          <button onClick={() => setCurrentBaptismPhoto(p => (p - 1 + baptismPhotos.length) % baptismPhotos.length)}
-                            className="absolute left-4 top-1/2 -translate-y-1/2 bg-black/50 text-white p-2 rounded-full hover:bg-black/70">
-                            <ChevronLeft className="w-6 h-6" />
-                          </button>
-                          <button onClick={() => setCurrentBaptismPhoto(p => (p + 1) % baptismPhotos.length)}
-                            className="absolute right-4 top-1/2 -translate-y-1/2 bg-black/50 text-white p-2 rounded-full hover:bg-black/70">
-                            <ChevronRight className="w-6 h-6" />
-                          </button>
-                          <div className="absolute bottom-4 left-1/2 -translate-x-1/2 bg-black/70 text-white px-4 py-1.5 rounded-full text-sm">
-                            {currentBaptismPhoto + 1} / {baptismPhotos.length}
+              // Featured = selected by click, otherwise the first (newest upcoming or most recent past)
+              const featured = sorted.find(s => s.id === selectedServiceId) || sorted[0];
+              const pastServices = sorted.filter(s => s.id !== featured.id && s.service_date && new Date(s.service_date) < now);
+              const media = Array.isArray(featured?.media_urls) ? featured.media_urls.filter(Boolean) : [];
+              const isPast = featured?.service_date && new Date(featured.service_date) < now;
+
+              return (
+                <div className="max-w-4xl mx-auto">
+                  {/* Featured service card */}
+                  <div className="bg-white rounded-xl shadow-lg overflow-hidden border border-slate-100 mb-10">
+                    {media.length > 0 ? (
+                      <MediaCarousel items={media} interval={2000} />
+                    ) : (
+                      <div className="relative h-96 md:h-[440px] bg-slate-100">
+                        {baptismPhotos.map((photo, index) => (
+                          <div key={index} className={`absolute inset-0 transition-opacity duration-700 ${index === currentBaptismPhoto ? 'opacity-100' : 'opacity-0'}`}>
+                            <img src={photo} alt="Service photo" className="w-full h-full object-cover" />
                           </div>
+                        ))}
+                        <button onClick={() => setCurrentBaptismPhoto(p => (p - 1 + baptismPhotos.length) % baptismPhotos.length)}
+                          className="absolute left-4 top-1/2 -translate-y-1/2 bg-black/50 text-white p-2 rounded-full hover:bg-black/70">
+                          <ChevronLeft className="w-6 h-6" />
+                        </button>
+                        <button onClick={() => setCurrentBaptismPhoto(p => (p + 1) % baptismPhotos.length)}
+                          className="absolute right-4 top-1/2 -translate-y-1/2 bg-black/50 text-white p-2 rounded-full hover:bg-black/70">
+                          <ChevronRight className="w-6 h-6" />
+                        </button>
+                        <div className="absolute bottom-4 left-1/2 -translate-x-1/2 bg-black/70 text-white px-4 py-1.5 rounded-full text-sm">
+                          {currentBaptismPhoto + 1} / {baptismPhotos.length}
                         </div>
-                      )}
-                      <div className="p-6">
-                        <div className="flex items-center gap-2 mb-2 flex-wrap">
-                          {svc.service_type && (
-                            <span className="bg-amber-100 text-amber-700 text-xs font-semibold px-2 py-1 rounded capitalize">{svc.service_type}</span>
-                          )}
-                          {isPast
-                            ? <span className="bg-gray-100 text-gray-500 text-xs px-2 py-1 rounded">Past Service</span>
-                            : <span className="bg-green-100 text-green-700 text-xs px-2 py-1 rounded">Upcoming</span>
-                          }
-                          {svc.service_date && (
-                            <span className="text-xs text-slate-400 ml-auto">
-                              {new Date(svc.service_date).toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
-                            </span>
-                          )}
-                        </div>
-                        <h3 className="text-2xl font-bold text-slate-900 mb-2">{svc.title}</h3>
-                        {svc.description && <p className="text-slate-600">{svc.description}</p>}
+                      </div>
+                    )}
+                    <div className="p-6">
+                      <div className="flex items-center gap-2 mb-2 flex-wrap">
+                        {featured.service_type && (
+                          <span className="bg-amber-100 text-amber-700 text-xs font-semibold px-2 py-1 rounded capitalize">{featured.service_type}</span>
+                        )}
+                        {isPast
+                          ? <span className="bg-gray-100 text-gray-500 text-xs px-2 py-1 rounded">Past Service</span>
+                          : <span className="bg-green-100 text-green-700 text-xs px-2 py-1 rounded font-medium">Upcoming</span>
+                        }
+                        {featured.service_date && (
+                          <span className="text-xs text-slate-400 ml-auto">
+                            {new Date(featured.service_date).toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
+                          </span>
+                        )}
+                      </div>
+                      <h3 className="text-2xl font-bold text-slate-900 mb-2">{featured.title}</h3>
+                      {featured.description && <p className="text-slate-600">{featured.description}</p>}
+                    </div>
+                  </div>
+
+                  {/* Past services grid — never deleted, always accessible */}
+                  {pastServices.length > 0 && (
+                    <div>
+                      <h3 className="text-lg font-bold text-slate-600 mb-4 flex items-center gap-2">
+                        <Clock className="w-5 h-5" /> Past Services
+                      </h3>
+                      <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-4">
+                        {pastServices.map(svc => (
+                          <button
+                            key={svc.id}
+                            onClick={() => setSelectedServiceId(svc.id)}
+                            className="bg-white rounded-lg shadow-sm border border-slate-200 overflow-hidden hover:shadow-md hover:border-amber-300 transition-all text-left group"
+                          >
+                            {svc.media_urls?.[0] ? (
+                              <img src={svc.media_urls[0]} alt="" className="w-full h-32 object-cover group-hover:opacity-90 transition-opacity" />
+                            ) : (
+                              <div className="w-full h-32 bg-slate-100 flex items-center justify-center">
+                                <BookOpen className="w-8 h-8 text-slate-300" />
+                              </div>
+                            )}
+                            <div className="p-3">
+                              <span className="bg-gray-100 text-gray-500 text-xs px-2 py-0.5 rounded">Past Service</span>
+                              <h4 className="text-sm font-semibold text-slate-800 mt-1 line-clamp-2 group-hover:text-amber-700 transition-colors">{svc.title}</h4>
+                              {svc.service_date && (
+                                <p className="text-xs text-slate-400 mt-1">
+                                  {new Date(svc.service_date).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })}
+                                </p>
+                              )}
+                            </div>
+                          </button>
+                        ))}
                       </div>
                     </div>
-                  );
-                })()}
-              </div>
-            ) : (
+                  )}
+                </div>
+              );
+            })() : (
               /* Fallback: original baptism photo slideshow */
               <div className="max-w-4xl mx-auto">
                 <div className="relative bg-slate-100 rounded-lg overflow-hidden shadow-lg">
