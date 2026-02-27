@@ -8,13 +8,15 @@ interface Props {
   className?: string;
 }
 
-function isVideo(url: string) {
+function isVideo(url: string | undefined) {
+  if (!url) return false;
   return /\.(mp4|mov|webm|avi|mkv)(\?|$)/i.test(url) ||
     url.includes('youtube.com') || url.includes('youtu.be') ||
     (url.includes('cloudinary.com') && url.includes('/video/'));
 }
 
-function isYouTube(url: string) {
+function isYouTube(url: string | undefined) {
+  if (!url) return false;
   return url.includes('youtube.com') || url.includes('youtu.be');
 }
 
@@ -35,14 +37,16 @@ export default function MediaCarousel({ items, autoPlay = true, interval = 4000,
 
   const validLength = valid.length;
   useEffect(() => {
-    if (!autoPlay || validLength <= 1 || isVideo(valid[idx])) return;
+    const si = Math.min(idx, Math.max(0, validLength - 1));
+    if (!autoPlay || validLength <= 1 || isVideo(valid[si])) return;
     const t = setInterval(() => setIdx(p => (p + 1) % validLength), interval);
     return () => clearInterval(t);
   }, [autoPlay, idx, validLength, interval]);
 
   if (!valid.length) return null;
 
-  const url = valid[idx];
+  const safeIdx = Math.min(idx, valid.length - 1);
+  const url = valid[safeIdx];
   const video = isVideo(url);
   const yt = isYouTube(url);
 
@@ -90,12 +94,12 @@ export default function MediaCarousel({ items, autoPlay = true, interval = 4000,
               <button
                 key={i}
                 onClick={() => setIdx(i)}
-                className={`w-2 h-2 rounded-full transition-colors ${i === idx ? 'bg-white' : 'bg-white/40'}`}
+                className={`w-2 h-2 rounded-full transition-colors ${i === safeIdx ? 'bg-white' : 'bg-white/40'}`}
               />
             ))}
           </div>
           <div className="absolute top-2 right-2 bg-black/60 text-white text-xs px-2 py-0.5 rounded-full z-10">
-            {idx + 1}/{valid.length}
+            {safeIdx + 1}/{valid.length}
           </div>
         </>
       )}
